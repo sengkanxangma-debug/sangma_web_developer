@@ -1,0 +1,59 @@
+ display: none; /* Keeps it hidden until clicked */
+}
+
+#nav-menu.show {
+    display: block !important; /* Forces it to show when clicked */
+/* --- RESPONSIVE NAVIGATION SYSTEM --- */
+
+/* 1. Mobile & Tablet Styles (Screens smaller than 992px wide) */
+@media (max-width: 991px) {
+    #nav-menu {
+        display: none; /* Hide standard links by default on mobile */
+        width: 100%;
+        flex-direction: column; /* Stack menu items vertically */
+        background-color: #ffffff; /* Change to match your theme color */
+        position: absolute;
+        top: 60px; /* Adjust based on your header height */
+        left: 0;
+        z-index: 1000;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    /* This class is added by your JavaScript when clicked */
+    #nav-menu.show {
+        display: flex !important; 
+    }
+
+    /* Make the mobile menu button visible */
+    #mobile-menu {
+        display: block; 
+        cursor: pointer;
+    }
+    
+    #nav-menu a {
+        padding: 15px 20px;
+        border-bottom: 1px solid #eaeaea;
+        width: 100%;
+    }
+}
+
+/* 2. Desktop Styles (Screens 992px wide and larger) */
+@media (min-width: 992px) {
+    #mobile-menu {
+        display: none !important; /* Hide hamburger icon on big screens */
+    }
+
+    #nav-menu {
+        display: flex !important; /* Always show links horizontally */
+        flex-direction: row;
+        position: static;
+        box-shadow: none;
+        background-color: transparent;
+    }
+
+    #nav-menu a {
+        padding: 0 15px;
+        border-bottom: none;
+        width: auto;
+    }
+}
