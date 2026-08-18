@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Good Shepherd Higher Secondary School</title>
+    <link class="icon" type="images/png" href="images/favico.png">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* CSS styling for the Animated School Title over Hero Banner Slider */
+        .slider-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        /* Continuous Sliding Animation for 10 Images */
+        .slides-wrapper {
+            display: flex;
+            width: 1000%;
+            animation: heroSlideshow 30s infinite ease-in-out;
+        }
+        .slide-img {
+            width: 10%;
+            height: auto;
+            object-fit: cover;
+            display: block;
+        }
+
+        @keyframes heroSlideshow {
+            0%, 7% { transform: translateX(0%); }
+            10%, 17% { transform: translateX(-10%); }
+            20%, 27% { transform: translateX(-20%); }
+            30%, 37% { transform: translateX(-30%); }
+            40%, 47% { transform: translateX(-40%); }
+            50%, 57% { transform: translateX(-50%); }
+            60%, 67% { transform: translateX(-60%); }
+            70%, 77% { transform: translateX(-70%); }
+            80%, 87% { transform: translateX(-80%); }
+            90%, 97% { transform: translateX(-90%); }
+            100% { transform: translateX(0%); }
+        }
+
+        .slider-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4); 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #ffffff;
+            padding: 20px;
+            box-sizing: border-box;
+            z-index: 2;
+        }
+        .animate-school-name {
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+            animation: textFadeTracking 2.5s ease-out infinite alternate;
+        }
+        @keyframes textFadeTracking {
+            0% {
+                letter-spacing: 1px;
+                opacity: 0.8;
+                transform: scale(0.98);
+            }
+            100% {
+                letter-spacing: 4px;
+                opacity: 1;
+                transform: scale(1.02);
+            }
+        }
+        
+        /* Centered Bottom-Middle Footer Styling Block */
+        .site-footer {
+            background-color: #222222;
+            color: #bbbbbb;
+            padding: 30px 0;
+            font-size: 14px;
+            text-align: center;
+            border-top: 3px solid #2e7d32;
+            margin-top: 40px;
+            width: 100%;
+        }
+        .site-footer .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center;
+            text-align: center;
+        }
+        .site-footer p {
+            margin: 5px 0; 
+        }
+        .site-footer a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+        .site-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Portal Login Grid Styles */
+        .portal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .portal-card {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        .portal-card:hover {
+            transform: translateY(-5px);
+        }
+        .portal-btn {
+            display: inline-block;
+            background-color: #2e7d32;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        .portal-btn.staff {
+            background-color: #1565c0;
+        }
+
+        /* Added Styling Rules for Contact & Info Section Rows */
+        .contact-row-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+        .contact-card-box {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .contact-box-title {
+            font-size: 1.5rem;
+            color: #2e7d32;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e8f5e9;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .contact-item {
+            display: flex;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        .contact-label {
+            font-weight: bold;
+            width: 150px;
+            color: #333333;
+            flex-shrink: 0;
+        }
+        .contact-value {
+            color: #555555;
+            flex-grow: 1;
+        }
+        .contact-value a {
+            color: #2e7d32;
+            text-decoration: none;
+        }
+        .contact-value a:hover {
+            text-decoration: underline;
+        }
+        .whatsapp-link, .social-btn {
+            display: inline-block;
+            margin-left: 10px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #fff !important;
+            font-weight: bold;
+        }
+        .whatsapp-link { background-color: #25d366; }
+        .social-btn.btn-youtube { background-color: #ff0000; }
+        .social-btn.btn-facebook { background-color: #1877f2; }
+        
+        /* Map Layout Setup */
+        .map-container {
+            margin: 40px 0 10px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        /* --- Collapsible Routine Dropdown Styling --- */
+        .routine-dropdown-wrapper {
+            margin-bottom: 20px;
+        }
+        .routine-toggle-btn {
+            width: 100%;
+            background-color: #1a365d;
+            color: #ffffff;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: left;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: background-color 0.2s ease;
+        }
+        .routine-toggle-btn:hover {
+            background-color: #2b6cb0;
+        }
+        .routine-toggle-btn .arrow-icon {
+            font-size: 1.4rem;
+            transition: transform 0.3s ease;
+        }
+        .routine-toggle-btn.active .arrow-icon {
+            transform: rotate(180deg);
+        }
+        .routine-collapse-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease;
+            background-color: #ffffff;
+            border-radius: 0 0 6px 6px;
+            border: 1px solid #cbd5e0;
+            border-top: none;
+        }
+        .routine-inner-body {
+            padding: 25px;
+        }
+        .routine-table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 6px;
+            border: 1px solid #cbd5e0;
+        }
+        .routine-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            min-width: 850px;
+        }
+        .routine-table th {
+            background-color: #2b6cb0;
+            color: #ffffff;
+            text-align: left;
+            padding: 12px 10px;
+            font-weight: 600;
+            border: 1px solid #cbd5e0;
+        }
+        .routine-table td {
+            padding: 12px 10px;
+            border: 1px solid #e2e8f0;
+            color: #2d3748;
+        }
+        .routine-table tbody tr:nth-child(even) {
+            background-color: #f7fafc;
+        }
+        .routine-table tbody tr:hover {
+            background-color: #ebf8ff;
+            cursor: pointer;
+        }
+        .routine-date-col {
+            font-weight: 600;
+            color: #2b6cb0;
+            white-space: nowrap;
+        }
+        .routine-nb-box {
+            background-color: #fffaf0;
+            border-left: 4px solid #dd6b20;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .routine-signature {
+            text-align: right;
+            margin-top: 20px;
+            font-weight: bold;
+            color: #4a5568;
+        }
+
+        /* Styles to make text links within sections look uniform and distinct */
+        .news-link {
+            text-decoration: none;
+            color: #333333;
+            display: block;
+            margin-bottom: 15px;
+        }
+        .news-link:hover {
+            color: #2e7d32;
+            text-decoration: underline;
+        }
+        .card-heading a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+        .card-heading a:hover {
+            text-decoration: underline;
+        }
+
+        /* Donation QR Code Box Styles */
+        #donation-qr-box {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 250px;
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 1000; 
+            display: none; 
+        }
+        #donation-qr-box.show {
+            display: block; 
+        }
+        #donation-qr-title {
+            font-weight: bold;
+            color: #2e7d32;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        #qr-code-placeholder {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+            border: 2px solid #000;
+            background-color: #f0f0f0; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #555;
+            font-size: 1.2rem;
+            position: relative;
+        }
+        #close-donation-box {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: #999;
+            cursor: pointer;
+        }
+        #close-donation-box:hover {
+            color: #555;
+        }
+        #qr-scan-label {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #666;
+            text-align: center;
+        }
+
+        /* --- POP-UP MODAL & FLOATING BUTTONS CSS (Feedback) --- */
+        .action-btn-group {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 999;
+        }
+        .floating-action-btn { 
+            background: #3182ce; color: white; border: none; padding: 15px 25px; 
+            font-size: 16px; font-weight: bold; border-radius: 50px; cursor: pointer; 
+            box-shadow: 0 5px 15px rgba(49,130,206,0.4); transition: transform 0.2s, background 0.2s; 
+        }
+        .floating-action-btn:hover { background: #2b6cb0; transform: scale(1.05); }
+
+        .modal-overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0, 0, 0, 0.6); display: none; justify-content: center; 
+            align-items: center; z-index: 2000; backdrop-filter: blur(4px); 
+        }
+        .modal-card { 
+            background: white; width: 100%; max-width: 550px; max-height: 90vh; 
+            overflow-y: auto; padding: 30px; border-radius: 12px; 
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); position: relative; 
+            animation: slideIn 0.3s ease-out; 
+        }
+        @keyframes slideIn { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .close-modal-btn { 
+            position: absolute; top: 15px; right: 20px; font-size: 28px; 
+            color: #a0aec0; cursor: pointer; border: none; background: none; 
+        }
+        .close-modal-btn:hover { color: #4a5568; }
+
+        /* Modal Form Shared Styling */
+        .modal-card h2 { margin: 0 0 5px 0; color: #2d3748; font-size: 22px; text-align: center; }
+        .modal-card p.subtitle { margin: 0 0 20px 0; color: #718096; font-size: 14px; text-align: center; }
+        .form-group { margin-bottom: 16px; }
+        .modal-card label { display: block; margin-bottom: 6px; font-weight: 600; color: #4a5568; font-size: 13px; }
+        .modal-card select, .modal-card textarea, .modal-card input[type="text"], 
+        .modal-card input[type="email"], .modal-card input[type="tel"], .modal-card input[type="date"] { 
+            width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 6px; 
+            box-sizing: border-box; font-size: 14px; background-color: #f8fafc; 
+        }
+        .modal-card select:focus, .modal-card textarea:focus, .modal-card input:focus { 
+            outline: none; border-color: #3182ce; background-color: #fff; 
+        }
+        
+        /* Star Rating CSS */
+        .rating-wrapper { display: flex; flex-direction: row-reverse; justify-content: flex-end; gap: 6px; }
+        .rating-wrapper input[type="radio"] { display: none; }
+        .rating-wrapper label.star-label { font-size: 32px; color: #cbd5e0; cursor: pointer; transition: color 0.1s; margin: 0; }
+        .rating-wrapper label.star-label:hover, .rating-wrapper label.star-label:hover ~ label.star-label, 
+        .rating-wrapper input[type="radio"]:checked ~ label.star-label { color: #ecc94b; }
+        
+        /* Form Submission Actions */
+        .submit-btn { 
+            width: 100%; background: #48bb78; color: white; border: none; padding: 12px; 
+            font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; 
+            margin-top: 10px; transition: background 0.2s; 
+        }
+        .submit-btn:hover { background: #38a169; }
+        .submit-btn:disabled { background: #a0aec0; cursor: not-allowed; }
+        .statusMsg { text-align: center; font-weight: bold; margin-top: 15px; display: none; padding: 10px; border-radius: 6px; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="container flex-header">
+            <b>Our School Motto:</b>
+            <marquee class="motto-marquee">"To Learn, To Lead"</marquee>
+        </div>
+    </div>
+
+    <div class="nav-wrapper">
+        <div class="container nav-container">
+            <img src="images/logo.png" alt="School Logo" class="logo">
+            <button class="menu-toggle" id="mobile-menu">☰</button>
+            <nav id="nav-menu">
+                <a href="index.html" class="active">Home</a>
+                <a href="about.html">About</a>
+                <a href="admission.html">Admission</a>
+                <a href="events.html">Events</a>
+                <a href="faculty.html">Faculty</a>
+                <a href="gallery.html">Gallery</a>
+                <a href="result.html">Result</a>
+                <a href="registration.html">Registration</a>
+                <a href="udiseentry.html">Udise</a>
+                <a href="notice.html">Notice</a>
+                <a href="contact.html">Contact</a>
+                <a href="blog.html">Blog</a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Universal Image Slideshow Hero Block -->
+    <div class="slider-container">
+        <div class="slides-wrapper">
+            <img src="images/11.jpg" alt="School Campus View" class="slide-img">
+            <img src="images/22.jpg" alt="School Campus View" class="slide-img">
+            <img src="images/33.jpg" alt="School Campus View" class="slide-img">
+            <img src="images/44.jpg" alt="School Campus View" class="slide-img">
+            <img src="images/55.jpg" alt="School Campus View" class="slide-img">
+            <img src="images/66.jpg" alt="School Campus View" class="slide-img">
+            <img src="images/77.jpg" alt="School Campus View" class="slide-img">
+            <img src="images/88.jpg" alt="School Campus View" class="slide-img">
+            <img src="images/99.jpg" alt="School Campus View" class="slide-img">
+            <img src="images/100.jpg" alt="School Campus View" class="slide-img">
+        </div>
+        <div class="slider-overlay">
+            <h1 class="animate-school-name">GOOD SHEPHERD HIGHER SECONDARY SCHOOL</h1>
+            <p style="font-size: 1.2rem; margin-top: 10px; font-weight: 300; text-shadow: 1px 1px 4px rgba(0,0,0,0.6);">"TO LEARN, TO LEAD"</p>
+        </div>
+    </div>
+
+    <div class="main-section gray-bg" style="padding: 30px 0;">
+        <div class="container">
+            <h2 style="text-align: center; color: #222222; margin-bottom: 10px;">Our Online Portals</h2>
+            <div class="portal-grid">
+                <div class="portal-card">
+                    <h3>Student Portal</h3>
+                    <p>Access your classes, results, and other notification.</p>
+                    <a href="students.html" class="portal-btn">Login as Student</a>
+                </div>
+                <div class="portal-card">
+                    <h3>Staff Portal</h3>
+                    <p>Manage performance metrics, register student profiles, and update internal academic tasks.</p>
+                    <a href="staffup.html" class="portal-btn staff">Login as Faculty</a>
+                </div>
+                <div class="portal-card">
+                    <h3>Udise+ Portal</h3>
+                    <p>Only Teachers can access this Portal.</p>
+                    <a href="https://script.google.com/macros/s/AKfycbxzTzP7baKlO0MXZM1Uf4PRELcbVo8IYdO9O1QIBIzvMhzvo8erZrneGjrEvdP2XiLP6A/exec" class="portal-btn staff">Login as Faculty</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-section">
+        <div class="container grid-three">
+            
+            <div class="event-card">
+                <h2 class="card-heading">
+                    Campus News 
+                    <span style="font-size:12px; float:right;"><a href="blog.html">View All →</a></span>
+                </h2>
+                <div class="card-content">
+                    <marquee direction="up" scrollamount="4" style="height:320px;" onmouseover="this.stop();" onmouseout="this.start();">
+                        <ul>
+                            <li>
+                                <a href="images/banner.png" class="news-link">
+                                    <i>12-August-2026 :</i> Inter Club Competition on School Week Notice. <img src="images/new (1).gif" alt="new">
+                                </a>
+                            </li>
+                            <li>
+                            </li>
+                            <li>
+                                <a href="registration.html" class="news-link">
+                                    <i>04-July-2026 :</i> Class XI Registration Notice. <img src="images/new (1).gif" alt="new">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="registration.html" class="news-link">
+                                    <i>27-June-2026 :</i> Notice for the Past Pupil and Students. <img src="images/new (1).gif" alt="new">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="udiseentry.html" class="news-link">
+                                    <i>22-June-2026 :</i> Udise Students List Check List (2026-2027). <img src="images/new (1).gif" alt="new">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="blog.html" class="news-link">
+                                    <i>29-May-2026 :</i> Anti-Tobacco Rally. <img src="images/new (1).gif" alt="new">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="blog.html" class="news-link">
+                                    <i>16-May-2026 :</i> Inauguration of the Class XI Higher Secondary Arts Stream (Pioneer Batch 2026). <img src="images/new (1).gif" alt="new">
+                                </a>
+                            </li>
+                        </ul>
+                    </marquee>
+                </div>
+            </div>
+
+            <div class="event-card">
+                <h2 class="card-heading">
+                    Events 
+                    <span style="font-size:12px; float:right;"><a href="events.html">View All →</a></span>
+                </h2>
+                <div class="card-content">
+                    <ul class="event-list">
+                         <li>
+                            <a href="events.html" style="text-decoration:none; color:inherit; display:flex; width:100%;">
+                                <span class="event-date">12<br>August</span> 
+                                <div class="event-text">School Week Celebration - 2026</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="registration.html" style="text-decoration:none; color:inherit; display:flex; width:100%;">
+                                <span class="event-date">04<br>July</span> 
+                                <div class="event-text">Class XI Registration LINK</div>
+                            </a>
+                        </li>
+                         <li>
+                            <a href="registration.html" style="text-decoration:none; color:inherit; display:flex; width:100%;">
+                                <span class="event-date">27<br>June</span> 
+                                <div class="event-text">Notice For the Past Pupil and Students</div>
+                            </a>
+                        </li>
+                         <li>
+                            <a href="udiseentry.html" style="text-decoration:none; color:inherit; display:flex; width:100%;">
+                                <span class="event-date">22<br>June</span> 
+                                <div class="event-text">Udise + Students Check List</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="events.html" style="text-decoration:none; color:inherit; display:flex; width:100%;">
+                                <span class="event-date">16<br>May</span> 
+                                <div class="event-text">Half Yearly Examination of 2026</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="events.html" style="text-decoration:none; color:inherit; display:flex; width:100%;">
+                                <span class="event-date">16<br>May</span> 
+                                <div class="event-text">Prospectus  - 2026</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://goodshepherdsecondaryschool.blogspot.com/2026/05/inauguration-of-class-xi-higher.html" style="text-decoration:none; color:inherit; display:flex; width:100%;">
+                                <span class="event-date">11<br>May</span> 
+                                <div class="event-text">Inauguration of Higher Secondary Section for the Session of New Academic Term (2026-27)</div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="event-card">
+                <h2 class="card-heading">
+                    Notice Board 
+                    <span style="font-size:12px; float:right;"><a href="notice.html">View All →</a></span>
+                </h2>
+                <div class="card-content">
+                    <marquee direction="up" scrollamount="3" style="height:270px;" onmouseover="this.stop();" onmouseout="this.start();">
+                        <ul class="notice-list">
+                            <li style="margin-bottom: 20px;">
+                                <img src="images/iconpdf.gif" alt="pdf"> 
+                                <a href="images/programe.png" target="_blank">School Week</a> 
+                                <img src="images/new (1).gif" alt="new">
+                            </li>
+                            <li style="margin-bottom: 20px;">
+                                <img src="images/iconpdf.gif" alt="pdf"> 
+                                <a href="registration.html" target="_blank">LINK fro XI Registration</a> 
+                                <img src="images/new (1).gif" alt="new">
+                            </li>
+                            <li style="margin-bottom: 20px;">
+                                <img src="images/iconpdf.gif" alt="pdf"> 
+                                <a href="registration.html" target="_blank">Notice for the Past Pupil and  Students</a> 
+                                <img src="images/new (1).gif" alt="new">
+                            </li>
+                            <li style="margin-bottom: 20px;">
+                                <img src="images/iconpdf.gif" alt="pdf"> 
+                                <a href="udiseentry.html" target="_blank">Notice for the Parents & Students to Check Udise Students List 2026-2027</a> 
+                                <img src="images/new (1).gif" alt="new">
+                            </li>
+                            <li style="margin-bottom: 20px;">
+                                <img src="images/iconpdf.gif" alt="pdf"> 
+                                <a href="registration.html" target="_blank">Class XI Registration for ID Card, for the Academic Session 2026-2027</a> 
+                                <img src="images/new (1).gif" alt="new">
+                            </li>
+                            <li style="margin-bottom: 20px;">
+                                <img src="images/iconpdf.gif" alt="pdf"> 
+                                <a href="" target="_blank">Notice for the Class XI Submit the Choosen Subject</a> 
+                                <img src="images/new (1).gif" alt="new">
+                            </li>
+                        </ul>
+                    </marquee>
+                    <a href="notice.html" class="view-all-btn" style="margin-top: 10px;">View All Notices →</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="main-section" style="padding: 30px 0 50px 0;">
+        <div class="container">
+            
+            <div class="contact-row-grid">
+                
+                <div class="contact-card-box">
+                    <h2 class="contact-box-title">🗺️ School Profile</h2>
+                    
+                    <div class="contact-item">
+                        <div class="contact-label">Address:</div>
+                        <div class="contact-value">Chapahati - Nogorpara, South West Garo Hills, Meghalaya - 794106</div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-label">Managed By:</div>
+                        <div class="contact-value">Good Shepherd Church Chapahati</div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-label">Affiliation:</div>
+                        <div class="contact-value">Affiliated to MBOSE</div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-label">School Timing:</div>
+                        <div class="contact-value">9:00 am to 2:35 pm (Monday to Friday)</div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-label">Classes Offered:</div>
+                        <div class="contact-value">Pre-Primary Section to Higher Secondary Section</div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-label">Medium of Instruction:</div>
+                        <div class="contact-value">English</div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-label">Office Phone:</div>
+                        <div class="contact-value">
+                            <a href="tel:+919863106661">+91 98631 06661</a>
+                            <a href="https://wa.me/919863106661" target="_blank" class="whatsapp-link">💬 WhatsApp</a>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-label">Official Email:</div>
+                        <div class="contact-value"><a href="mailto:gssschapahati@gmail.com">gssschapahati@gmail.com</a></div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-label">Social Media:</div>
+                        <div class="contact-value">
+                            <a href="https://youtube.com/@gssschapahati?si=UrbK2XogcOBW7Ebl" target="_blank" class="social-btn btn-youtube">YouTube</a>
+                            <a href="#" target="_blank" class="social-btn btn-facebook">Facebook</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-card-box">
+                    <h2 class="contact-box-title">👤 Key Personnel Contacts</h2>
+                    
+                    <div class="contact-item">
+                        <div class="contact-label">Principal:</div>
+                        <div class="contact-value">
+                            <strong>Fr. Francis Kizhakkevelikakathu</strong><br>
+                            <a href="tel:+918414977686">+91 84149 77686</a>
+                            <a href="https://wa.me/918414977686" target="_blank" class="whatsapp-link">💬 WhatsApp</a>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-label">Headmistress:</div>
+                        <div class="contact-value">
+                            <strong>Sr. Brijitha N Marak</strong><br>
+                            <a href="tel:+918974822126">+91 89748 22126</a>
+                            <a href="https://wa.me/918974822126" target="_blank" class="whatsapp-link">💬 WhatsApp</a>
+                        </div>
+                    </div>                 
+                  <div class="contact-item">
+                        <div class="contact-label">Head Teacher:</div>
+                        <div class="contact-value">
+                            <strong>Sir. Jekush D Sangma</strong><br>
+                            <a href="tel:+916009690235">+91 60096 90235</a>
+                            <a href="https://wa.me/916009690235" target="_blank" class="whatsapp-link">💬 WhatsApp</a>
+                        </div>
+                       </div>
+                    <div class="contact-item">
+                        <div class="contact-label">Asst. Head Teacher:</div>
+                        <div class="contact-value">
+                            <strong>Md. Pinali Sangma</strong><br>
+                            <a href="tel:+917005783404">+91 70051 71278</a>
+                            <a href="https://wa.me/7005171278" target="_blank" class="whatsapp-link">💬 WhatsApp</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-label">Head Clerk (LDA):</div>
+                        <div class="contact-value">
+                            <strong>Sir. Sengkan M Sangma</strong><br>
+                            <a href="tel:+918258813963">+91 82588 13963</a> <a href="https://wa.me/918258813963" target="_blank" class="whatsapp-link">💬 Whatsapp</a><br>
+                            <span style="font-size: 13px; color: #666;">Email: <a href="mailto:sengkanxangma@gmail.com">sengkanxangma@gmail.com</a></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="map-container">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3611.839655610813!2d89.9142168!3d25.141113!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3756372d82914db9%3A0x633e77864c0d12e9!2sGood+Shepherd+Higher+Secondary+School%2C+Chapahati!5e0!3m2!1sen!2sin!4v1717750000000!5m2!1sen!2sin" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>© 2026 Good Shepherd Higher Secondary School, Chapahati. All Rights Reserved.</p>
+            <p style="font-size: 12px; color: #888;">Managed by Good Shepherd Church Chapahati | Powered by Local Administration Desk</p>
+        </div>
+    </footer>
+
+    <!-- Floating Trigger Buttons -->
+    <div class="action-btn-group">
+        <button class="floating-action-btn" id="openFeedbackBtn">📝 Give Feedback</button>
+    </div>
+
+    <!-- Feedback Modal Pop-Up -->
+    <div class="modal-overlay" id="feedbackModal">
+        <div class="modal-card">
+            <button class="close-modal-btn" id="closeFeedbackBtn">&times;</button>
+            
+            <h2>Public Feedback & Ratings</h2>
+            <p class="subtitle">Your feedback directly updates our administration system records.</p>
+            
+            <form id="feedbackForm">
+                <div class="form-group">
+                    <label for="category">What would you like to give feedback on?</label>
+                    <select id="category" name="category" required>
+                        <option value="">-- Choose Custom Category --</option>
+                        <option value="School Website">🌐 School Website & Online Portal</option>
+                        <option value="Teaching Staff">👨‍🏫 Teachers & Classroom Teaching Quality</option>
+                        <option value="Student Conduct">🎒 Student Behaviour, Activities & Welfare</option>
+                        <option value="School Administration">🏢 School Management & Fees Office</option>
+                        <option value="Infrastructure">🏫 Classrooms, Labs & Sports Facilities</option>
+                        <option value="Transport & Security">🚌 Bus Services & Campus Security</option>
+                        <option value="Canteen/Mess">🍎 School Canteen & Food Hygiene</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Your Overall Rating</label>
+                    <div class="rating-wrapper">
+                        <input type="radio" id="star5" name="rating" value="5" required/><label class="star-label" for="star5">★</label>
+                        <input type="radio" id="star4" name="rating" value="4" /><label class="star-label" for="star4">★</label>
+                        <input type="radio" id="star3" name="rating" value="3" /><label class="star-label" for="star3">★</label>
+                        <input type="radio" id="star2" name="rating" value="2" /><label class="star-label" for="star2">★</label>
+                        <input type="radio" id="star1" name="rating" value="1" /><label class="star-label" for="star1">★</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="suggestions">Your Detailed Suggestions or Feedback</label>
+                    <textarea id="suggestions" name="suggestions" rows="3" placeholder="Share your honest thoughts, ideas, or structural issues here..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="userName">Your Name (Optional)</label>
+                    <input type="text" id="userName" name="userName" placeholder="John Doe">
+                </div>
+
+                <div style="display: flex; gap: 10px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label for="userEmail">Gmail Address</label>
+                        <input type="email" id="userEmail" name="userEmail" placeholder="name@gmail.com" required>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label for="userMobile">Mobile Number</label>
+                        <input type="tel" id="userMobile" name="userMobile" pattern="\d{10}" placeholder="10-digit mobile" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitFeedbackBtn">Submit Review</button>
+                <div class="statusMsg" id="feedbackStatusMsg"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Donation QR Code Box -->
+   <div id="donation-qr-box">
+        <button id="close-donation-box" onclick="closeDonationBox()">&times;</button>
+        <div id="donation-qr-title">Support Good Shepherd</div>
+        
+        <div id="qr-code-placeholder">
+            <img src="https://i.postimg.cc/t42Rp5Mq/ba025f5a-46f7-4f4c-b0fd-fe8be4d93747.jpg" alt="Donation QR Code" style="max-width: 100%; height: auto; border-radius: 8px;">
+        </div>
+        
+        <div id="qr-scan-label">Scan to Donate</div>
+    </div>
+
+    <script src="JavaScript/script.js"></script>
+    
+    <script>
+        // Donation Box Script
+        function closeDonationBox() {
+            document.getElementById('donation-qr-box').classList.remove('show');
+        }
+        setTimeout(function() {
+            document.getElementById('donation-qr-box').classList.add('show');
+        }, 1500); 
+
+        // ---------------- MODAL CONTROLS ----------------
+        const feedbackModal = document.getElementById('feedbackModal');
+        const openFeedbackBtn = document.getElementById('openFeedbackBtn');
+        const closeFeedbackBtn = document.getElementById('closeFeedbackBtn');
+
+        openFeedbackBtn.onclick = () => feedbackModal.style.display = 'flex';
+        closeFeedbackBtn.onclick = () => feedbackModal.style.display = 'none';
+
+        window.onclick = (e) => { 
+            if (e.target === feedbackModal) feedbackModal.style.display = 'none'; 
+        }
+
+        // ---------------- FORM SUBMISSION LOGIC ----------------
+        const feedbackScriptURL = 'https://script.google.com/macros/s/AKfycbyGdVJyh5pxQg5LxLdPv_l4Tly72TKl4cLKZcW1ieIAubalzILU7qyG4oxp2SnuIXdI/exec';
+        const feedbackForm = document.getElementById('feedbackForm');
+        const feedbackMsg = document.getElementById('feedbackStatusMsg');
+        const feedbackBtn = document.getElementById('submitFeedbackBtn');
+
+        feedbackForm.addEventListener('submit', e => {
+            e.preventDefault();
+            feedbackBtn.disabled = true;
+            feedbackBtn.innerText = 'Sending...';
+            feedbackMsg.style.display = 'block';
+            feedbackMsg.style.background = '#ebf8ff';
+            feedbackMsg.style.color = '#2b6cb0';
+            feedbackMsg.innerText = 'Submitting entry data to database sheet...';
+
+            fetch(feedbackScriptURL, { method: 'POST', body: new FormData(feedbackForm)})
+                .then(response => {
+                    feedbackBtn.disabled = false;
+                    feedbackBtn.innerText = 'Submit Review';
+                    feedbackMsg.style.background = '#f0fff4';
+                    feedbackMsg.style.color = '#38a169';
+                    feedbackMsg.innerText = 'Thank you! Your feedback has been logged directly.';
+                    feedbackForm.reset();
+                    setTimeout(() => { feedbackModal.style.display = 'none'; feedbackMsg.style.display = 'none'; }, 2000);
+                })
+                .catch(error => {
+                    feedbackBtn.disabled = false;
+                    feedbackBtn.innerText = 'Submit Review';
+                    feedbackMsg.style.background = '#fff5f5';
+                    feedbackMsg.style.color = '#e53e3e';
+                    feedbackMsg.innerText = 'Error submitting feedback. Connection dropped.';
+                    console.error('Error!', error.message);
+                });
+        });
+    </script>
+</body>
+</html>
