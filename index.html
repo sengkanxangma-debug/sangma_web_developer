@@ -3,326 +3,618 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sangma Web Developer</title>
+    <title>Sangma Web Developer | Digital Code Marketplace</title>
+    
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="images/favicologo.png">
     
+    <!-- Google Fonts & Tailwind CDN -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Stripe.js SDK -->
+    <script src="https://js.stripe.com/v3/"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#11171c',
+                            card: '#1a2228',
+                            border: '#333d45',
+                            accent: '#0f766e',
+                            teal: '#14b8a6',
+                            orange: '#ff6b4a',
+                            orangeLight: '#ff9b54'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        /* Core Theme Setup based on provided image */
         body {
-            background-color: #212932; /* Dark slate background */
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 40px 20px;
-            box-sizing: border-box;
-        }
-
-        .header-container {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        /* Logo styling - added a white background to make the blue/teal logo pop on dark background */
-        .header-logo {
-            max-width: 180px;
-            background-color: #ffffff;
-            border-radius: 12px;
-            padding: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-
-        /* 3-Column Grid Layout */
-        .card-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 25px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* Individual Card Styling */
-        .card {
-            background-color: #1a2228;
-            border: 2px solid #333d45;
-            border-radius: 10px;
-            width: 340px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-        }
-
-        .card-header {
-            background-color: #11171c;
-            padding: 20px;
-            text-align: center;
-            border-bottom: 1px solid #333d45;
-        }
-
-        .card-title {
-            font-size: 1.6rem;
-            font-weight: 800;
-            margin: 0 0 5px 0;
+            background-color: #0d1217;
             color: #ffffff;
         }
-
-        .stars {
-            color: #fbbf24; /* Yellow stars */
-            font-size: 1.1rem;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
+        .glass {
+            background: rgba(26, 34, 40, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid #333d45;
         }
-        
-        .rating-text {
-            font-size: 0.8rem;
-            font-weight: bold;
+        .gradient-orange-btn {
+            background: linear-gradient(135deg, #ff6b4a, #ff9b54);
+            transition: all 0.25s ease;
         }
-
-        /* Green Highlight Box */
-        .highlight-box {
-            background-color: #059669;
-            color: white;
-            text-align: center;
-            padding: 15px;
-            margin: 15px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 1rem;
-            line-height: 1.4;
+        .gradient-orange-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 74, 0.35);
         }
-
-        .card-body {
-            padding: 0 15px 15px 15px;
-            flex-grow: 1;
-        }
-
-        .details-title {
-            font-size: 0.95rem;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-weight: 600;
-        }
-
-        .details-title span {
-            color: #10b981; /* Light green checkmark */
-        }
-
-        /* Features List */
-        ul.features {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        ul.features li {
-            font-size: 0.9rem;
-            padding: 12px 0;
-            border-bottom: 1px solid #333d45;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #cbd5e1;
-        }
-
-        ul.features li::before {
-            content: '🎁';
-            font-size: 1.1rem;
-        }
-
-        ul.features li:last-child {
-            border-bottom: none;
-        }
-
-        /* Tech/Tools Grid (Mirroring the payment methods from screenshot) */
-        .tech-section {
-            padding: 15px;
-            font-size: 0.85rem;
-            text-align: center;
-            color: #94a3b8;
-            border-top: 1px solid #333d45;
-        }
-
-        .tech-grid {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-top: 12px;
-        }
-
-        .tech-badge {
-            background-color: #0f766e;
-            color: #ccfbf1;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: bold;
-        }
-
-        .card-footer {
-            padding: 20px;
-            text-align: center;
-            background-color: #1a2228;
-        }
-
-        /* Orange Gradient Button */
-        .btn-action {
-            background: linear-gradient(to right, #ff6b4a, #ff9b54);
-            color: white;
-            border: none;
-            padding: 14px 30px;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 107, 74, 0.4);
-            transition: transform 0.2s;
-            text-decoration: none;
-            display: inline-block;
-            width: 80%;
-        }
-
-        .btn-action:hover {
-            transform: scale(1.05);
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            margin-top: 60px;
-            padding: 20px;
-            font-size: 0.95rem;
-            color: #9ca3af;
-            border-top: 1px solid #333d45;
+        .code-preview {
+            background: #090d10;
+            border: 1px solid #222d36;
         }
     </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col font-sans selection:bg-teal-500 selection:text-white">
 
-    <div class="header-container">
-        <!-- Logo Image File -->
-        <img src="images/favicologo.png" alt="Sangma Web Developer Logo" class="header-logo">
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-40 glass border-b border-brand-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="#hero" class="flex items-center gap-3">
+                <div class="bg-white p-1.5 rounded-lg shadow-md flex items-center justify-center">
+                    <img src="images/favicologo.png" alt="SWD Logo" class="h-9 w-auto object-contain" onerror="this.src='https://placehold.co/100x100/ffffff/0f766e?text=SWD'">
+                </div>
+                <div class="leading-tight">
+                    <span class="text-lg font-black tracking-wide text-white block">Sangma Web Developer</span>
+                    <span class="text-xs text-brand-teal font-medium tracking-wider uppercase">Source Marketplace</span>
+                </div>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+                <a href="#products" class="hover:text-brand-teal transition">Store Catalog</a>
+                <a href="#about" class="hover:text-brand-teal transition">About</a>
+                <a href="#stats" class="hover:text-brand-teal transition">Performance</a>
+                <a href="#contact" class="hover:text-brand-teal transition">Support</a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                <button onclick="toggleCart()" class="relative p-2.5 rounded-lg bg-brand-card border border-brand-border hover:border-brand-teal transition flex items-center justify-center text-white">
+                    <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+                    <span id="cart-count-badge" class="absolute -top-2 -right-2 bg-brand-orange text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center scale-0 transition-transform">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative py-20 px-4 text-center overflow-hidden border-b border-brand-border bg-gradient-to-b from-[#141b22] to-[#0d1217]">
+        <div class="max-w-4xl mx-auto space-y-6">
+            <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-brand-accent/20 text-brand-teal border border-brand-teal/30">
+                <i data-lucide="sparkles" class="w-4 h-4"></i> Production-Ready Code & Web Portals
+            </span>
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight">
+                Accelerate Web Development with <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-400">Verified Source Code</span>
+            </h1>
+            <p class="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto">
+                Secure, tested code modules, custom administration portals, and scripts crafted by Sangma Web Developer for creators and businesses.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 pt-4">
+                <a href="#products" class="gradient-orange-btn px-8 py-3.5 rounded-lg text-white font-bold text-sm tracking-wide">
+                    Browse All Codes
+                </a>
+                <a href="#contact" class="px-8 py-3.5 rounded-lg text-slate-300 font-bold text-sm bg-brand-card border border-brand-border hover:bg-slate-800 transition">
+                    Request Custom Code
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <section id="stats" class="border-b border-brand-border bg-brand-dark/60 py-10 px-4">
+        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            <div>
+                <p class="text-3xl font-extrabold text-brand-teal font-mono">100%</p>
+                <p class="text-xs text-slate-400 font-medium uppercase mt-1">Verified Clean Code</p>
+            </div>
+            <div>
+                <p class="text-3xl font-extrabold text-brand-teal font-mono">24/7</p>
+                <p class="text-xs text-slate-400 font-medium uppercase mt-1">Instant Source Delivery</p>
+            </div>
+            <div>
+                <p class="text-3xl font-extrabold text-brand-teal font-mono">5.0 ★</p>
+                <p class="text-xs text-slate-400 font-medium uppercase mt-1">Client Satisfaction</p>
+            </div>
+            <div>
+                <p class="text-3xl font-extrabold text-brand-teal font-mono">Stripe</p>
+                <p class="text-xs text-slate-400 font-medium uppercase mt-1">Encrypted Checkout</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Catalog Section -->
+    <section id="products" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+            <div>
+                <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Digital Code Catalog</h2>
+                <p class="text-slate-400 text-sm mt-1">Select a category to filter scripts and project components.</p>
+            </div>
+
+            <!-- Category Filter Tabs -->
+            <div class="flex flex-wrap gap-2" id="filter-buttons">
+                <button onclick="filterProducts('all')" class="filter-btn active px-4 py-1.5 rounded-md text-xs font-semibold bg-brand-teal text-brand-dark transition" data-cat="all">All</button>
+                <button onclick="filterProducts('HTML/CSS')" class="filter-btn px-4 py-1.5 rounded-md text-xs font-semibold bg-brand-card text-slate-300 border border-brand-border hover:border-brand-teal transition" data-cat="HTML/CSS">HTML/CSS</button>
+                <button onclick="filterProducts('JavaScript')" class="filter-btn px-4 py-1.5 rounded-md text-xs font-semibold bg-brand-card text-slate-300 border border-brand-border hover:border-brand-teal transition" data-cat="JavaScript">JavaScript</button>
+                <button onclick="filterProducts('AppsScript')" class="filter-btn px-4 py-1.5 rounded-md text-xs font-semibold bg-brand-card text-slate-300 border border-brand-border hover:border-brand-teal transition" data-cat="AppsScript">Google Apps Script</button>
+                <button onclick="filterProducts('FullStack')" class="filter-btn px-4 py-1.5 rounded-md text-xs font-semibold bg-brand-card text-slate-300 border border-brand-border hover:border-brand-teal transition" data-cat="FullStack">Full Stack</button>
+            </div>
+        </div>
+
+        <!-- Product Grid -->
+        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Dynamic Cards Loaded via JS -->
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 px-4 bg-brand-card/40 border-y border-brand-border">
+        <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+            <div class="space-y-4">
+                <span class="text-brand-teal text-xs font-bold uppercase tracking-wider">About The Creator</span>
+                <h2 class="text-3xl font-extrabold text-white">Engineering Practical Solutions with Sangma Web Developer</h2>
+                <p class="text-slate-300 text-sm leading-relaxed">
+                    Sangma Web Developer provides ready-to-deploy web portals, lightweight administrative scripts, and full-stack modules. Designed for high efficiency, speed, and seamless integration with GitHub Pages and cloud APIs.
+                </p>
+                <ul class="space-y-2 text-sm text-slate-300 pt-2">
+                    <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i> Lifetime codebase access</li>
+                    <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i> Standardized modern syntax</li>
+                    <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i> Direct email assistance for setups</li>
+                </ul>
+            </div>
+            <div class="code-preview p-5 rounded-xl font-mono text-xs text-slate-300 shadow-2xl border border-brand-border space-y-2">
+                <div class="flex items-center gap-2 pb-3 border-b border-slate-800 text-slate-500">
+                    <span class="w-3 h-3 rounded-full bg-rose-500 inline-block"></span>
+                    <span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span>
+                    <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span>
+                    <span class="ml-2 text-slate-400">SangmaWebDeveloper.config.js</span>
+                </div>
+                <p><span class="text-purple-400">const</span> <span class="text-yellow-300">developer</span> = {</p>
+                <p class="pl-4">brand: <span class="text-emerald-400">'Sangma Web Developer'</span>,</p>
+                <p class="pl-4">specialties: [<span class="text-emerald-400">'Front-End'</span>, <span class="text-emerald-400">'Automations'</span>, <span class="text-emerald-400">'Web Portals'</span>],</p>
+                <p class="pl-4">readyToDeploy: <span class="text-cyan-400">true</span>,</p>
+                <p class="pl-4">license: <span class="text-emerald-400">'Commercial + Developer Rights'</span></p>
+                <p>};</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 px-4 max-w-4xl mx-auto w-full">
+        <div class="text-center mb-10">
+            <h2 class="text-3xl font-bold text-white">Contact & Custom Script Inquiries</h2>
+            <p class="text-slate-400 text-sm mt-2">Have a specific feature request or need tailored custom coding?</p>
+        </div>
+
+        <form onsubmit="handleContactSubmit(event)" class="glass p-8 rounded-xl space-y-5 border border-brand-border shadow-xl">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase mb-2">Your Name</label>
+                    <input type="text" required placeholder="John Doe" class="w-full bg-[#0d1217] border border-brand-border rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-teal">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase mb-2">Email Address</label>
+                    <input type="email" required placeholder="john@example.com" class="w-full bg-[#0d1217] border border-brand-border rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-teal">
+                </div>
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-slate-300 uppercase mb-2">Subject</label>
+                <input type="text" required placeholder="Custom Web Portal Script Request" class="w-full bg-[#0d1217] border border-brand-border rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-teal">
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-slate-300 uppercase mb-2">Message</label>
+                <textarea rows="4" required placeholder="Describe your required features or code specifications..." class="w-full bg-[#0d1217] border border-brand-border rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-teal"></textarea>
+            </div>
+            <button type="submit" class="w-full gradient-orange-btn py-3.5 rounded-lg text-white font-bold text-sm">
+                Send Message to Sangma Web Developer
+            </button>
+            <div id="contact-success" class="hidden text-center text-xs text-emerald-400 font-semibold pt-2">
+                Thank you! Your message has been sent successfully.
+            </div>
+        </form>
+    </section>
+
+    <!-- Slide-over Shopping Cart Modal -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden pointer-events-none transition-opacity duration-300 opacity-0">
+        <div onclick="toggleCart()" class="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity"></div>
+        <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md pointer-events-auto bg-[#141b22] border-l border-brand-border flex flex-col shadow-2xl">
+                <!-- Cart Header -->
+                <div class="p-5 border-b border-brand-border flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="shopping-bag" class="w-5 h-5 text-brand-teal"></i>
+                        <h2 class="text-lg font-bold text-white">Your Cart</h2>
+                    </div>
+                    <button onclick="toggleCart()" class="p-1 rounded-md text-slate-400 hover:text-white">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <!-- Cart Items Container -->
+                <div id="cart-items" class="flex-1 overflow-y-auto p-5 space-y-4">
+                    <!-- Populated dynamically via JS -->
+                </div>
+
+                <!-- Cart Footer & Stripe Checkout -->
+                <div class="p-5 border-t border-brand-border bg-[#0d1217] space-y-4">
+                    <div class="flex justify-between items-center text-slate-300">
+                        <span class="text-sm">Subtotal</span>
+                        <span id="cart-total" class="text-xl font-mono font-bold text-white">$0.00</span>
+                    </div>
+                    <p class="text-[11px] text-slate-400 text-center">Secure 256-bit encrypted checkout powered by Stripe.</p>
+                    <button onclick="triggerStripeCheckout()" id="checkout-btn" class="w-full gradient-orange-btn py-3.5 rounded-lg text-white font-bold text-sm flex items-center justify-center gap-2">
+                        <i data-lucide="lock" class="w-4 h-4"></i> Checkout with Stripe
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="card-container">
-        
-        <!-- Card 1 -->
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">Basic Coding</h2>
-                <div class="stars">★★★★★ <span class="rating-text">5/5</span></div>
-            </div>
-            
-            <div class="highlight-box">
-                Starter Package<br>
-                Landing Page + Hosting Setup 💻
-            </div>
-            
-            <div class="card-body">
-                <div class="details-title">Dettagli <span>✔</span></div>
-                <ul class="features">
-                    <li>Custom HTML/CSS Design ⚡</li>
-                    <li>Mobile Responsive Layout 📱</li>
-                    <li>Basic SEO Optimization 🔥</li>
-                </ul>
-            </div>
-            
-            <div class="tech-section">
-                Technologies utilized for this package:
-                <div class="tech-grid">
-                    <span class="tech-badge">HTML5</span>
-                    <span class="tech-badge">CSS3</span>
-                    <span class="tech-badge">JS</span>
-                    <span class="tech-badge">GitHub</span>
-                </div>
-            </div>
-            
-            <div class="card-footer">
-                <a href="#" class="btn-action">Ottieni un bonus 🎁</a>
-            </div>
+    <!-- Auto Popup Advertisement Modal -->
+    <div id="ad-popup" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm transition-opacity duration-300 opacity-0 pointer-events-none">
+        <div class="relative w-full max-w-md bg-[#1a2228] border-2 border-brand-teal/60 rounded-2xl p-6 shadow-2xl text-center transform scale-95 transition-transform duration-300" id="ad-box">
+            <button onclick="closeAdPopup()" class="absolute top-3 right-3 text-slate-400 hover:text-white bg-brand-dark p-1.5 rounded-full">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+            <span class="inline-block px-2.5 py-1 rounded bg-brand-accent/30 text-brand-teal text-[10px] font-bold tracking-wider uppercase mb-3">
+                Featured Partner & Resource
+            </span>
+            <h3 id="ad-title" class="text-xl font-bold text-white mb-2">Master Modern Web Development</h3>
+            <p id="ad-desc" class="text-slate-300 text-xs leading-relaxed mb-5">
+                Explore comprehensive tutorials, official documentation, and world-class repositories on GitHub.
+            </p>
+            <a id="ad-link" href="https://github.com" target="_blank" rel="noopener noreferrer" onclick="closeAdPopup()" class="w-full inline-block gradient-orange-btn py-3 rounded-lg text-white font-bold text-sm">
+                Visit Sponsor Site <span id="ad-btn-text">→</span>
+            </a>
         </div>
-
-        <!-- Card 2 -->
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">Pro Developer</h2>
-                <div class="stars">★★★★★ <span class="rating-text">5/5</span></div>
-            </div>
-            
-            <div class="highlight-box">
-                Advanced Package<br>
-                Dynamic Web Apps + Database 🗄️
-            </div>
-            
-            <div class="card-body">
-                <div class="details-title">Dettagli <span>✔</span></div>
-                <ul class="features">
-                    <li>Google Apps Script Integration ⚡</li>
-                    <li>Custom Management Portals 💸</li>
-                    <li>Automated Data Scripts 📊</li>
-                </ul>
-            </div>
-            
-            <div class="tech-section">
-                Technologies utilized for this package:
-                <div class="tech-grid">
-                    <span class="tech-badge">AppScript</span>
-                    <span class="tech-badge">Sheets API</span>
-                    <span class="tech-badge">Node.js</span>
-                    <span class="tech-badge">React</span>
-                </div>
-            </div>
-            
-            <div class="card-footer">
-                <a href="#" class="btn-action">Ottieni un bonus 🎁</a>
-            </div>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">Enterprise App</h2>
-                <div class="stars">★★★★★ <span class="rating-text">5/5</span></div>
-            </div>
-            
-            <div class="highlight-box">
-                Premium Package<br>
-                Full Stack System + AI Tools 🤖
-            </div>
-            
-            <div class="card-body">
-                <div class="details-title">Dettagli <span>✔</span></div>
-                <ul class="features">
-                    <li>Complete Staff/Student Portals ⚡</li>
-                    <li>AI Content & Graphics Setup 👑</li>
-                    <li>Priority Maintenance 💸</li>
-                </ul>
-            </div>
-            
-            <div class="tech-section">
-                Technologies utilized for this package:
-                <div class="tech-grid">
-                    <span class="tech-badge">FullStack</span>
-                    <span class="tech-badge">Python</span>
-                    <span class="tech-badge">AI API</span>
-                    <span class="tech-badge">Cloud</span>
-                </div>
-            </div>
-            
-            <div class="card-footer">
-                <a href="#" class="btn-action">Ottieni un bonus 🎁</a>
-            </div>
-        </div>
-
     </div>
 
-    <footer>
-        &copy; 2026 Copyright by Sangmawebdeveloper. All rights reserved.
+    <!-- Footer -->
+    <footer class="mt-auto border-t border-brand-border bg-[#090d10] py-8 text-center text-xs text-slate-400">
+        <div class="max-w-7xl mx-auto px-4 space-y-2">
+            <p>&copy; 2026 Copyright by Sangma Web Developer. All rights reserved.</p>
+            <p class="text-[11px] text-slate-500">Built for seamless deployment on GitHub Pages.</p>
+        </div>
     </footer>
 
+    <!-- App State & Marketplace Logic -->
+    <script>
+        // --- 1. Products Database ---
+        const products = [
+            {
+                id: 'swd-01',
+                title: 'Basic Coding Starter',
+                category: 'HTML/CSS',
+                price: 19.00,
+                rating: '5.0',
+                features: ['Custom HTML5 & CSS3 Design', 'Fully Mobile Responsive', 'SEO Optimization Ready'],
+                tech: ['HTML5', 'CSS3', 'JS', 'GitHub'],
+                badge: 'Starter Package',
+                stripePriceId: 'price_basic_coding' // Replace with your Stripe Price ID
+            },
+            {
+                id: 'swd-02',
+                title: 'Pro Developer Suite',
+                category: 'AppsScript',
+                price: 49.00,
+                rating: '5.0',
+                features: ['Google Apps Script System', 'Custom Management Portals', 'Automated Google Sheets Sync'],
+                tech: ['AppScript', 'Sheets API', 'JavaScript', 'OAuth'],
+                badge: 'Popular',
+                stripePriceId: 'price_pro_developer' // Replace with your Stripe Price ID
+            },
+            {
+                id: 'swd-03',
+                title: 'Enterprise App Framework',
+                category: 'FullStack',
+                price: 99.00,
+                rating: '5.0',
+                features: ['Complete Staff/Student Portals', 'AI API & Dynamic Graphics Setup', 'Priority Lifetime Maintenance'],
+                tech: ['FullStack', 'Node.js', 'AI API', 'Cloud'],
+                badge: 'Enterprise',
+                stripePriceId: 'price_enterprise_app' // Replace with your Stripe Price ID
+            },
+            {
+                id: 'swd-04',
+                title: 'Dynamic Data Scoring Engine',
+                category: 'JavaScript',
+                price: 29.00,
+                rating: '4.9',
+                features: ['Realtime Judging Portal', 'Automated Score Calculations', 'Live Result Leaderboards'],
+                tech: ['Vanilla JS', 'Tailwind', 'LocalStore', 'JSON'],
+                badge: 'Specialized',
+                stripePriceId: 'price_scoring_engine' // Replace with your Stripe Price ID
+            },
+            {
+                id: 'swd-05',
+                title: 'PHP & MySQL Auth Boilerplate',
+                category: 'FullStack',
+                price: 39.00,
+                rating: '5.0',
+                features: ['Secure Password Hashing', 'Role-Based Permissions (Admin/User)', 'CSRF & SQL Injection Protection'],
+                tech: ['PHP 8', 'MySQL', 'Bootstrap', 'Security'],
+                badge: 'Backend Core',
+                stripePriceId: 'price_php_auth' // Replace with your Stripe Price ID
+            }
+        ];
+
+        // --- 2. Rotating Advertisements ---
+        const ads = [
+            {
+                title: "Explore Open Source on GitHub",
+                desc: "Discover millions of developers and open-source projects. Host your code repositories freely with GitHub Pages.",
+                url: "https://github.com"
+            },
+            {
+                title: "Test Live Code on CodePen",
+                desc: "An online code editor and front-end web developer community to build, deploy, and test HTML, CSS, and JS creations.",
+                url: "https://codepen.io"
+            },
+            {
+                title: "Master Web Standards at MDN",
+                desc: "Resources for developers, by developers. Up-to-date documentation on JavaScript, CSS, Web APIs, and HTML5.",
+                url: "https://developer.mozilla.org"
+            },
+            {
+                title: "Deploy Lightning Fast on Vercel",
+                desc: "Experience zero-configuration deployment for Next.js, React, and static digital applications.",
+                url: "https://vercel.com"
+            }
+        ];
+
+        let cart = [];
+
+        // Render Product Cards
+        function renderProducts(items) {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = items.map(p => `
+                <div class="bg-brand-card border border-brand-border rounded-xl flex flex-col overflow-hidden hover:border-brand-teal transition duration-300 shadow-lg">
+                    <div class="bg-[#11171c] p-5 border-b border-brand-border text-center">
+                        <div class="flex justify-between items-center text-xs text-slate-400 mb-2">
+                            <span class="text-amber-400 font-bold">★★★★★ <span class="text-white ml-1">${p.rating}</span></span>
+                            <span class="px-2 py-0.5 rounded bg-brand-accent/20 text-brand-teal text-[11px] font-semibold">${p.category}</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">${p.title}</h3>
+                    </div>
+
+                    <div class="bg-brand-accent/20 text-emerald-300 text-center py-2.5 px-4 font-semibold text-xs border-y border-brand-teal/20">
+                        ${p.badge}
+                    </div>
+
+                    <div class="p-5 flex-1 flex flex-col justify-between">
+                        <ul class="space-y-2.5 text-xs text-slate-300">
+                            ${p.features.map(f => `<li class="flex items-center gap-2"><span class="text-emerald-400">✔</span> ${f}</li>`).join('')}
+                        </ul>
+
+                        <div class="mt-6 pt-4 border-t border-brand-border">
+                            <div class="flex flex-wrap gap-1.5 mb-5 justify-center">
+                                ${p.tech.map(t => `<span class="bg-[#0f766e]/30 text-teal-200 text-[10px] font-mono px-2 py-0.5 rounded border border-teal-500/20">${t}</span>`).join('')}
+                            </div>
+                            
+                            <div class="flex items-center justify-between pt-2">
+                                <div>
+                                    <span class="text-[10px] text-slate-400 uppercase block">Price</span>
+                                    <span class="text-2xl font-mono font-black text-white">$${p.price.toFixed(2)}</span>
+                                </div>
+                                <button onclick="addToCart('${p.id}')" class="gradient-orange-btn px-5 py-2.5 rounded-lg text-white font-bold text-xs flex items-center gap-1.5">
+                                    <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // Filter Logic
+        function filterProducts(category) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.dataset.cat === category) {
+                    btn.className = "filter-btn active px-4 py-1.5 rounded-md text-xs font-semibold bg-brand-teal text-brand-dark transition";
+                } else {
+                    btn.className = "filter-btn px-4 py-1.5 rounded-md text-xs font-semibold bg-brand-card text-slate-300 border border-brand-border hover:border-brand-teal transition";
+                }
+            });
+
+            if (category === 'all') {
+                renderProducts(products);
+            } else {
+                renderProducts(products.filter(p => p.category === category));
+            }
+        }
+
+        // Cart Actions
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const existing = cart.find(item => item.id === productId);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            updateCartUI();
+            openCart();
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCartUI();
+        }
+
+        function updateQuantity(productId, delta) {
+            const item = cart.find(i => i.id === productId);
+            if (item) {
+                item.quantity += delta;
+                if (item.quantity <= 0) {
+                    removeFromCart(productId);
+                    return;
+                }
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const cartItemsEl = document.getElementById('cart-items');
+            const cartTotalEl = document.getElementById('cart-total');
+            const cartBadge = document.getElementById('cart-count-badge');
+
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            // Badge
+            if (totalItems > 0) {
+                cartBadge.innerText = totalItems;
+                cartBadge.classList.remove('scale-0');
+                cartBadge.classList.add('scale-100');
+            } else {
+                cartBadge.classList.remove('scale-100');
+                cartBadge.classList.add('scale-0');
+            }
+
+            // Total
+            cartTotalEl.innerText = `$${totalPrice.toFixed(2)}`;
+
+            // Items List
+            if (cart.length === 0) {
+                cartItemsEl.innerHTML = `
+                    <div class="text-center py-16 text-slate-500 space-y-3">
+                        <i data-lucide="shopping-cart" class="w-10 h-10 mx-auto opacity-40"></i>
+                        <p class="text-sm">Your shopping cart is empty.</p>
+                    </div>
+                `;
+            } else {
+                cartItemsEl.innerHTML = cart.map(item => `
+                    <div class="bg-[#1a2228] p-4 rounded-lg border border-brand-border flex items-center justify-between gap-3">
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-xs font-bold text-white truncate">${item.title}</h4>                             <p class="text-xs font-mono text-brand-teal mt-0.5">$${item.price.toFixed(2)}</p>
+                        </div>
+                        <div class="flex items-center gap-2 bg-[#11171c] px-2 py-1 rounded border border-brand-border">
+                            <button onclick="updateQuantity('${item.id}', -1)" class="text-slate-400 hover:text-white px-1 text-xs">-</button>
+                            <span class="text-xs font-mono text-white px-1">${item.quantity}</span>
+                            <button onclick="updateQuantity('${item.id}', 1)" class="text-slate-400 hover:text-white px-1 text-xs">+</button>
+                        </div>
+                        <button onclick="removeFromCart('${item.id}')" class="text-rose-400 hover:text-rose-300 p-1">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+            lucide.createIcons();
+        }
+
+        function toggleCart() {
+            const drawer = document.getElementById('cart-drawer');
+            if (drawer.classList.contains('pointer-events-none')) {
+                openCart();
+            } else {
+                closeCart();
+            }
+        }
+
+        function openCart() {
+            const drawer = document.getElementById('cart-drawer');
+            drawer.classList.remove('pointer-events-none', 'opacity-0');
+            drawer.classList.add('opacity-100');
+        }
+
+        function closeCart() {
+            const drawer = document.getElementById('cart-drawer');
+            drawer.classList.add('opacity-0', 'pointer-events-none');
+            drawer.classList.remove('opacity-100');
+        }
+
+        // --- 3. Stripe Integration Trigger ---
+        function triggerStripeCheckout() {
+            if (cart.length === 0) {
+                alert('Your cart is empty. Please add code items before checking out.');
+                return;
+            }
+
+            // INSTRUCTIONS:
+            // Option A: If using a Stripe Payment Link directly, set your Stripe Payment Link URL below:
+            const STRIPE_PAYMENT_LINK_URL = "https://buy.stripe.com/test_your_payment_link_here";
+
+            // Option B: If connected to a custom backend/serverless function:
+            /*
+            const stripe = Stripe('pk_test_YOUR_STRIPE_PUBLISHABLE_KEY');
+            fetch('/create-checkout-session', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ items: cart })
+            })
+            .then(res => res.json())
+            .then(session => stripe.redirectToCheckout({ sessionId: session.id }))
+            .catch(err => console.error(err));
+            */
+
+            window.location.href = STRIPE_PAYMENT_LINK_URL;
+        }
+
+        // --- 4. Auto Popup Advertisement Logic ---
+        function triggerAutoAd() {
+            const randomAd = ads[Math.floor(Math.random() * ads.length)];
+            document.getElementById('ad-title').innerText = randomAd.title;
+            document.getElementById('ad-desc').innerText = randomAd.desc;
+            document.getElementById('ad-link').href = randomAd.url;
+
+            const popup = document.getElementById('ad-popup');
+            const box = document.getElementById('ad-box');
+            popup.classList.remove('pointer-events-none', 'opacity-0');
+            popup.classList.add('opacity-100');
+            box.classList.remove('scale-95');
+            box.classList.add('scale-100');
+        }
+
+        function closeAdPopup() {
+            const popup = document.getElementById('ad-popup');
+            const box = document.getElementById('ad-box');
+            popup.classList.add('opacity-0', 'pointer-events-none');
+            popup.classList.remove('opacity-100');
+            box.classList.remove('scale-100');
+            box.classList.add('scale-95');
+        }
+
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            const success = document.getElementById('contact-success');
+            success.classList.remove('hidden');
+            e.target.reset();
+            setTimeout(() => success.classList.add('hidden'), 5000);
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
+            renderProducts(products);
+            updateCartUI();
+            lucide.createIcons();
+
+            // Trigger Advertisement popup after 2.5 seconds
+            setTimeout(triggerAutoAd, 2500);
+        });
+    </script>
 </body>
 </html>
