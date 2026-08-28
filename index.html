@@ -85,12 +85,31 @@
 
             <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
                 <a href="#products" class="hover:text-brand-teal transition">Store Catalog</a>
+                <a href="#services" class="hover:text-brand-teal transition">Services</a>
                 <a href="#about" class="hover:text-brand-teal transition">About</a>
-                <a href="#stats" class="hover:text-brand-teal transition">Performance</a>
                 <a href="#contact" class="hover:text-brand-teal transition">Support</a>
             </nav>
 
+            <!-- Top Right Corner: Auth & Cart -->
             <div class="flex items-center gap-4">
+                
+                <!-- Login Button (Visible when NOT logged in) -->
+                <button id="nav-login-btn" onclick="openAuthModal()" class="text-xs font-bold text-slate-300 hover:text-white transition flex items-center gap-1.5">
+                    <i data-lucide="user" class="w-4 h-4"></i> Sign In
+                </button>
+
+                <!-- Member Status & Logout (Visible when logged in) -->
+                <div id="member-status" class="hidden flex items-center gap-3">
+                    <span class="text-xs font-bold text-emerald-400 bg-emerald-400/10 px-3 py-1.5 rounded-full border border-emerald-400/20">
+                        <i data-lucide="check-circle" class="w-3 h-3 inline mr-1"></i> Member
+                    </span>
+                    <button onclick="logout()" class="text-xs font-bold text-rose-400 hover:text-rose-300 transition flex items-center gap-1">
+                        <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Logout
+                    </button>
+                </div>
+
+                <div class="w-px h-6 bg-brand-border mx-1"></div>
+
                 <button onclick="toggleCart()" class="relative p-2.5 rounded-lg bg-brand-card border border-brand-border hover:border-brand-teal transition flex items-center justify-center text-white">
                     <i data-lucide="shopping-cart" class="w-5 h-5"></i>
                     <span id="cart-count-badge" class="absolute -top-2 -right-2 bg-brand-orange text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center scale-0 transition-transform">0</span>
@@ -109,37 +128,15 @@
                 Accelerate Web Development with <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-400">Verified Source Code</span>
             </h1>
             <p class="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto">
-                Secure, tested code modules, custom administration portals, and scripts crafted by Sangma Web Developer for creators and businesses.
+                Secure, tested code modules, custom administration portals, and scripts crafted by Sangma Web Developer for creators and businesses. Exclusive to registered members.
             </p>
             <div class="flex flex-wrap justify-center gap-4 pt-4">
                 <a href="#products" class="gradient-orange-btn px-8 py-3.5 rounded-lg text-white font-bold text-sm tracking-wide">
                     Browse All Codes
                 </a>
-                <a href="#contact" class="px-8 py-3.5 rounded-lg text-slate-300 font-bold text-sm bg-brand-card border border-brand-border hover:bg-slate-800 transition">
-                    Request Custom Code
+                <a href="#services" class="px-8 py-3.5 rounded-lg text-slate-300 font-bold text-sm bg-brand-card border border-brand-border hover:bg-slate-800 transition">
+                    View Services
                 </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Stats Bar -->
-    <section id="stats" class="border-b border-brand-border bg-brand-dark/60 py-10 px-4">
-        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            <div>
-                <p class="text-3xl font-extrabold text-brand-teal font-mono">100%</p>
-                <p class="text-xs text-slate-400 font-medium uppercase mt-1">Verified Clean Code</p>
-            </div>
-            <div>
-                <p class="text-3xl font-extrabold text-brand-teal font-mono">24/7</p>
-                <p class="text-xs text-slate-400 font-medium uppercase mt-1">Instant Source Delivery</p>
-            </div>
-            <div>
-                <p class="text-3xl font-extrabold text-brand-teal font-mono">5.0 ★</p>
-                <p class="text-xs text-slate-400 font-medium uppercase mt-1">Client Satisfaction</p>
-            </div>
-            <div>
-                <p class="text-3xl font-extrabold text-brand-teal font-mono">Stripe</p>
-                <p class="text-xs text-slate-400 font-medium uppercase mt-1">Encrypted Checkout</p>
             </div>
         </div>
     </section>
@@ -148,8 +145,8 @@
     <section id="products" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
             <div>
-                <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Digital Code Catalog</h2>
-                <p class="text-slate-400 text-sm mt-1">Select a category to filter scripts and project components.</p>
+                <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Membership Code Catalog</h2>
+                <p class="text-slate-400 text-sm mt-1">Sign in required to add to cart and unlock source codes.</p>
             </div>
 
             <!-- Category Filter Tabs -->
@@ -168,8 +165,48 @@
         </div>
     </section>
 
+    <!-- Service Provider Section -->
+    <section id="services" class="py-16 px-4 bg-brand-card/40 border-y border-brand-border">
+        <div class="max-w-7xl mx-auto w-full">
+            <div class="text-center mb-10">
+                <span class="text-brand-teal text-xs font-bold uppercase tracking-wider">Additional Services</span>
+                <h2 class="text-3xl font-bold text-white mt-2">Professional Services & Registrations</h2>
+                <p class="text-slate-400 text-sm mt-2">Comprehensive administrative and design support for institutions.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Service 1 -->
+                <div class="bg-[#11171c] p-6 rounded-xl border border-brand-border hover:border-brand-teal transition shadow-lg text-center">
+                    <i data-lucide="badge-check" class="w-10 h-10 text-brand-orange mx-auto mb-4"></i>
+                    <h3 class="text-lg font-bold text-white mb-2">ID Card Ordering</h3>
+                    <p class="text-xs text-slate-400">Professional student and staff identity card design and bulk printing.</p>
+                </div>
+                <!-- Service 2 -->
+                <div class="bg-[#11171c] p-6 rounded-xl border border-brand-border hover:border-brand-teal transition shadow-lg text-center">
+                    <i data-lucide="book-open" class="w-10 h-10 text-brand-orange mx-auto mb-4"></i>
+                    <h3 class="text-lg font-bold text-white mb-2">Magazines & Calendars</h3>
+                    <p class="text-xs text-slate-400">Custom layout design for annual school magazines and academic calendars.</p>
+                </div>
+                <!-- Service 3 -->
+                <div class="bg-[#11171c] p-6 rounded-xl border border-brand-border hover:border-brand-teal transition shadow-lg text-center">
+                    <i data-lucide="file-text" class="w-10 h-10 text-brand-orange mx-auto mb-4"></i>
+                    <h3 class="text-lg font-bold text-white mb-2">MBOSE Registrations</h3>
+                    <p class="text-xs text-slate-400">Form filing & registration for MBOSE Class X SSLC and Class XII HSLC.</p>
+                </div>
+                <!-- Service 4 -->
+                <div class="bg-[#11171c] p-6 rounded-xl border border-brand-border hover:border-brand-teal transition shadow-lg text-center flex flex-col justify-center">
+                    <i data-lucide="phone-call" class="w-10 h-10 text-emerald-400 mx-auto mb-4"></i>
+                    <h3 class="text-lg font-bold text-white mb-2">Contact to Order</h3>
+                    <p class="text-xs text-slate-400 mb-2">Call, Text, or WhatsApp for costs and inquiries:</p>
+                    <p class="text-sm font-bold text-brand-teal">8258813963</p>
+                    <p class="text-sm font-bold text-brand-teal">8131813772</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- About Section -->
-    <section id="about" class="py-16 px-4 bg-brand-card/40 border-y border-brand-border">
+    <section id="about" class="py-16 px-4 bg-brand-dark border-b border-brand-border">
         <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
             <div class="space-y-4">
                 <span class="text-brand-teal text-xs font-bold uppercase tracking-wider">About The Creator</span>
@@ -177,11 +214,6 @@
                 <p class="text-slate-300 text-sm leading-relaxed">
                     Sangma Web Developer provides ready-to-deploy web portals, lightweight administrative scripts, and full-stack modules. Designed for high efficiency, speed, and seamless integration with GitHub Pages and cloud APIs.
                 </p>
-                <ul class="space-y-2 text-sm text-slate-300 pt-2">
-                    <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i> Lifetime codebase access</li>
-                    <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i> Standardized modern syntax</li>
-                    <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i> Direct email assistance for setups</li>
-                </ul>
             </div>
             <div class="code-preview p-5 rounded-xl font-mono text-xs text-slate-300 shadow-2xl border border-brand-border space-y-2">
                 <div class="flex items-center gap-2 pb-3 border-b border-slate-800 text-slate-500">
@@ -198,41 +230,6 @@
                 <p>};</p>
             </div>
         </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="py-16 px-4 max-w-4xl mx-auto w-full">
-        <div class="text-center mb-10">
-            <h2 class="text-3xl font-bold text-white">Contact & Custom Script Inquiries</h2>
-            <p class="text-slate-400 text-sm mt-2">Have a specific feature request or need tailored custom coding?</p>
-        </div>
-
-        <form onsubmit="handleContactSubmit(event)" class="glass p-8 rounded-xl space-y-5 border border-brand-border shadow-xl">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 uppercase mb-2">Your Name</label>
-                    <input type="text" required placeholder="John Doe" class="w-full bg-[#0d1217] border border-brand-border rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-teal">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 uppercase mb-2">Email Address</label>
-                    <input type="email" required placeholder="john@example.com" class="w-full bg-[#0d1217] border border-brand-border rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-teal">
-                </div>
-            </div>
-            <div>
-                <label class="block text-xs font-semibold text-slate-300 uppercase mb-2">Subject</label>
-                <input type="text" required placeholder="Custom Web Portal Script Request" class="w-full bg-[#0d1217] border border-brand-border rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-teal">
-            </div>
-            <div>
-                <label class="block text-xs font-semibold text-slate-300 uppercase mb-2">Message</label>
-                <textarea rows="4" required placeholder="Describe your required features or code specifications..." class="w-full bg-[#0d1217] border border-brand-border rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-teal"></textarea>
-            </div>
-            <button type="submit" class="w-full gradient-orange-btn py-3.5 rounded-lg text-white font-bold text-sm">
-                Send Message to Sangma Web Developer
-            </button>
-            <div id="contact-success" class="hidden text-center text-xs text-emerald-400 font-semibold pt-2">
-                Thank you! Your message has been sent successfully.
-            </div>
-        </form>
     </section>
 
     <!-- Slide-over Shopping Cart Modal -->
@@ -256,134 +253,165 @@
                     <!-- Populated dynamically via JS -->
                 </div>
 
-                <!-- Cart Footer & Stripe Checkout -->
+                <!-- Cart Footer & UPI Checkout -->
                 <div class="p-5 border-t border-brand-border bg-[#0d1217] space-y-4">
                     <div class="flex justify-between items-center text-slate-300">
-                        <span class="text-sm">Subtotal</span>
-                        <span id="cart-total" class="text-xl font-mono font-bold text-white">$0.00</span>
+                        <span class="text-sm">Subtotal (INR)</span>
+                        <span id="cart-total" class="text-xl font-mono font-bold text-white">₹0.00</span>
                     </div>
-                    <p class="text-[11px] text-slate-400 text-center">Secure 256-bit encrypted checkout powered by Stripe.</p>
-                    <button onclick="triggerStripeCheckout()" id="checkout-btn" class="w-full gradient-orange-btn py-3.5 rounded-lg text-white font-bold text-sm flex items-center justify-center gap-2">
-                        <i data-lucide="lock" class="w-4 h-4"></i> Checkout with Stripe
+                    <button onclick="triggerUPICheckout()" id="checkout-btn" class="w-full gradient-orange-btn py-3.5 rounded-lg text-white font-bold text-sm flex items-center justify-center gap-2">
+                        <i data-lucide="qr-code" class="w-4 h-4"></i> Buy the Codes Document
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Auto Popup Advertisement Modal -->
-    <div id="ad-popup" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm transition-opacity duration-300 opacity-0 pointer-events-none">
-        <div class="relative w-full max-w-md bg-[#1a2228] border-2 border-brand-teal/60 rounded-2xl p-6 shadow-2xl text-center transform scale-95 transition-transform duration-300" id="ad-box">
-            <button onclick="closeAdPopup()" class="absolute top-3 right-3 text-slate-400 hover:text-white bg-brand-dark p-1.5 rounded-full">
+    <!-- Login / OTP Modal -->
+    <div id="auth-modal" class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity duration-300 opacity-0 pointer-events-none">
+        <div class="relative w-full max-w-sm bg-[#1a2228] border border-brand-border rounded-xl p-6 shadow-2xl text-center">
+            <button onclick="closeAuthModal()" class="absolute top-3 right-3 text-slate-400 hover:text-white bg-brand-dark p-1.5 rounded-full">
                 <i data-lucide="x" class="w-4 h-4"></i>
             </button>
-            <span class="inline-block px-2.5 py-1 rounded bg-brand-accent/30 text-brand-teal text-[10px] font-bold tracking-wider uppercase mb-3">
-                Featured Partner & Resource
-            </span>
-            <h3 id="ad-title" class="text-xl font-bold text-white mb-2">Master Modern Web Development</h3>
-            <p id="ad-desc" class="text-slate-300 text-xs leading-relaxed mb-5">
-                Explore comprehensive tutorials, official documentation, and world-class repositories on GitHub.
-            </p>
-            <a id="ad-link" href="https://github.com" target="_blank" rel="noopener noreferrer" onclick="closeAdPopup()" class="w-full inline-block gradient-orange-btn py-3 rounded-lg text-white font-bold text-sm">
-                Visit Sponsor Site <span id="ad-btn-text">→</span>
-            </a>
+            
+            <!-- Step 1: Email Input -->
+            <div id="auth-step-1">
+                <div class="bg-brand-dark w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 border border-brand-border">
+                    <i data-lucide="mail" class="w-5 h-5 text-brand-teal"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">Member Sign In</h3>
+                <p class="text-slate-400 text-xs mb-5">Login with your existing Gmail ID to access the membership dashboard and buy codes.</p>
+                
+                <input type="email" id="auth-email" placeholder="yourname@gmail.com" class="w-full bg-[#0d1217] border border-brand-border rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-teal mb-4 text-center">
+                
+                <button onclick="sendOTP()" class="w-full gradient-orange-btn py-3 rounded-lg text-white font-bold text-sm">
+                    Send OTP to Gmail
+                </button>
+            </div>
+
+            <!-- Step 2: OTP Input -->
+            <div id="auth-step-2" class="hidden">
+                <div class="bg-brand-dark w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 border border-brand-border">
+                    <i data-lucide="lock" class="w-5 h-5 text-brand-orange"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">Enter OTP</h3>
+                <p class="text-slate-400 text-xs mb-5">We've automatically sent a verification code to your Gmail.</p>
+                
+                <input type="text" id="auth-otp" placeholder="Enter 6-digit OTP" class="w-full bg-[#0d1217] border border-brand-border rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-teal mb-4 text-center tracking-widest font-mono">
+                
+                <button onclick="verifyOTP()" class="w-full bg-brand-teal hover:bg-teal-400 py-3 rounded-lg text-brand-dark font-bold text-sm transition">
+                    Verify & Enter Dashboard
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="mt-auto border-t border-brand-border bg-[#090d10] py-8 text-center text-xs text-slate-400">
-        <div class="max-w-7xl mx-auto px-4 space-y-2">
-            <p>&copy; 2026 Copyright by Sangma Web Developer. All rights reserved.</p>
-            <p class="text-[11px] text-slate-500">Built for seamless deployment on GitHub Pages.</p>
+    <!-- UPI Payment & Screenshot Modal -->
+    <div id="payment-modal" class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md transition-opacity duration-300 opacity-0 pointer-events-none overflow-y-auto">
+        <div class="relative w-full max-w-md bg-[#1a2228] border border-brand-border rounded-xl p-6 shadow-2xl text-center my-8">
+            <button onclick="closePaymentModal()" class="absolute top-3 right-3 text-slate-400 hover:text-white bg-brand-dark p-1.5 rounded-full">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+            
+            <h3 class="text-2xl font-bold text-white mb-2">Secure Checkout</h3>
+            <p class="text-slate-400 text-xs mb-4">Scan the QR code to pay the fixed amount via any UPI app. The amount is set automatically.</p>
+            
+            <div class="bg-white p-4 rounded-xl inline-block mb-4 shadow-inner">
+                <img id="upi-qr-code" src="" alt="UPI QR Code" class="w-48 h-48 mx-auto">
+            </div>
+
+            <div class="bg-[#0d1217] p-3 rounded-lg border border-brand-border mb-5">
+                <p class="text-xs text-slate-400 uppercase tracking-wider mb-1">Paying to UPI ID</p>
+                <p class="font-mono text-brand-teal font-bold">sangmawebdeveloper@ptaxis</p>
+                <div class="h-px bg-brand-border my-2 w-full"></div>
+                <p class="text-xs text-slate-400 uppercase tracking-wider mb-1">Fixed Total Amount</p>
+                <p id="payment-amount" class="text-xl font-bold text-white">₹0</p>
+            </div>
+
+            <div class="text-left mb-5">
+                <label class="block text-xs font-semibold text-slate-300 uppercase mb-2">Upload Payment Screenshot</label>
+                <input type="file" accept="image/*" id="payment-screenshot" class="w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-brand-dark file:text-brand-teal hover:file:bg-[#11171c] cursor-pointer">
+            </div>
+
+            <button onclick="submitPayment()" class="w-full gradient-orange-btn py-3.5 rounded-lg text-white font-bold text-sm">
+                Submit Payment Record
+            </button>
+
+            <div id="payment-success" class="hidden mt-4 bg-emerald-400/10 border border-emerald-400/30 p-3 rounded-lg">
+                <p class="text-xs text-emerald-400 font-semibold flex items-center justify-center gap-1.5">
+                    <i data-lucide="check-circle" class="w-4 h-4"></i>
+                    Success! Source codes will be automatically sent to your registered Gmail within 24 hours.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer with Copyright -->
+    <footer class="mt-auto border-t border-brand-border bg-[#090d10] py-8 text-center">
+        <div class="max-w-7xl mx-auto px-4 space-y-3">
+            <!-- Explicit Copyright Added Here -->
+            <p class="text-sm text-slate-300 font-semibold tracking-wide">
+                &copy; <span id="current-year">2026</span> Copyright by Sangma Web Developer. All rights reserved.
+            </p>
+            <p class="text-[11px] text-slate-500">
+                Unauthorized duplication or distribution of membership codes and portals is strictly prohibited. Built for seamless deployment on GitHub Pages.
+            </p>
         </div>
     </footer>
 
     <!-- App State & Marketplace Logic -->
     <script>
-        // --- 1. Products Database ---
+        // Set dynamic year for copyright
+        document.getElementById('current-year').innerText = new Date().getFullYear();
+
+        // --- 1. Products Database with updated Indian Rupee Prices ---
         const products = [
             {
                 id: 'swd-01',
                 title: 'Basic Coding Starter',
                 category: 'HTML/CSS',
-                price: 19.00,
+                price: 12499.00,
                 rating: '5.0',
                 features: ['Custom HTML5 & CSS3 Design', 'Fully Mobile Responsive', 'SEO Optimization Ready'],
                 tech: ['HTML5', 'CSS3', 'JS', 'GitHub'],
-                badge: 'Starter Package',
-                stripePriceId: 'price_basic_coding' // Replace with your Stripe Price ID
+                badge: 'Starter Package'
             },
             {
                 id: 'swd-02',
                 title: 'Pro Developer Suite',
                 category: 'AppsScript',
-                price: 49.00,
+                price: 14499.00,
                 rating: '5.0',
                 features: ['Google Apps Script System', 'Custom Management Portals', 'Automated Google Sheets Sync'],
                 tech: ['AppScript', 'Sheets API', 'JavaScript', 'OAuth'],
-                badge: 'Popular',
-                stripePriceId: 'price_pro_developer' // Replace with your Stripe Price ID
+                badge: 'Popular'
             },
             {
                 id: 'swd-03',
                 title: 'Enterprise App Framework',
                 category: 'FullStack',
-                price: 99.00,
+                price: 7499.00,
                 rating: '5.0',
                 features: ['Complete Staff/Student Portals', 'AI API & Dynamic Graphics Setup', 'Priority Lifetime Maintenance'],
                 tech: ['FullStack', 'Node.js', 'AI API', 'Cloud'],
-                badge: 'Enterprise',
-                stripePriceId: 'price_enterprise_app' // Replace with your Stripe Price ID
+                badge: 'Enterprise'
             },
             {
                 id: 'swd-04',
                 title: 'Dynamic Data Scoring Engine',
                 category: 'JavaScript',
-                price: 29.00,
+                price: 1999.00,
                 rating: '4.9',
                 features: ['Realtime Judging Portal', 'Automated Score Calculations', 'Live Result Leaderboards'],
                 tech: ['Vanilla JS', 'Tailwind', 'LocalStore', 'JSON'],
-                badge: 'Specialized',
-                stripePriceId: 'price_scoring_engine' // Replace with your Stripe Price ID
-            },
-            {
-                id: 'swd-05',
-                title: 'PHP & MySQL Auth Boilerplate',
-                category: 'FullStack',
-                price: 39.00,
-                rating: '5.0',
-                features: ['Secure Password Hashing', 'Role-Based Permissions (Admin/User)', 'CSRF & SQL Injection Protection'],
-                tech: ['PHP 8', 'MySQL', 'Bootstrap', 'Security'],
-                badge: 'Backend Core',
-                stripePriceId: 'price_php_auth' // Replace with your Stripe Price ID
-            }
-        ];
-
-        // --- 2. Rotating Advertisements ---
-        const ads = [
-            {
-                title: "Explore Open Source on GitHub",
-                desc: "Discover millions of developers and open-source projects. Host your code repositories freely with GitHub Pages.",
-                url: "https://github.com"
-            },
-            {
-                title: "Test Live Code on CodePen",
-                desc: "An online code editor and front-end web developer community to build, deploy, and test HTML, CSS, and JS creations.",
-                url: "https://codepen.io"
-            },
-            {
-                title: "Master Web Standards at MDN",
-                desc: "Resources for developers, by developers. Up-to-date documentation on JavaScript, CSS, Web APIs, and HTML5.",
-                url: "https://developer.mozilla.org"
-            },
-            {
-                title: "Deploy Lightning Fast on Vercel",
-                desc: "Experience zero-configuration deployment for Next.js, React, and static digital applications.",
-                url: "https://vercel.com"
+                badge: 'Specialized'
             }
         ];
 
         let cart = [];
+        let isMember = false;
+        let registeredEmail = "";
+        let pendingCartItem = null;
 
         // Render Product Cards
         function renderProducts(items) {
@@ -415,9 +443,9 @@
                             <div class="flex items-center justify-between pt-2">
                                 <div>
                                     <span class="text-[10px] text-slate-400 uppercase block">Price</span>
-                                    <span class="text-2xl font-mono font-black text-white">$${p.price.toFixed(2)}</span>
+                                    <span class="text-2xl font-mono font-black text-white">₹${p.price.toFixed(0)}</span>
                                 </div>
-                                <button onclick="addToCart('${p.id}')" class="gradient-orange-btn px-5 py-2.5 rounded-lg text-white font-bold text-xs flex items-center gap-1.5">
+                                <button onclick="handleAddToCart('${p.id}')" class="gradient-orange-btn px-5 py-2.5 rounded-lg text-white font-bold text-xs flex items-center gap-1.5">
                                     <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add to Cart
                                 </button>
                             </div>
@@ -428,7 +456,7 @@
             lucide.createIcons();
         }
 
-        // Filter Logic
+        // Category Filtering
         function filterProducts(category) {
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 if (btn.dataset.cat === category) {
@@ -445,7 +473,88 @@
             }
         }
 
-        // Cart Actions
+        // --- Authentication & Logout Flow ---
+        function handleAddToCart(productId) {
+            if (!isMember) {
+                pendingCartItem = productId;
+                openAuthModal();
+            } else {
+                addToCart(productId);
+            }
+        }
+
+        function openAuthModal() {
+            // Reset to Step 1
+            document.getElementById('auth-step-1').classList.remove('hidden');
+            document.getElementById('auth-step-2').classList.add('hidden');
+            document.getElementById('auth-email').value = '';
+            document.getElementById('auth-otp').value = '';
+
+            const modal = document.getElementById('auth-modal');
+            modal.classList.remove('pointer-events-none', 'opacity-0');
+            modal.classList.add('opacity-100');
+        }
+
+        function closeAuthModal() {
+            const modal = document.getElementById('auth-modal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.classList.remove('opacity-100');
+            pendingCartItem = null;
+        }
+
+        function sendOTP() {
+            const emailInput = document.getElementById('auth-email').value;
+            if(!emailInput.includes('@gmail.com')) {
+                alert("Please enter a valid existing Gmail ID.");
+                return;
+            }
+            registeredEmail = emailInput;
+            // Simulate sending OTP
+            document.getElementById('auth-step-1').classList.add('hidden');
+            document.getElementById('auth-step-2').classList.remove('hidden');
+        }
+
+        function verifyOTP() {
+            const otp = document.getElementById('auth-otp').value;
+            if(otp.length >= 4) { // Basic mock check
+                isMember = true;
+                
+                // Show Member status, hide Login button
+                document.getElementById('member-status').classList.remove('hidden');
+                document.getElementById('nav-login-btn').classList.add('hidden');
+                
+                // Close modal and reset
+                document.getElementById('auth-modal').classList.add('opacity-0', 'pointer-events-none');
+                document.getElementById('auth-modal').classList.remove('opacity-100');
+                
+                alert("Successfully signed in to Membership Dashboard!");
+                
+                // Add the pending item to cart now that they are logged in
+                if (pendingCartItem) {
+                    addToCart(pendingCartItem);
+                    pendingCartItem = null;
+                }
+            } else {
+                alert("Invalid OTP. Please enter the correct code sent to your Gmail.");
+            }
+        }
+
+        function logout() {
+            isMember = false;
+            registeredEmail = "";
+            
+            // Revert Header UI
+            document.getElementById('member-status').classList.add('hidden');
+            document.getElementById('nav-login-btn').classList.remove('hidden');
+            
+            // Empty Cart on Logout for security
+            cart = [];
+            updateCartUI();
+
+            alert("You have successfully logged out of the Membership Dashboard.");
+        }
+
+        // --- Cart Actions ---
         function addToCart(productId) {
             const product = products.find(p => p.id === productId);
             if (!product) return;
@@ -485,7 +594,6 @@
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
             const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
-            // Badge
             if (totalItems > 0) {
                 cartBadge.innerText = totalItems;
                 cartBadge.classList.remove('scale-0');
@@ -495,10 +603,8 @@
                 cartBadge.classList.add('scale-0');
             }
 
-            // Total
-            cartTotalEl.innerText = `$${totalPrice.toFixed(2)}`;
+            cartTotalEl.innerText = `₹${totalPrice.toFixed(0)}`;
 
-            // Items List
             if (cart.length === 0) {
                 cartItemsEl.innerHTML = `
                     <div class="text-center py-16 text-slate-500 space-y-3">
@@ -510,7 +616,7 @@
                 cartItemsEl.innerHTML = cart.map(item => `
                     <div class="bg-[#1a2228] p-4 rounded-lg border border-brand-border flex items-center justify-between gap-3">
                         <div class="flex-1 min-w-0">
-                            <h4 class="text-xs font-bold text-white truncate">${item.title}</h4>                             <p class="text-xs font-mono text-brand-teal mt-0.5">$${item.price.toFixed(2)}</p>
+                            <h4 class="text-xs font-bold text-white truncate">${item.title}</h4>                             <p class="text-xs font-mono text-brand-teal mt-0.5">₹${item.price.toFixed(0)}</p>
                         </div>
                         <div class="flex items-center gap-2 bg-[#11171c] px-2 py-1 rounded border border-brand-border">
                             <button onclick="updateQuantity('${item.id}', -1)" class="text-slate-400 hover:text-white px-1 text-xs">-</button>
@@ -547,63 +653,58 @@
             drawer.classList.remove('opacity-100');
         }
 
-        // --- 3. Stripe Integration Trigger ---
-        function triggerStripeCheckout() {
+        // --- UPI Checkout Logic ---
+        function triggerUPICheckout() {
             if (cart.length === 0) {
-                alert('Your cart is empty. Please add code items before checking out.');
+                alert('Your cart is empty. Please add code items before buying.');
                 return;
             }
 
-            // INSTRUCTIONS:
-            // Option A: If using a Stripe Payment Link directly, set your Stripe Payment Link URL below:
-            const STRIPE_PAYMENT_LINK_URL = "https://buy.stripe.com/test_your_payment_link_here";
-
-            // Option B: If connected to a custom backend/serverless function:
-            /*
-            const stripe = Stripe('pk_test_YOUR_STRIPE_PUBLISHABLE_KEY');
-            fetch('/create-checkout-session', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ items: cart })
-            })
-            .then(res => res.json())
-            .then(session => stripe.redirectToCheckout({ sessionId: session.id }))
-            .catch(err => console.error(err));
-            */
-
-            window.location.href = STRIPE_PAYMENT_LINK_URL;
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const upiId = "sangmawebdeveloper@ptaxis";
+            const name = "Sangma Web Developer";
+            
+            // Format UPI Intent String
+            const upiString = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&am=${totalPrice}&cu=INR`;
+            
+            // Generate QR Code dynamically using an external API
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiString)}`;
+            
+            document.getElementById('upi-qr-code').src = qrUrl;
+            document.getElementById('payment-amount').innerText = `₹${totalPrice.toFixed(0)}`;
+            
+            closeCart();
+            
+            const modal = document.getElementById('payment-modal');
+            modal.classList.remove('pointer-events-none', 'opacity-0');
+            modal.classList.add('opacity-100');
         }
 
-        // --- 4. Auto Popup Advertisement Logic ---
-        function triggerAutoAd() {
-            const randomAd = ads[Math.floor(Math.random() * ads.length)];
-            document.getElementById('ad-title').innerText = randomAd.title;
-            document.getElementById('ad-desc').innerText = randomAd.desc;
-            document.getElementById('ad-link').href = randomAd.url;
-
-            const popup = document.getElementById('ad-popup');
-            const box = document.getElementById('ad-box');
-            popup.classList.remove('pointer-events-none', 'opacity-0');
-            popup.classList.add('opacity-100');
-            box.classList.remove('scale-95');
-            box.classList.add('scale-100');
+        function closePaymentModal() {
+            const modal = document.getElementById('payment-modal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.classList.remove('opacity-100');
+            // Reset success message
+            document.getElementById('payment-success').classList.add('hidden');
+            document.getElementById('payment-screenshot').value = '';
         }
 
-        function closeAdPopup() {
-            const popup = document.getElementById('ad-popup');
-            const box = document.getElementById('ad-box');
-            popup.classList.add('opacity-0', 'pointer-events-none');
-            popup.classList.remove('opacity-100');
-            box.classList.remove('scale-100');
-            box.classList.add('scale-95');
-        }
-
-        function handleContactSubmit(e) {
-            e.preventDefault();
-            const success = document.getElementById('contact-success');
-            success.classList.remove('hidden');
-            e.target.reset();
-            setTimeout(() => success.classList.add('hidden'), 5000);
+        function submitPayment() {
+            const fileInput = document.getElementById('payment-screenshot');
+            if (!fileInput.files || fileInput.files.length === 0) {
+                alert("Please upload the payment screenshot to proceed.");
+                return;
+            }
+            
+            document.getElementById('payment-success').classList.remove('hidden');
+            
+            // Empty cart after successful submission
+            cart = [];
+            updateCartUI();
+            
+            setTimeout(() => {
+                closePaymentModal();
+            }, 4000);
         }
 
         // Initialize on load
@@ -611,9 +712,6 @@
             renderProducts(products);
             updateCartUI();
             lucide.createIcons();
-
-            // Trigger Advertisement popup after 2.5 seconds
-            setTimeout(triggerAutoAd, 2500);
         });
     </script>
 </body>
