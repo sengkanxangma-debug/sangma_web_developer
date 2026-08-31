@@ -140,7 +140,7 @@
         </div>
     </section>
 
-    <!-- Professional Services Section -->
+    <!-- Professional Services Section with Updated Pricing -->
     <section id="services" class="py-20 px-4 bg-gradient-to-b from-brand-card/40 to-brand-dark border-y border-brand-border/50 relative">
         <div class="max-w-7xl mx-auto w-full relative z-10">
             <div class="text-center mb-14">
@@ -148,19 +148,25 @@
                 <h2 class="text-4xl font-extrabold text-white mt-2">Institutional IT & Board Services</h2>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- ID Ordering Update -->
                 <div onclick="handleServiceClick('ID Card Ordering')" class="card-3d bg-brand-card p-6 rounded-2xl border border-brand-border flex flex-col justify-between cursor-pointer group">
                     <div class="relative z-10 text-center">
                         <div class="w-16 h-16 rounded-xl bg-brand-orange/10 flex items-center justify-center mx-auto mb-5 border border-brand-orange/20"><i data-lucide="badge-check" class="w-8 h-8 text-brand-orange"></i></div>
                         <h3 class="text-lg font-extrabold text-white mb-2">ID Card Bulk Order</h3>
-                        <p class="text-[13px] text-slate-400 mb-6">Staff & student identity card processing.</p>
+                        <p class="text-[13px] text-slate-400 mb-2">Staff & student identity card processing.</p>
+                        <p class="text-[14px] text-brand-orange font-black mb-1">₹70 per head</p>
+                        <p class="text-[10px] text-slate-500 mb-6 italic">(HTML form link provided after order)</p>
                     </div>
                     <button class="w-full bg-brand-dark hover:bg-brand-orange text-brand-orange hover:text-white border border-brand-orange/30 font-bold text-xs py-3 rounded-lg transition-colors">Initiate Order</button>
                 </div>
                 
+                <!-- MBOSE Update -->
                 <div class="card-3d bg-brand-card p-6 rounded-2xl border border-brand-border flex flex-col justify-between group">
                     <div class="relative z-10 text-center">
-                        <div class="w-16 h-16 rounded-xl bg-emerald-500/10 flex items-center justify-center mx-auto mb-5 border border-emerald-500/20"><i data-lucide="file-text" class="w-8 h-8 text-emerald-400"></i></div>
-                        <h3 class="text-lg font-extrabold text-white mb-4">MBOSE Portals</h3>
+                        <div class="w-16 h-16 rounded-xl bg-emerald-500/10 flex items-center justify-center mx-auto mb-4 border border-emerald-500/20"><i data-lucide="file-text" class="w-8 h-8 text-emerald-400"></i></div>
+                        <h3 class="text-lg font-extrabold text-white mb-1">MBOSE Portals</h3>
+                        <p class="text-[14px] text-emerald-400 font-black mb-1">₹150 per candidate</p>
+                        <p class="text-[10px] text-slate-500 mb-4 italic">(HTML form link provided after order)</p>
                     </div>
                     <div class="space-y-2 relative z-20">
                         <button onclick="handleServiceClick('MBOSE Class IX Registration')" class="w-full bg-brand-dark hover:bg-emerald-500 hover:text-brand-dark text-slate-300 border border-brand-border font-semibold text-[11px] py-2 rounded-md">Class IX (Registration)</button>
@@ -170,15 +176,19 @@
                     </div>
                 </div>
 
+                <!-- Magazines Update -->
                 <div onclick="handleServiceClick('Publishing & Calendar Design')" class="card-3d bg-brand-card p-6 rounded-2xl border border-brand-border flex flex-col justify-between cursor-pointer group">
                     <div class="relative z-10 text-center">
                         <div class="w-16 h-16 rounded-xl bg-cyan-500/10 flex items-center justify-center mx-auto mb-5 border border-cyan-500/20"><i data-lucide="book-open" class="w-8 h-8 text-cyan-400"></i></div>
                         <h3 class="text-lg font-extrabold text-white mb-2">Magazines & Calendars</h3>
-                        <p class="text-[13px] text-slate-400 mb-6">School publication layouts.</p>
+                        <p class="text-[13px] text-slate-400 mb-2">School publication layouts.</p>
+                        <p class="text-[11px] text-cyan-400 font-bold mb-1">Depends on pictures, design & pages</p>
+                        <p class="text-[10px] text-slate-500 mb-6 italic">(HTML PDF upload link provided after order)</p>
                     </div>
                     <button class="w-full bg-brand-dark hover:bg-cyan-500 text-cyan-400 hover:text-brand-dark border border-cyan-500/30 font-bold text-xs py-3 rounded-lg transition-colors">Submit Request</button>
                 </div>
 
+                <!-- Direct Helpdesk -->
                 <div class="card-3d bg-brand-card p-6 rounded-2xl border border-brand-border flex flex-col justify-center group text-center relative overflow-hidden">
                     <div class="w-16 h-16 rounded-full bg-brand-teal/10 flex items-center justify-center mx-auto mb-5 shadow-[0_0_15px_rgba(20,184,166,0.3)]"><i data-lucide="phone-call" class="w-8 h-8 text-brand-teal"></i></div>
                     <h3 class="text-xl font-extrabold text-white mb-2">Direct Helpdesk</h3>
@@ -192,7 +202,7 @@
         </div>
     </section>
 
-    <!-- Slide-over Cart (Pending Approval Queue) -->
+    <!-- Slide-over Cart -->
     <div id="cart-drawer" class="fixed inset-0 z-[55] overflow-hidden pointer-events-none transition-opacity duration-400 opacity-0">
         <div onclick="toggleCart()" class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
         <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
@@ -280,7 +290,7 @@
         </div>
     </div>
 
-    <!-- Public User Dashboard Modal -->
+    <!-- Public User Dashboard Modal with Formatted Status Badges -->
     <div id="user-dashboard-modal" class="fixed inset-0 z-[70] bg-[#05080a] hidden flex-col transition-opacity duration-500 opacity-0">
         <div class="glass border-b border-brand-border p-4 sm:p-6 flex justify-between items-center">
             <h2 class="text-2xl font-black text-white flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-8 h-8 text-emerald-400"></i> My Dashboard</h2>
@@ -299,7 +309,7 @@
         </div>
     </div>
 
-    <!-- Hidden Secure Admin Dashboard -->
+    <!-- Hidden Secure Admin Dashboard with Formatted Status Badges -->
     <div id="admin-dashboard-modal" class="fixed inset-0 z-[80] bg-[#05080a] hidden flex-col transition-opacity duration-500 opacity-0">
         <div class="glass border-b border-brand-border p-4 sm:p-6 flex justify-between items-center relative overflow-hidden">
             <div class="absolute inset-0 bg-brand-teal/5 pointer-events-none"></div>
@@ -348,7 +358,7 @@
 
         // ============================================================================
         // PASTE YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL HERE:
-        const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwT6eq6gEmdCWp4EsZcihaBfnez6uGAdwgJHHZ6lV5M6VsW4WfptbQTcXGZ_dVy5HzjDw/exec"; 
+        const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbxEj2UI96f7esvK2cK1AgEB2s05rdCCgCKHmWhPu5ZmrjHYx0qcbDZXYHSCaCqLP0OasA/exec"; 
         // ============================================================================
 
         const products = [
@@ -373,7 +383,6 @@
             lucide.createIcons(); t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 5000);
         }
 
-        // --- Core API Fetch Function (Fixed to remove no-cors so we can read JSON) ---
         async function apiRequest(payload) {
             try {
                 const response = await fetch(GOOGLE_SHEET_API_URL, {
@@ -440,7 +449,6 @@
             generatedOTP = Math.floor(100000 + Math.random() * 900000).toString(); // Generate 6 digit OTP
             currentSignupEmail = email.toLowerCase();
 
-            // API Call to Google Script to SEND Email
             const res = await apiRequest({ action: 'sendOTP', email: currentSignupEmail, otp: generatedOTP });
             
             document.getElementById('send-otp-text').classList.remove('hidden'); document.getElementById('send-otp-loader').classList.add('hidden');
@@ -488,7 +496,6 @@
             const pwd = document.getElementById('login-pwd').value;
             if(!uid || !pwd) { showToast("Enter credentials.", "error"); return; }
 
-            // ADMIN LOGIN
             if(uid === "Admin12323" && pwd === "asd123@") {
                 closeAuthModal();
                 showToast("Admin credentials recognized. Fetching database...", "success");
@@ -507,7 +514,6 @@
             if(res.status === 'success') {
                 isMember = true; activeUser = uid;
                 
-                // Update UI for logged-in user
                 document.getElementById('nav-login-btn').classList.add('hidden');
                 document.getElementById('user-dash-btn').classList.replace('hidden', 'flex');
                 document.getElementById('logout-btn').classList.replace('hidden', 'flex');
@@ -527,7 +533,6 @@
             cart = []; updateCartUI(); showToast("Logged out.", "info");
         }
 
-        // --- User Dashboard ---
         async function openUserDashboard() {
             showToast("Loading your orders...", "info");
             const res = await apiRequest({ action: 'getUserOrders', userId: activeUser });
@@ -540,7 +545,7 @@
                     <tr class="hover:bg-brand-teal/5 transition-colors">
                         <td class="p-4 text-xs font-medium text-slate-200">${o.items}</td>
                         <td class="p-4 font-mono font-bold text-white">₹${o.total}</td>
-                        <td class="p-4"><span class="px-3 py-1.5 rounded-md text-[10px] font-black uppercase tracking-widest border ${o.status === 'Approved' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'bg-rose-500/10 text-rose-400 border-rose-500/30'}">${o.status}</span></td>
+                        <td class="p-4"><div class="inline-block px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest border whitespace-normal text-left max-w-[250px] leading-relaxed ${o.status.includes('Approved') ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'bg-amber-500/10 text-amber-400 border-amber-500/30'}">${o.status}</div></td>
                     </tr>`).join('');
                 lucide.createIcons();
             } else {
@@ -553,7 +558,6 @@
             setTimeout(() => { dash.classList.remove('flex'); dash.classList.add('hidden'); }, 500);
         }
 
-        // --- Admin Dashboard ---
         function openAdminDashboard(users, orders) {
             const dash = document.getElementById('admin-dashboard-modal');
             dash.classList.remove('hidden'); dash.classList.add('flex');
@@ -570,7 +574,7 @@
                     <td class="p-4 font-black text-brand-teal">${o.userId}</td>
                     <td class="p-4 text-xs font-medium text-slate-200">${o.items}</td>
                     <td class="p-4 font-mono font-bold text-white">₹${o.total}</td>
-                    <td class="p-4"><span class="px-3 py-1.5 rounded-md text-[10px] font-black uppercase tracking-widest border ${o.status === 'Approved' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'bg-rose-500/10 text-rose-400 border-rose-500/30'}">${o.status}</span></td>
+                    <td class="p-4"><div class="inline-block px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest border whitespace-normal text-left max-w-[250px] leading-relaxed ${o.status.includes('Approved') ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'bg-amber-500/10 text-amber-400 border-amber-500/30'}">${o.status}</div></td>
                     <td class="p-4"><button onclick="adminToggleOrderStatus(${o.rowIndex}, '${o.status}')" class="text-xs bg-brand-border border border-slate-600 px-3 py-1.5 rounded-lg hover:bg-brand-teal hover:text-brand-dark hover:border-brand-teal font-bold transition-all shadow-md">Change Status</button></td>
                 </tr>`).join('');
             lucide.createIcons();
@@ -583,11 +587,13 @@
             showToast("Admin node disconnected.", "info");
         }
         async function adminToggleOrderStatus(rowIndex, currentStatus) {
-            const newStatus = currentStatus === 'Approved' ? 'Not Approved' : 'Approved';
+            const newStatus = currentStatus === 'Under process' 
+                ? 'Approved for delivering and payment please contact given number 8258813963/8131813772' 
+                : 'Under process';
+                
             const res = await apiRequest({ action: 'updateOrderStatus', rowIndex: rowIndex, newStatus: newStatus });
             if (res.status === 'success') {
                 showToast("Database Updated: Order status synced with Google Sheets.", "success");
-                // Refresh Admin Data
                 const freshRes = await apiRequest({ action: 'getAdminData' });
                 openAdminDashboard(freshRes.users, freshRes.orders);
             } else {
@@ -595,10 +601,20 @@
             }
         }
 
-        // --- Cart & Service Requests ---
+        // --- Service Specific Pricing Rules & Logic ---
+        function processServiceOrder(serviceName) { 
+            let price = 0;
+            if (serviceName.includes('ID Card')) { price = 70; }
+            if (serviceName.includes('MBOSE')) { price = 150; }
+            
+            cart.push({ id: `srv-${Date.now()}`, title: serviceName, price: price, quantity: 1, type: 'Service' }); 
+            updateCartUI(); 
+            openCart(); 
+            showToast(`${serviceName} added to queue.`, "success"); 
+        }
+
         function handleServiceClick(serviceName) { if (!isMember) { pendingAction = () => { processServiceOrder(serviceName); }; openAuthModal(); } else { processServiceOrder(serviceName); } }
         function handleAddToCart(productId) { if (!isMember) { pendingAction = () => { addToCart(productId); }; openAuthModal(); } else { addToCart(productId); } }
-        function processServiceOrder(serviceName) { cart.push({ id: `srv-${Date.now()}`, title: serviceName, price: 0, quantity: 1, type: 'Service' }); updateCartUI(); openCart(); showToast(`${serviceName} added to queue.`, "success"); }
         function addToCart(productId) {
             const product = products.find(p => p.id === productId); if (!product) return;
             const existing = cart.find(item => item.id === productId);
@@ -639,7 +655,8 @@
             const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             const itemsStr = cart.map(i => i.title).join(" + ");
             
-            const res = await apiRequest({ action: 'order', userId: activeUser, items: itemsStr, total: total, status: 'Not Approved' });
+            // Set initial status to 'Under process'
+            const res = await apiRequest({ action: 'order', userId: activeUser, items: itemsStr, total: total, status: 'Under process' });
             
             document.getElementById('order-btn-text').classList.remove('hidden'); document.getElementById('order-btn-loader').classList.add('hidden');
 
