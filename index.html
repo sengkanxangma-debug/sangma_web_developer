@@ -3,21 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sangma Web Developer | Digital Code Marketplace</title>
+    <title>Sangma Web Developer | Premium Source Marketplace</title>
     
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="images/favicologo.png">
-    
-    <!-- Google Fonts & Tailwind CDN -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Stripe.js SDK -->
-    <script src="https://js.stripe.com/v3/"></script>
-    
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <script>
@@ -25,19 +17,13 @@
             theme: {
                 extend: {
                     colors: {
-                        brand: {
-                            dark: '#11171c',
-                            card: '#1a2228',
-                            border: '#333d45',
-                            accent: '#0f766e',
-                            teal: '#14b8a6',
-                            orange: '#ff6b4a',
-                            orangeLight: '#ff9b54'
-                        }
+                        brand: { dark: '#05080a', card: '#131b23', border: '#2a3642', teal: '#14b8a6', orange: '#ff6b4a' }
                     },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['Fira Code', 'monospace']
+                    fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['Fira Code', 'monospace'] },
+                    animation: { 'gradient-x': 'gradient-x 8s ease infinite', 'float': 'float 6s ease-in-out infinite' },
+                    keyframes: {
+                        'gradient-x': { '0%, 100%': { 'background-size': '200% 200%', 'background-position': 'left center' }, '50%': { 'background-size': '200% 200%', 'background-position': 'right center' } },
+                        'float': { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-15px)' } }
                     }
                 }
             }
@@ -45,674 +31,627 @@
     </script>
 
     <style>
-        body {
-            background-color: #0d1217;
-            color: #ffffff;
-        }
-        .glass {
-            background: rgba(26, 34, 40, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1px solid #333d45;
-        }
-        .gradient-orange-btn {
-            background: linear-gradient(135deg, #ff6b4a, #ff9b54);
-            transition: all 0.25s ease;
-        }
-        .gradient-orange-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255, 107, 74, 0.35);
-        }
-        .code-preview {
-            background: #090d10;
-            border: 1px solid #222d36;
-        }
+        body { background-color: #05080a; color: #ffffff; overflow-x: hidden; }
+        .glass { background: rgba(19, 27, 35, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(42, 54, 66, 0.8); }
+        
+        .card-3d { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; }
+        .card-3d:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 20px 40px -10px rgba(20, 184, 166, 0.4), 0 10px 20px -5px rgba(255, 107, 74, 0.3); border-color: #14b8a6; z-index: 10; }
+        
+        .img-overlay { position: relative; overflow: hidden; border-bottom: 2px solid #14b8a6; }
+        .img-overlay::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, #131b23 5%, transparent 100%); }
+        .card-img { width: 100%; height: 160px; object-fit: cover; transition: transform 0.5s ease; }
+        .card-3d:hover .card-img { transform: scale(1.1) rotate(2deg); }
+
+        .gradient-orange-btn { background: linear-gradient(135deg, #ff6b4a, #ff9b54, #ff6b4a); background-size: 200% auto; transition: all 0.4s ease; }
+        .gradient-orange-btn:hover { background-position: right center; transform: translateY(-2px) scale(1.02); box-shadow: 0 10px 25px -5px rgba(255, 107, 74, 0.5); }
+
+        .loader { border: 3px solid rgba(255,255,255,0.1); border-left-color: #14b8a6; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); transition: bottom 0.4s ease-out; z-index: 9999; }
+        .toast.show { bottom: 30px; }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0f14; }
+        ::-webkit-scrollbar-thumb { background: #2a3642; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #14b8a6; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col font-sans selection:bg-teal-500 selection:text-white">
+<body class="min-h-screen flex flex-col font-sans">
+
+    <!-- Global Toast System -->
+    <div id="sys-toast" class="toast flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl border text-sm font-bold max-w-md w-full glass">
+        <i id="sys-toast-icon" data-lucide="info" class="w-5 h-5"></i>
+        <span id="sys-toast-msg" class="flex-1 text-center">System Message</span>
+    </div>
 
     <!-- Navigation Header -->
-    <header class="sticky top-0 z-40 glass border-b border-brand-border">
+    <header class="sticky top-0 z-40 glass border-b border-brand-border/50 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <a href="#hero" class="flex items-center gap-3">
-                <div class="bg-white p-1.5 rounded-lg shadow-md flex items-center justify-center">
-                    <img src="images/favicologo.png" alt="SWD Logo" class="h-9 w-auto object-contain" onerror="this.src='https://placehold.co/100x100/ffffff/0f766e?text=SWD'">
+            <a href="#hero" class="flex items-center gap-4 group">
+                <div class="bg-gradient-to-br from-brand-teal to-brand-orange p-[2px] rounded-xl shadow-lg transform transition group-hover:rotate-6 group-hover:scale-110 duration-300">
+                    <div class="bg-white p-1.5 rounded-[10px]">
+                        <img src="images/favicologo.png" alt="SWD" class="h-9 w-auto object-contain" onerror="this.src='https://placehold.co/100x100/ffffff/0f766e?text=SWD'">
+                    </div>
                 </div>
                 <div class="leading-tight">
-                    <span class="text-lg font-black tracking-wide text-white block">Sangma Web Developer</span>
-                    <span class="text-xs text-brand-teal font-medium tracking-wider uppercase">Source Marketplace</span>
+                    <span class="text-lg font-black tracking-wide text-white block bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-white">Sangma Web Developer</span>
+                    <span class="text-xs text-brand-orange font-bold tracking-widest uppercase">Premium Marketplace</span>
                 </div>
             </a>
 
-            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
-                <a href="#products" class="hover:text-brand-teal transition">Store Catalog</a>
-                <a href="#services" class="hover:text-brand-teal transition">Services</a>
-                <a href="#about" class="hover:text-brand-teal transition">About</a>
-                <a href="#contact" class="hover:text-brand-teal transition">Support</a>
-            </nav>
-
-            <!-- Top Right Corner: Auth & Cart -->
-            <div class="flex items-center gap-4">
-                
-                <!-- Login Button (Visible when NOT logged in) -->
-                <button id="nav-login-btn" onclick="openAuthModal()" class="text-xs font-bold text-slate-300 hover:text-white transition flex items-center gap-1.5">
-                    <i data-lucide="user" class="w-4 h-4"></i> Sign In
+            <!-- Right: Auth & Cart -->
+            <div class="flex items-center gap-3 sm:gap-5">
+                <button id="nav-login-btn" onclick="openAuthModal()" class="text-xs font-bold text-white bg-brand-teal/10 hover:bg-brand-teal hover:text-brand-dark px-4 py-2.5 rounded-xl transition-all flex items-center gap-2 border border-brand-teal/30 shadow-[0_0_15px_rgba(20,184,166,0.2)]">
+                    <i data-lucide="user" class="w-4 h-4"></i> <span class="hidden sm:inline">Sign In / Sign Up</span>
                 </button>
 
-                <!-- Member Status & Logout (Visible when logged in) -->
-                <div id="member-status" class="hidden flex items-center gap-3">
-                    <span class="text-xs font-bold text-emerald-400 bg-emerald-400/10 px-3 py-1.5 rounded-full border border-emerald-400/20">
-                        <i data-lucide="check-circle" class="w-3 h-3 inline mr-1"></i> Member
-                    </span>
-                    <button onclick="logout()" class="text-xs font-bold text-rose-400 hover:text-rose-300 transition flex items-center gap-1">
-                        <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Logout
-                    </button>
-                </div>
+                <!-- Member Dashboard Button (Hidden until login) -->
+                <button id="user-dash-btn" onclick="openUserDashboard()" class="hidden text-xs font-bold text-emerald-400 bg-emerald-400/10 hover:bg-emerald-400 hover:text-brand-dark px-4 py-2.5 rounded-xl transition-all flex items-center gap-2 border border-emerald-400/20 shadow-[0_0_10px_rgba(52,211,153,0.1)]">
+                    <i data-lucide="layout-dashboard" class="w-4 h-4"></i> <span class="hidden sm:inline">My Dashboard</span>
+                </button>
+                
+                <button id="logout-btn" onclick="logout()" class="hidden text-xs font-bold text-rose-400 hover:text-white bg-rose-500/10 hover:bg-rose-500/80 px-3 py-2 rounded-lg transition-all border border-rose-500/20"><i data-lucide="log-out" class="w-3.5 h-3.5"></i></button>
 
-                <div class="w-px h-6 bg-brand-border mx-1"></div>
-
-                <button onclick="toggleCart()" class="relative p-2.5 rounded-lg bg-brand-card border border-brand-border hover:border-brand-teal transition flex items-center justify-center text-white">
-                    <i data-lucide="shopping-cart" class="w-5 h-5"></i>
-                    <span id="cart-count-badge" class="absolute -top-2 -right-2 bg-brand-orange text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center scale-0 transition-transform">0</span>
+                <button onclick="toggleCart()" class="relative p-2.5 rounded-xl glass hover:border-brand-orange transition-all flex items-center justify-center text-white hover:scale-105 group border-brand-border/50 hover:border-brand-orange">
+                    <i data-lucide="shopping-cart" class="w-5 h-5 group-hover:text-brand-orange transition-colors"></i>
+                    <span id="cart-count-badge" class="absolute -top-2 -right-2 bg-gradient-to-r from-brand-orange to-brand-orangeLight text-white text-xs font-black rounded-full h-5 w-5 flex items-center justify-center scale-0 transition-transform shadow-[0_0_10px_rgba(255,107,74,0.5)] border border-brand-dark">0</span>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section id="hero" class="relative py-20 px-4 text-center overflow-hidden border-b border-brand-border bg-gradient-to-b from-[#141b22] to-[#0d1217]">
-        <div class="max-w-4xl mx-auto space-y-6">
-            <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-brand-accent/20 text-brand-teal border border-brand-teal/30">
-                <i data-lucide="sparkles" class="w-4 h-4"></i> Production-Ready Code & Web Portals
+    <!-- Animated 3D Hero Section -->
+    <section id="hero" class="relative py-28 px-4 text-center overflow-hidden border-b border-brand-border bg-gradient-to-br from-[#0a1118] via-brand-dark to-[#0f1a24] animate-gradient-x">
+        <div class="absolute top-10 left-10 w-[500px] h-[500px] bg-brand-teal/20 rounded-full blur-[120px] pointer-events-none animate-float"></div>
+        <div class="absolute bottom-10 right-10 w-[500px] h-[500px] bg-brand-orange/20 rounded-full blur-[120px] pointer-events-none animate-float" style="animation-delay: 2s;"></div>
+
+        <div class="max-w-4xl mx-auto space-y-8 relative z-10">
+            <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold bg-brand-teal/10 text-brand-teal border border-brand-teal/30 shadow-[0_0_20px_rgba(20,184,166,0.3)]">
+                <i data-lucide="rocket" class="w-4 h-4"></i> Advanced Interactive Portals
             </span>
-            <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight">
-                Accelerate Web Development with <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-400">Verified Source Code</span>
+            <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold text-white tracking-tight leading-tight drop-shadow-2xl">
+                Master Web Engineering with <br class="hidden sm:block"/> <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400 animate-gradient-x">Premium Source Code</span>
             </h1>
-            <p class="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto">
-                Secure, tested code modules, custom administration portals, and scripts crafted by Sangma Web Developer for creators and businesses. Exclusive to registered members.
-            </p>
-            <div class="flex flex-wrap justify-center gap-4 pt-4">
-                <a href="#products" class="gradient-orange-btn px-8 py-3.5 rounded-lg text-white font-bold text-sm tracking-wide">
-                    Browse All Codes
-                </a>
-                <a href="#services" class="px-8 py-3.5 rounded-lg text-slate-300 font-bold text-sm bg-brand-card border border-brand-border hover:bg-slate-800 transition">
-                    View Services
-                </a>
+            <div class="flex flex-wrap justify-center gap-4 pt-6">
+                <a href="#products" class="gradient-orange-btn px-10 py-4 rounded-xl text-white font-black text-sm tracking-widest uppercase">Browse Catalog</a>
+                <a href="#services" class="px-10 py-4 rounded-xl text-brand-teal font-bold text-sm bg-brand-teal/10 border border-brand-teal/30 hover:bg-brand-teal hover:text-brand-dark transition-all">Explore Services</a>
             </div>
         </div>
     </section>
 
-    <!-- Products Catalog Section -->
-    <section id="products" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+    <!-- 3D Products Catalog Section -->
+    <section id="products" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full relative z-10">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div>
-                <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Membership Code Catalog</h2>
-                <p class="text-slate-400 text-sm mt-1">Sign in required to add to cart and unlock source codes.</p>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight flex items-center gap-3">
+                    <i data-lucide="code-2" class="w-8 h-8 text-brand-teal"></i> Official Code Marketplace
+                </h2>
             </div>
-
-            <!-- Category Filter Tabs -->
-            <div class="flex flex-wrap gap-2" id="filter-buttons">
-                <button onclick="filterProducts('all')" class="filter-btn active px-4 py-1.5 rounded-md text-xs font-semibold bg-brand-teal text-brand-dark transition" data-cat="all">All</button>
-                <button onclick="filterProducts('HTML/CSS')" class="filter-btn px-4 py-1.5 rounded-md text-xs font-semibold bg-brand-card text-slate-300 border border-brand-border hover:border-brand-teal transition" data-cat="HTML/CSS">HTML/CSS</button>
-                <button onclick="filterProducts('JavaScript')" class="filter-btn px-4 py-1.5 rounded-md text-xs font-semibold bg-brand-card text-slate-300 border border-brand-border hover:border-brand-teal transition" data-cat="JavaScript">JavaScript</button>
-                <button onclick="filterProducts('AppsScript')" class="filter-btn px-4 py-1.5 rounded-md text-xs font-semibold bg-brand-card text-slate-300 border border-brand-border hover:border-brand-teal transition" data-cat="AppsScript">Google Apps Script</button>
-                <button onclick="filterProducts('FullStack')" class="filter-btn px-4 py-1.5 rounded-md text-xs font-semibold bg-brand-card text-slate-300 border border-brand-border hover:border-brand-teal transition" data-cat="FullStack">Full Stack</button>
+            <div class="flex flex-wrap gap-2 p-1.5 glass rounded-xl" id="filter-buttons">
+                <button onclick="filterProducts('all')" class="filter-btn active px-5 py-2 rounded-lg text-xs font-bold bg-brand-teal text-brand-dark shadow-md" data-cat="all">All</button>
+                <button onclick="filterProducts('HTML/CSS')" class="filter-btn px-5 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white" data-cat="HTML/CSS">UI/UX FrontEnd</button>
+                <button onclick="filterProducts('AppsScript')" class="filter-btn px-5 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white" data-cat="AppsScript">Google Script</button>
+                <button onclick="filterProducts('FullStack')" class="filter-btn px-5 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white" data-cat="FullStack">Full Stack</button>
             </div>
         </div>
-
-        <!-- Product Grid -->
-        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Dynamic Cards Loaded via JS -->
+        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Dynamic Cards -->
         </div>
     </section>
 
-    <!-- Service Provider Section -->
-    <section id="services" class="py-16 px-4 bg-brand-card/40 border-y border-brand-border">
-        <div class="max-w-7xl mx-auto w-full">
-            <div class="text-center mb-10">
-                <span class="text-brand-teal text-xs font-bold uppercase tracking-wider">Additional Services</span>
-                <h2 class="text-3xl font-bold text-white mt-2">Professional Services & Registrations</h2>
-                <p class="text-slate-400 text-sm mt-2">Comprehensive administrative and design support for institutions.</p>
+    <!-- Professional Services Section -->
+    <section id="services" class="py-20 px-4 bg-gradient-to-b from-brand-card/40 to-brand-dark border-y border-brand-border/50 relative">
+        <div class="max-w-7xl mx-auto w-full relative z-10">
+            <div class="text-center mb-14">
+                <span class="text-brand-orange text-xs font-black uppercase tracking-widest bg-brand-orange/10 px-4 py-1.5 rounded-full border border-brand-orange/20 inline-block mb-4">Official Operations</span>
+                <h2 class="text-4xl font-extrabold text-white mt-2">Institutional IT & Board Services</h2>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Service 1 -->
-                <div class="bg-[#11171c] p-6 rounded-xl border border-brand-border hover:border-brand-teal transition shadow-lg text-center">
-                    <i data-lucide="badge-check" class="w-10 h-10 text-brand-orange mx-auto mb-4"></i>
-                    <h3 class="text-lg font-bold text-white mb-2">ID Card Ordering</h3>
-                    <p class="text-xs text-slate-400">Professional student and staff identity card design and bulk printing.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div onclick="handleServiceClick('ID Card Ordering')" class="card-3d bg-brand-card p-6 rounded-2xl border border-brand-border flex flex-col justify-between cursor-pointer group">
+                    <div class="relative z-10 text-center">
+                        <div class="w-16 h-16 rounded-xl bg-brand-orange/10 flex items-center justify-center mx-auto mb-5 border border-brand-orange/20"><i data-lucide="badge-check" class="w-8 h-8 text-brand-orange"></i></div>
+                        <h3 class="text-lg font-extrabold text-white mb-2">ID Card Bulk Order</h3>
+                        <p class="text-[13px] text-slate-400 mb-6">Staff & student identity card processing.</p>
+                    </div>
+                    <button class="w-full bg-brand-dark hover:bg-brand-orange text-brand-orange hover:text-white border border-brand-orange/30 font-bold text-xs py-3 rounded-lg transition-colors">Initiate Order</button>
                 </div>
-                <!-- Service 2 -->
-                <div class="bg-[#11171c] p-6 rounded-xl border border-brand-border hover:border-brand-teal transition shadow-lg text-center">
-                    <i data-lucide="book-open" class="w-10 h-10 text-brand-orange mx-auto mb-4"></i>
-                    <h3 class="text-lg font-bold text-white mb-2">Magazines & Calendars</h3>
-                    <p class="text-xs text-slate-400">Custom layout design for annual school magazines and academic calendars.</p>
+                
+                <div class="card-3d bg-brand-card p-6 rounded-2xl border border-brand-border flex flex-col justify-between group">
+                    <div class="relative z-10 text-center">
+                        <div class="w-16 h-16 rounded-xl bg-emerald-500/10 flex items-center justify-center mx-auto mb-5 border border-emerald-500/20"><i data-lucide="file-text" class="w-8 h-8 text-emerald-400"></i></div>
+                        <h3 class="text-lg font-extrabold text-white mb-4">MBOSE Portals</h3>
+                    </div>
+                    <div class="space-y-2 relative z-20">
+                        <button onclick="handleServiceClick('MBOSE Class IX Registration')" class="w-full bg-brand-dark hover:bg-emerald-500 hover:text-brand-dark text-slate-300 border border-brand-border font-semibold text-[11px] py-2 rounded-md">Class IX (Registration)</button>
+                        <button onclick="handleServiceClick('MBOSE Class X Exam Form')" class="w-full bg-brand-dark hover:bg-emerald-500 hover:text-brand-dark text-slate-300 border border-brand-border font-semibold text-[11px] py-2 rounded-md">Class X (Exam Form)</button>
+                        <button onclick="handleServiceClick('MBOSE Class XI Registration')" class="w-full bg-brand-dark hover:bg-emerald-500 hover:text-brand-dark text-slate-300 border border-brand-border font-semibold text-[11px] py-2 rounded-md">Class XI (Registration)</button>
+                        <button onclick="handleServiceClick('MBOSE Class XII Exam Form')" class="w-full bg-brand-dark hover:bg-emerald-500 hover:text-brand-dark text-slate-300 border border-brand-border font-semibold text-[11px] py-2 rounded-md">Class XII (Exam Form)</button>
+                    </div>
                 </div>
-                <!-- Service 3 -->
-                <div class="bg-[#11171c] p-6 rounded-xl border border-brand-border hover:border-brand-teal transition shadow-lg text-center">
-                    <i data-lucide="file-text" class="w-10 h-10 text-brand-orange mx-auto mb-4"></i>
-                    <h3 class="text-lg font-bold text-white mb-2">MBOSE Registrations</h3>
-                    <p class="text-xs text-slate-400">Form filing & registration for MBOSE Class X SSLC and Class XII HSLC.</p>
-                </div>
-                <!-- Service 4 -->
-                <div class="bg-[#11171c] p-6 rounded-xl border border-brand-border hover:border-brand-teal transition shadow-lg text-center flex flex-col justify-center">
-                    <i data-lucide="phone-call" class="w-10 h-10 text-emerald-400 mx-auto mb-4"></i>
-                    <h3 class="text-lg font-bold text-white mb-2">Contact to Order</h3>
-                    <p class="text-xs text-slate-400 mb-2">Call, Text, or WhatsApp for costs and inquiries:</p>
-                    <p class="text-sm font-bold text-brand-teal">8258813963</p>
-                    <p class="text-sm font-bold text-brand-teal">8131813772</p>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- About Section -->
-    <section id="about" class="py-16 px-4 bg-brand-dark border-b border-brand-border">
-        <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-            <div class="space-y-4">
-                <span class="text-brand-teal text-xs font-bold uppercase tracking-wider">About The Creator</span>
-                <h2 class="text-3xl font-extrabold text-white">Engineering Practical Solutions with Sangma Web Developer</h2>
-                <p class="text-slate-300 text-sm leading-relaxed">
-                    Sangma Web Developer provides ready-to-deploy web portals, lightweight administrative scripts, and full-stack modules. Designed for high efficiency, speed, and seamless integration with GitHub Pages and cloud APIs.
-                </p>
-            </div>
-            <div class="code-preview p-5 rounded-xl font-mono text-xs text-slate-300 shadow-2xl border border-brand-border space-y-2">
-                <div class="flex items-center gap-2 pb-3 border-b border-slate-800 text-slate-500">
-                    <span class="w-3 h-3 rounded-full bg-rose-500 inline-block"></span>
-                    <span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span>
-                    <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span>
-                    <span class="ml-2 text-slate-400">SangmaWebDeveloper.config.js</span>
+                <div onclick="handleServiceClick('Publishing & Calendar Design')" class="card-3d bg-brand-card p-6 rounded-2xl border border-brand-border flex flex-col justify-between cursor-pointer group">
+                    <div class="relative z-10 text-center">
+                        <div class="w-16 h-16 rounded-xl bg-cyan-500/10 flex items-center justify-center mx-auto mb-5 border border-cyan-500/20"><i data-lucide="book-open" class="w-8 h-8 text-cyan-400"></i></div>
+                        <h3 class="text-lg font-extrabold text-white mb-2">Magazines & Calendars</h3>
+                        <p class="text-[13px] text-slate-400 mb-6">School publication layouts.</p>
+                    </div>
+                    <button class="w-full bg-brand-dark hover:bg-cyan-500 text-cyan-400 hover:text-brand-dark border border-cyan-500/30 font-bold text-xs py-3 rounded-lg transition-colors">Submit Request</button>
                 </div>
-                <p><span class="text-purple-400">const</span> <span class="text-yellow-300">developer</span> = {</p>
-                <p class="pl-4">brand: <span class="text-emerald-400">'Sangma Web Developer'</span>,</p>
-                <p class="pl-4">specialties: [<span class="text-emerald-400">'Front-End'</span>, <span class="text-emerald-400">'Automations'</span>, <span class="text-emerald-400">'Web Portals'</span>],</p>
-                <p class="pl-4">readyToDeploy: <span class="text-cyan-400">true</span>,</p>
-                <p class="pl-4">license: <span class="text-emerald-400">'Commercial + Developer Rights'</span></p>
-                <p>};</p>
+
+                <div class="card-3d bg-brand-card p-6 rounded-2xl border border-brand-border flex flex-col justify-center group text-center relative overflow-hidden">
+                    <div class="w-16 h-16 rounded-full bg-brand-teal/10 flex items-center justify-center mx-auto mb-5 shadow-[0_0_15px_rgba(20,184,166,0.3)]"><i data-lucide="phone-call" class="w-8 h-8 text-brand-teal"></i></div>
+                    <h3 class="text-xl font-extrabold text-white mb-2">Direct Helpdesk</h3>
+                    <div class="bg-brand-dark border border-brand-border/50 rounded-xl p-4 mt-2">
+                        <p class="text-base font-black text-brand-teal tracking-widest">8258813963</p>
+                        <div class="h-px w-1/2 bg-brand-border/50 mx-auto my-1.5"></div>
+                        <p class="text-base font-black text-brand-teal tracking-widest">8131813772</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Slide-over Shopping Cart Modal -->
-    <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden pointer-events-none transition-opacity duration-300 opacity-0">
-        <div onclick="toggleCart()" class="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity"></div>
+    <!-- Slide-over Cart (Pending Approval Queue) -->
+    <div id="cart-drawer" class="fixed inset-0 z-[55] overflow-hidden pointer-events-none transition-opacity duration-400 opacity-0">
+        <div onclick="toggleCart()" class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
         <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
-            <div class="w-screen max-w-md pointer-events-auto bg-[#141b22] border-l border-brand-border flex flex-col shadow-2xl">
-                <!-- Cart Header -->
-                <div class="p-5 border-b border-brand-border flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <i data-lucide="shopping-bag" class="w-5 h-5 text-brand-teal"></i>
-                        <h2 class="text-lg font-bold text-white">Your Cart</h2>
-                    </div>
-                    <button onclick="toggleCart()" class="p-1 rounded-md text-slate-400 hover:text-white">
-                        <i data-lucide="x" class="w-5 h-5"></i>
-                    </button>
+            <div class="w-screen max-w-md pointer-events-auto bg-brand-dark border-l border-brand-border flex flex-col shadow-2xl transform transition-transform duration-500 translate-x-full" id="cart-panel">
+                <div class="p-6 border-b border-brand-border glass flex items-center justify-between">
+                    <h2 class="text-xl font-extrabold text-white flex items-center gap-3"><i data-lucide="shopping-bag" class="w-5 h-5 text-brand-orange"></i> Order Request Port</h2>
+                    <button onclick="toggleCart()" class="p-2 rounded-full bg-brand-card text-slate-400 hover:text-rose-400"><i data-lucide="x" class="w-5 h-5"></i></button>
                 </div>
-
-                <!-- Cart Items Container -->
-                <div id="cart-items" class="flex-1 overflow-y-auto p-5 space-y-4">
-                    <!-- Populated dynamically via JS -->
-                </div>
-
-                <!-- Cart Footer & UPI Checkout -->
-                <div class="p-5 border-t border-brand-border bg-[#0d1217] space-y-4">
-                    <div class="flex justify-between items-center text-slate-300">
-                        <span class="text-sm">Subtotal (INR)</span>
-                        <span id="cart-total" class="text-xl font-mono font-bold text-white">₹0.00</span>
+                <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4"></div>
+                <div class="p-6 border-t border-brand-border glass space-y-4">
+                    <div class="flex justify-between bg-brand-card p-4 rounded-lg border border-brand-border">
+                        <span class="text-xs font-bold text-slate-400 uppercase">Estimated Total</span>
+                        <span id="cart-total" class="text-xl font-black text-brand-teal font-mono">₹0.00</span>
                     </div>
-                    <button onclick="triggerUPICheckout()" id="checkout-btn" class="w-full gradient-orange-btn py-3.5 rounded-lg text-white font-bold text-sm flex items-center justify-center gap-2">
-                        <i data-lucide="qr-code" class="w-4 h-4"></i> Buy the Codes Document
+                    <button id="submit-order-btn" onclick="submitOrderRequest()" class="w-full gradient-orange-btn py-4 rounded-xl text-white font-black text-sm flex items-center justify-center gap-2">
+                        <span id="order-btn-text"><i data-lucide="send" class="w-5 h-5 inline mr-1"></i> Transmit Order</span>
+                        <div id="order-btn-loader" class="loader hidden"></div>
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Login / OTP Modal -->
-    <div id="auth-modal" class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity duration-300 opacity-0 pointer-events-none">
-        <div class="relative w-full max-w-sm bg-[#1a2228] border border-brand-border rounded-xl p-6 shadow-2xl text-center">
-            <button onclick="closeAuthModal()" class="absolute top-3 right-3 text-slate-400 hover:text-white bg-brand-dark p-1.5 rounded-full">
-                <i data-lucide="x" class="w-4 h-4"></i>
-            </button>
+    <!-- Master Authentication Modal -->
+    <div id="auth-modal" class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md transition-all duration-400 opacity-0 pointer-events-none perspective-1000">
+        <div id="auth-modal-content" class="relative w-full max-w-sm glass border-2 border-brand-border/50 rounded-3xl p-8 shadow-[0_0_50px_rgba(20,184,166,0.1)] text-center max-h-[90vh] overflow-y-auto transform scale-95 transition-transform duration-400">
+            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-rose-400 bg-brand-dark p-2 rounded-full border border-brand-border hover:border-rose-500 z-10"><i data-lucide="x" class="w-4 h-4"></i></button>
             
-            <!-- Step 1: Email Input -->
-            <div id="auth-step-1">
-                <div class="bg-brand-dark w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 border border-brand-border">
-                    <i data-lucide="mail" class="w-5 h-5 text-brand-teal"></i>
+            <!-- Login View -->
+            <div id="auth-view-login">
+                <div class="w-16 h-16 rounded-2xl bg-brand-dark flex items-center justify-center mx-auto mb-5 border border-brand-teal/30"><i data-lucide="fingerprint" class="w-8 h-8 text-brand-teal"></i></div>
+                <h3 class="text-2xl font-extrabold text-white mb-2">Secure Gateway</h3>
+                <p class="text-slate-400 text-xs mb-6">Enter Membership ID and Password.</p>
+                <div class="space-y-4 mb-6">
+                    <input type="text" id="login-uid" placeholder="Membership ID" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-3.5 text-sm text-center text-white focus:border-brand-teal font-mono">
+                    <input type="password" id="login-pwd" placeholder="Password" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-3.5 text-sm text-center text-white focus:border-brand-teal font-mono">
                 </div>
-                <h3 class="text-xl font-bold text-white mb-2">Member Sign In</h3>
-                <p class="text-slate-400 text-xs mb-5">Login with your existing Gmail ID to access the membership dashboard and buy codes.</p>
-                
-                <input type="email" id="auth-email" placeholder="yourname@gmail.com" class="w-full bg-[#0d1217] border border-brand-border rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-teal mb-4 text-center">
-                
-                <button onclick="sendOTP()" class="w-full gradient-orange-btn py-3 rounded-lg text-white font-bold text-sm">
-                    Send OTP to Gmail
+                <button onclick="executeLogin()" class="w-full bg-brand-teal hover:bg-teal-400 py-3.5 rounded-xl text-brand-dark font-black text-sm shadow-[0_0_15px_rgba(20,184,166,0.4)] mb-6">
+                    <span id="login-btn-text">Authenticate</span><div id="login-btn-loader" class="loader hidden" style="border-left-color: #05080a;"></div>
                 </button>
+                <div class="border-t border-brand-border/50 pt-5">
+                    <button onclick="switchAuthView('signup-email')" class="w-full gradient-orange-btn py-3 rounded-xl text-white font-bold text-xs"><i data-lucide="mail-plus" class="w-4 h-4 inline mr-1"></i> Create Membership via Email</button>
+                </div>
             </div>
 
-            <!-- Step 2: OTP Input -->
-            <div id="auth-step-2" class="hidden">
-                <div class="bg-brand-dark w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 border border-brand-border">
-                    <i data-lucide="lock" class="w-5 h-5 text-brand-orange"></i>
+            <!-- Signup Step 1: Email -->
+            <div id="auth-view-signup-email" class="hidden">
+                <div class="w-16 h-16 rounded-2xl bg-brand-dark flex items-center justify-center mx-auto mb-5 border border-brand-orange/30"><i data-lucide="at-sign" class="w-8 h-8 text-brand-orange"></i></div>
+                <h3 class="text-2xl font-extrabold text-white mb-2">Register Identity</h3>
+                <p class="text-slate-400 text-xs mb-6">Live OTP will be emailed directly to your inbox.</p>
+                <input type="email" id="signup-email" placeholder="Enter valid Gmail address" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-3.5 text-sm text-white focus:border-brand-orange text-center mb-4">
+                <button id="send-otp-btn" onclick="sendOTP()" class="w-full gradient-orange-btn py-3.5 rounded-xl text-white font-black text-sm mb-4">
+                    <span id="send-otp-text">Send Live OTP</span><div id="send-otp-loader" class="loader hidden"></div>
+                </button>
+                <button onclick="switchAuthView('login')" class="text-xs text-brand-teal hover:text-white font-bold">← Return to Login</button>
+            </div>
+
+            <!-- Signup Step 2: OTP -->
+            <div id="auth-view-signup-otp" class="hidden">
+                <h3 class="text-2xl font-extrabold text-white mb-2">Verify Identity</h3>
+                <div class="bg-brand-dark border border-brand-border p-3 rounded-xl mb-5">
+                    <p class="text-slate-400 text-[11px]">Code dispatched securely via system mailer:</p>
+                    <p class="text-brand-teal font-mono text-[11px] mt-1 bg-brand-teal/10 p-1 rounded inline-block">sengkanxangma@gmail.com</p>
                 </div>
-                <h3 class="text-xl font-bold text-white mb-2">Enter OTP</h3>
-                <p class="text-slate-400 text-xs mb-5">We've automatically sent a verification code to your Gmail.</p>
-                
-                <input type="text" id="auth-otp" placeholder="Enter 6-digit OTP" class="w-full bg-[#0d1217] border border-brand-border rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-teal mb-4 text-center tracking-widest font-mono">
-                
-                <button onclick="verifyOTP()" class="w-full bg-brand-teal hover:bg-teal-400 py-3 rounded-lg text-brand-dark font-bold text-sm transition">
-                    Verify & Enter Dashboard
+                <input type="text" id="signup-otp" placeholder="000000" maxlength="6" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-4 text-2xl text-brand-orange focus:border-brand-orange text-center tracking-[0.5em] font-mono font-black mb-4 shadow-inner">
+                <button onclick="verifyOTP()" class="w-full bg-emerald-500 hover:bg-emerald-400 py-3.5 rounded-xl text-white font-black text-sm mb-3 shadow-[0_0_15px_rgba(16,185,129,0.4)]">Confirm Verification</button>
+            </div>
+
+            <!-- Signup Step 3: Full Profile -->
+            <div id="auth-view-signup-profile" class="hidden text-left">
+                <h3 class="text-xl font-extrabold text-white mb-4 text-center">Finalize Profile</h3>
+                <div class="space-y-3 mb-6 max-h-[45vh] overflow-y-auto pr-2 custom-scroll">
+                    <input type="text" id="reg-fname" placeholder="First Name *" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-3 text-sm text-white focus:border-brand-teal">
+                    <input type="text" id="reg-lname" placeholder="Last Name *" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-3 text-sm text-white focus:border-brand-teal">
+                    <input type="tel" id="reg-mobile" placeholder="Active Mobile Number *" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-3 text-sm text-white focus:border-brand-teal">
+                    <textarea id="reg-address" placeholder="Physical Address *" rows="2" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-3 text-sm text-white focus:border-brand-teal resize-none"></textarea>
+                    <div class="flex items-center gap-2 my-4"><div class="h-px bg-brand-border flex-1"></div><span class="text-[10px] font-bold text-brand-teal uppercase tracking-widest">Credentials</span><div class="h-px bg-brand-border flex-1"></div></div>
+                    <input type="text" id="reg-uid" placeholder="Create Custom User ID *" class="w-full bg-brand-teal/5 border border-brand-teal/50 rounded-xl px-4 py-3 text-sm text-white font-bold focus:border-brand-teal">
+                    <input type="password" id="reg-pwd" placeholder="Create Secure Password *" class="w-full bg-brand-teal/5 border border-brand-teal/50 rounded-xl px-4 py-3 text-sm text-white font-bold focus:border-brand-teal">
+                </div>
+                <button id="reg-submit-btn" onclick="submitRegistration()" class="w-full bg-brand-teal hover:bg-teal-400 py-4 rounded-xl text-brand-dark font-black text-sm shadow-[0_0_15px_rgba(20,184,166,0.4)]">
+                    <span id="reg-submit-text">Register Database</span><div id="reg-submit-loader" class="loader hidden" style="border-left-color: #05080a;"></div>
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- UPI Payment & Screenshot Modal -->
-    <div id="payment-modal" class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md transition-opacity duration-300 opacity-0 pointer-events-none overflow-y-auto">
-        <div class="relative w-full max-w-md bg-[#1a2228] border border-brand-border rounded-xl p-6 shadow-2xl text-center my-8">
-            <button onclick="closePaymentModal()" class="absolute top-3 right-3 text-slate-400 hover:text-white bg-brand-dark p-1.5 rounded-full">
-                <i data-lucide="x" class="w-4 h-4"></i>
-            </button>
-            
-            <h3 class="text-2xl font-bold text-white mb-2">Secure Checkout</h3>
-            <p class="text-slate-400 text-xs mb-4">Scan the QR code to pay the fixed amount via any UPI app. The amount is set automatically.</p>
-            
-            <div class="bg-white p-4 rounded-xl inline-block mb-4 shadow-inner">
-                <img id="upi-qr-code" src="" alt="UPI QR Code" class="w-48 h-48 mx-auto">
-            </div>
-
-            <div class="bg-[#0d1217] p-3 rounded-lg border border-brand-border mb-5">
-                <p class="text-xs text-slate-400 uppercase tracking-wider mb-1">Paying to UPI ID</p>
-                <p class="font-mono text-brand-teal font-bold">sangmawebdeveloper@ptaxis</p>
-                <div class="h-px bg-brand-border my-2 w-full"></div>
-                <p class="text-xs text-slate-400 uppercase tracking-wider mb-1">Fixed Total Amount</p>
-                <p id="payment-amount" class="text-xl font-bold text-white">₹0</p>
-            </div>
-
-            <div class="text-left mb-5">
-                <label class="block text-xs font-semibold text-slate-300 uppercase mb-2">Upload Payment Screenshot</label>
-                <input type="file" accept="image/*" id="payment-screenshot" class="w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-brand-dark file:text-brand-teal hover:file:bg-[#11171c] cursor-pointer">
-            </div>
-
-            <button onclick="submitPayment()" class="w-full gradient-orange-btn py-3.5 rounded-lg text-white font-bold text-sm">
-                Submit Payment Record
-            </button>
-
-            <div id="payment-success" class="hidden mt-4 bg-emerald-400/10 border border-emerald-400/30 p-3 rounded-lg">
-                <p class="text-xs text-emerald-400 font-semibold flex items-center justify-center gap-1.5">
-                    <i data-lucide="check-circle" class="w-4 h-4"></i>
-                    Success! Source codes will be automatically sent to your registered Gmail within 24 hours.
-                </p>
+    <!-- Public User Dashboard Modal -->
+    <div id="user-dashboard-modal" class="fixed inset-0 z-[70] bg-[#05080a] hidden flex-col transition-opacity duration-500 opacity-0">
+        <div class="glass border-b border-brand-border p-4 sm:p-6 flex justify-between items-center">
+            <h2 class="text-2xl font-black text-white flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-8 h-8 text-emerald-400"></i> My Dashboard</h2>
+            <button onclick="closeUserDashboard()" class="text-slate-400 hover:text-white bg-brand-card p-2 rounded-full border border-brand-border hover:border-emerald-400"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4 sm:p-8 max-w-5xl mx-auto w-full">
+            <div class="bg-brand-card/50 p-6 rounded-2xl border border-brand-border/50 shadow-2xl">
+                <h3 class="text-white font-extrabold mb-5 flex items-center gap-2 text-lg"><i data-lucide="list-ordered" class="w-5 h-5 text-brand-teal"></i> My Order History & Status</h3>
+                <div class="bg-[#05080a] rounded-xl border border-brand-border overflow-x-auto shadow-inner">
+                    <table class="w-full text-left text-sm text-slate-300 whitespace-nowrap">
+                        <thead class="bg-brand-dark"><tr class="border-b border-brand-border text-brand-teal text-xs tracking-wider uppercase font-bold"><th class="p-4">Requested Services/Codes</th><th class="p-4">Estimated Value</th><th class="p-4">Admin Confirmation Status</th></tr></thead>
+                        <tbody id="user-orders-list" class="divide-y divide-brand-border/30"></tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Footer with Copyright -->
-    <footer class="mt-auto border-t border-brand-border bg-[#090d10] py-8 text-center">
-        <div class="max-w-7xl mx-auto px-4 space-y-3">
-            <!-- Explicit Copyright Added Here -->
-            <p class="text-sm text-slate-300 font-semibold tracking-wide">
-                &copy; <span id="current-year">2026</span> Copyright by Sangma Web Developer. All rights reserved.
-            </p>
-            <p class="text-[11px] text-slate-500">
-                Unauthorized duplication or distribution of membership codes and portals is strictly prohibited. Built for seamless deployment on GitHub Pages.
-            </p>
+    <!-- Hidden Secure Admin Dashboard -->
+    <div id="admin-dashboard-modal" class="fixed inset-0 z-[80] bg-[#05080a] hidden flex-col transition-opacity duration-500 opacity-0">
+        <div class="glass border-b border-brand-border p-4 sm:p-6 flex justify-between items-center relative overflow-hidden">
+            <div class="absolute inset-0 bg-brand-teal/5 pointer-events-none"></div>
+            <div class="relative z-10">
+                <h2 class="text-2xl font-black text-white flex items-center gap-3"><i data-lucide="terminal-square" class="w-8 h-8 text-brand-teal"></i> Administrator Console</h2>
+                <p class="text-[11px] text-brand-teal font-mono tracking-widest mt-1">G-SHEET API LIVE SYNC PORTAL</p>
+            </div>
+            <button onclick="closeAdminDashboard()" class="text-rose-400 hover:text-white font-bold text-xs bg-rose-500/10 hover:bg-rose-500 px-5 py-2.5 rounded-lg border border-rose-500/30 transition-all shadow-sm relative z-10 flex items-center gap-2">
+                <i data-lucide="log-out" class="w-4 h-4"></i> Close Session
+            </button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4 sm:p-8 max-w-7xl mx-auto w-full space-y-10">
+            <!-- Order Management Node -->
+            <div class="bg-brand-card/50 p-6 rounded-2xl border border-brand-border/50 shadow-2xl">
+                <h3 class="text-white font-extrabold mb-5 flex items-center gap-2 text-lg"><i data-lucide="server" class="w-5 h-5 text-brand-orange"></i> Service Confirmation Port (Orders)</h3>
+                <div class="bg-[#05080a] rounded-xl border border-brand-border overflow-x-auto shadow-inner">
+                    <table class="w-full text-left text-sm text-slate-300 whitespace-nowrap">
+                        <thead class="bg-brand-dark"><tr class="border-b border-brand-border text-brand-teal text-xs tracking-wider uppercase font-bold"><th class="p-4">User ID</th><th class="p-4">Service/Code Requisition</th><th class="p-4">Value</th><th class="p-4">Status Check</th><th class="p-4">Admin Action</th></tr></thead>
+                        <tbody id="admin-orders-list" class="divide-y divide-brand-border/30"></tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Identity Management Node -->
+            <div class="bg-brand-card/50 p-6 rounded-2xl border border-brand-border/50 shadow-2xl">
+                <h3 class="text-white font-extrabold mb-5 flex items-center gap-2 text-lg"><i data-lucide="users-2" class="w-5 h-5 text-emerald-400"></i> Global Member Directory</h3>
+                <div class="bg-[#05080a] rounded-xl border border-brand-border overflow-x-auto shadow-inner">
+                    <table class="w-full text-left text-sm text-slate-300 whitespace-nowrap">
+                        <thead class="bg-brand-dark"><tr class="border-b border-brand-border text-brand-teal text-xs tracking-wider uppercase font-bold"><th class="p-4">ID Name</th><th class="p-4">Registered Email</th><th class="p-4">Mobile</th><th class="p-4">Encrypted Key</th><th class="p-4">Physical Node</th></tr></thead>
+                        <tbody id="admin-users-list" class="divide-y divide-brand-border/30"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Structured Footer -->
+    <footer class="mt-auto border-t border-brand-border bg-[#05080a] pt-12 pb-8 relative">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-3 relative z-10">
+            <p class="text-sm text-white font-black tracking-widest uppercase">&copy; <span id="current-year"></span> Sangma Web Developer</p>
+            <p class="text-[10px] text-slate-500 max-w-3xl mx-auto font-mono uppercase tracking-wider">Built for Official Meghalaya Code Structuring and Registration Services.</p>
         </div>
     </footer>
 
-    <!-- App State & Marketplace Logic -->
     <script>
-        // Set dynamic year for copyright
         document.getElementById('current-year').innerText = new Date().getFullYear();
 
-        // --- 1. Products Database with updated Indian Rupee Prices ---
+        // ============================================================================
+        // PASTE YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL HERE:
+        const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwT6eq6gEmdCWp4EsZcihaBfnez6uGAdwgJHHZ6lV5M6VsW4WfptbQTcXGZ_dVy5HzjDw/exec"; 
+        // ============================================================================
+
         const products = [
-            {
-                id: 'swd-01',
-                title: 'Basic Coding Starter',
-                category: 'HTML/CSS',
-                price: 12499.00,
-                rating: '5.0',
-                features: ['Custom HTML5 & CSS3 Design', 'Fully Mobile Responsive', 'SEO Optimization Ready'],
-                tech: ['HTML5', 'CSS3', 'JS', 'GitHub'],
-                badge: 'Starter Package'
-            },
-            {
-                id: 'swd-02',
-                title: 'Pro Developer Suite',
-                category: 'AppsScript',
-                price: 14499.00,
-                rating: '5.0',
-                features: ['Google Apps Script System', 'Custom Management Portals', 'Automated Google Sheets Sync'],
-                tech: ['AppScript', 'Sheets API', 'JavaScript', 'OAuth'],
-                badge: 'Popular'
-            },
-            {
-                id: 'swd-03',
-                title: 'Enterprise App Framework',
-                category: 'FullStack',
-                price: 7499.00,
-                rating: '5.0',
-                features: ['Complete Staff/Student Portals', 'AI API & Dynamic Graphics Setup', 'Priority Lifetime Maintenance'],
-                tech: ['FullStack', 'Node.js', 'AI API', 'Cloud'],
-                badge: 'Enterprise'
-            },
-            {
-                id: 'swd-04',
-                title: 'Dynamic Data Scoring Engine',
-                category: 'JavaScript',
-                price: 1999.00,
-                rating: '4.9',
-                features: ['Realtime Judging Portal', 'Automated Score Calculations', 'Live Result Leaderboards'],
-                tech: ['Vanilla JS', 'Tailwind', 'LocalStore', 'JSON'],
-                badge: 'Specialized'
-            }
+            { id: 'swd-01', title: 'Basic Coding Starter', category: 'HTML/CSS', price: 12499, img: 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=500&q=80', rating: '5.0', features: ['Custom HTML5 Design', 'Mobile Responsive'], badge: 'Starter Package' },
+            { id: 'swd-02', title: 'Pro Developer Suite', category: 'AppsScript', price: 14499, img: 'https://images.unsplash.com/photo-1555099962-4199c345e5dd?w=500&q=80', rating: '5.0', features: ['Google Apps Script System', 'Custom Portals'], badge: 'Popular' },
+            { id: 'swd-03', title: 'Enterprise App Framework', category: 'FullStack', price: 7499, img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&q=80', rating: '5.0', features: ['Staff/Student Portals', 'Priority Maintenance'], badge: 'Enterprise' },
+            { id: 'swd-04', title: 'Dynamic Data Scoring', category: 'JavaScript', price: 1999, img: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500&q=80', rating: '4.9', features: ['Realtime Judging Portal', 'Live Leaderboards'], badge: 'Specialized' },
+            { id: 'swd-05', title: 'School Dashboard Pro', category: 'FullStack', price: 18999, img: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&q=80', rating: '5.0', features: ['Attendance Tracker', 'Report Generation'], badge: 'New' },
+            { id: 'swd-06', title: 'E-Commerce UI Kit', category: 'HTML/CSS', price: 5499, img: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=500&q=80', rating: '4.8', features: ['Shopping Cart Design', 'Checkout Forms'], badge: 'Design' },
+            { id: 'swd-07', title: 'Auto Email Bot Script', category: 'AppsScript', price: 3499, img: 'https://images.unsplash.com/photo-1596526131083-e8c638c9c6c8?w=500&q=80', rating: '4.9', features: ['Bulk Gmail Sender', 'Sheet Integration'], badge: 'Utility' },
+            { id: 'swd-08', title: 'Portfolio Template Pro', category: 'JavaScript', price: 2999, img: 'https://images.unsplash.com/photo-1507721999472-8ed4421c4af2?w=500&q=80', rating: '5.0', features: ['3D Animations', 'Contact Form API'], badge: 'Trending' }
         ];
 
-        let cart = [];
-        let isMember = false;
-        let registeredEmail = "";
-        let pendingCartItem = null;
+        let cart = []; let isMember = false; let activeUser = null; let pendingAction = null; 
+        let currentSignupEmail = ""; let generatedOTP = "";
 
-        // Render Product Cards
+        function showToast(msg, type = 'info') {
+            const t = document.getElementById('sys-toast'); const i = document.getElementById('sys-toast-icon');
+            document.getElementById('sys-toast-msg').innerText = msg;
+            t.className = `toast flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl border text-sm font-bold max-w-md w-full glass z-[9999] ${type==='error'?'border-rose-500/50 text-rose-400':type==='success'?'border-emerald-500/50 text-emerald-400':'border-brand-teal/50 text-brand-teal'}`;
+            i.setAttribute('data-lucide', type==='error'?'alert-circle':type==='success'?'check-circle-2':'info');
+            lucide.createIcons(); t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 5000);
+        }
+
+        // --- Core API Fetch Function (Fixed to remove no-cors so we can read JSON) ---
+        async function apiRequest(payload) {
+            try {
+                const response = await fetch(GOOGLE_SHEET_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                return result;
+            } catch (error) {
+                console.error('API Error:', error); 
+                return { status: 'error', message: 'Delivery Failed. Check API URL.' };
+            }
+        }
+
         function renderProducts(items) {
             const grid = document.getElementById('product-grid');
             grid.innerHTML = items.map(p => `
-                <div class="bg-brand-card border border-brand-border rounded-xl flex flex-col overflow-hidden hover:border-brand-teal transition duration-300 shadow-lg">
-                    <div class="bg-[#11171c] p-5 border-b border-brand-border text-center">
-                        <div class="flex justify-between items-center text-xs text-slate-400 mb-2">
-                            <span class="text-amber-400 font-bold">★★★★★ <span class="text-white ml-1">${p.rating}</span></span>
-                            <span class="px-2 py-0.5 rounded bg-brand-accent/20 text-brand-teal text-[11px] font-semibold">${p.category}</span>
+                <div class="card-3d bg-brand-card border border-brand-border rounded-2xl flex flex-col overflow-hidden cursor-pointer group" onclick="handleAddToCart('${p.id}')">
+                    <div class="img-overlay"><img src="${p.img}" alt="${p.title}" class="card-img"></div>
+                    <div class="bg-brand-dark p-5 border-b border-brand-border text-center relative z-10 -mt-2">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-amber-400 font-bold text-[10px]">★★★★★</span>
+                            <span class="px-2 py-0.5 rounded-md bg-brand-teal/10 text-brand-teal text-[9px] font-black uppercase border border-brand-teal/20">${p.category}</span>
                         </div>
-                        <h3 class="text-xl font-bold text-white">${p.title}</h3>
+                        <h3 class="text-lg font-extrabold text-white group-hover:text-brand-teal transition-colors leading-tight">${p.title}</h3>
                     </div>
-
-                    <div class="bg-brand-accent/20 text-emerald-300 text-center py-2.5 px-4 font-semibold text-xs border-y border-brand-teal/20">
-                        ${p.badge}
-                    </div>
-
+                    <div class="bg-brand-teal/5 text-brand-teal text-center py-1.5 px-4 font-bold text-[10px] uppercase tracking-widest border-b border-brand-teal/10">${p.badge}</div>
                     <div class="p-5 flex-1 flex flex-col justify-between">
-                        <ul class="space-y-2.5 text-xs text-slate-300">
-                            ${p.features.map(f => `<li class="flex items-center gap-2"><span class="text-emerald-400">✔</span> ${f}</li>`).join('')}
+                        <ul class="space-y-2 text-[12px] text-slate-300 font-medium">
+                            ${p.features.map(f => `<li class="flex items-center gap-2"><div class="w-3.5 h-3.5 rounded-full bg-emerald-500/20 flex items-center justify-center"><i data-lucide="check" class="w-2.5 h-2.5 text-emerald-400"></i></div> ${f}</li>`).join('')}
                         </ul>
-
-                        <div class="mt-6 pt-4 border-t border-brand-border">
-                            <div class="flex flex-wrap gap-1.5 mb-5 justify-center">
-                                ${p.tech.map(t => `<span class="bg-[#0f766e]/30 text-teal-200 text-[10px] font-mono px-2 py-0.5 rounded border border-teal-500/20">${t}</span>`).join('')}
+                        <div class="mt-6 pt-4 border-t border-brand-border/50 flex items-center justify-between">
+                            <div>
+                                <span class="text-[9px] text-slate-500 uppercase tracking-widest font-bold block mb-0.5">Total Cost</span>
+                                <span class="text-xl font-mono font-black text-white group-hover:text-brand-orange transition-colors">₹${p.price}</span>
                             </div>
-                            
-                            <div class="flex items-center justify-between pt-2">
-                                <div>
-                                    <span class="text-[10px] text-slate-400 uppercase block">Price</span>
-                                    <span class="text-2xl font-mono font-black text-white">₹${p.price.toFixed(0)}</span>
-                                </div>
-                                <button onclick="handleAddToCart('${p.id}')" class="gradient-orange-btn px-5 py-2.5 rounded-lg text-white font-bold text-xs flex items-center gap-1.5">
-                                    <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add to Cart
-                                </button>
-                            </div>
+                            <button class="w-10 h-10 rounded-xl bg-brand-dark border border-brand-border group-hover:bg-brand-teal flex items-center justify-center transition-all pointer-events-none"><i data-lucide="plus" class="w-4 h-4 text-brand-teal group-hover:text-brand-dark"></i></button>
                         </div>
                     </div>
-                </div>
-            `).join('');
+                </div>`).join('');
             lucide.createIcons();
         }
 
-        // Category Filtering
         function filterProducts(category) {
             document.querySelectorAll('.filter-btn').forEach(btn => {
-                if (btn.dataset.cat === category) {
-                    btn.className = "filter-btn active px-4 py-1.5 rounded-md text-xs font-semibold bg-brand-teal text-brand-dark transition";
-                } else {
-                    btn.className = "filter-btn px-4 py-1.5 rounded-md text-xs font-semibold bg-brand-card text-slate-300 border border-brand-border hover:border-brand-teal transition";
-                }
+                btn.className = btn.dataset.cat === category 
+                    ? "filter-btn active px-5 py-2 rounded-lg text-xs font-bold bg-brand-teal text-brand-dark shadow-md"
+                    : "filter-btn px-5 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white";
             });
+            renderProducts(category === 'all' ? products : products.filter(p => p.category === category));
+        }
 
-            if (category === 'all') {
-                renderProducts(products);
+        function openAuthModal() { switchAuthView('login'); const m = document.getElementById('auth-modal'); const c = document.getElementById('auth-modal-content'); m.classList.remove('pointer-events-none', 'opacity-0'); m.classList.add('opacity-100'); setTimeout(() => c.classList.replace('scale-95', 'scale-100'), 50); }
+        function closeAuthModal() { const m = document.getElementById('auth-modal'); const c = document.getElementById('auth-modal-content'); c.classList.replace('scale-100', 'scale-95'); m.classList.remove('opacity-100'); m.classList.add('opacity-0', 'pointer-events-none'); pendingAction = null; }
+        function switchAuthView(viewName) { ['login', 'signup-email', 'signup-otp', 'signup-profile'].forEach(v => document.getElementById('auth-view-' + v).classList.add('hidden')); document.getElementById('auth-view-' + viewName).classList.remove('hidden'); }
+
+        async function sendOTP() {
+            const email = document.getElementById('signup-email').value.trim();
+            if(!email.includes('@') || email.length < 5) { showToast("Invalid email format.", "error"); return; }
+            
+            document.getElementById('send-otp-text').classList.add('hidden'); document.getElementById('send-otp-loader').classList.remove('hidden');
+
+            generatedOTP = Math.floor(100000 + Math.random() * 900000).toString(); // Generate 6 digit OTP
+            currentSignupEmail = email.toLowerCase();
+
+            // API Call to Google Script to SEND Email
+            const res = await apiRequest({ action: 'sendOTP', email: currentSignupEmail, otp: generatedOTP });
+            
+            document.getElementById('send-otp-text').classList.remove('hidden'); document.getElementById('send-otp-loader').classList.add('hidden');
+
+            if(res.status === 'success') {
+                showToast(`OTP successfully sent from sengkanxangma@gmail.com to ${currentSignupEmail}`, "success");
+                switchAuthView('signup-otp');
+            } else if (res.message === 'Email Exists') {
+                showToast("Only single user with single email allowed. This email is already registered.", "error");
             } else {
-                renderProducts(products.filter(p => p.category === category));
+                showToast(res.message, "error");
             }
-        }
-
-        // --- Authentication & Logout Flow ---
-        function handleAddToCart(productId) {
-            if (!isMember) {
-                pendingCartItem = productId;
-                openAuthModal();
-            } else {
-                addToCart(productId);
-            }
-        }
-
-        function openAuthModal() {
-            // Reset to Step 1
-            document.getElementById('auth-step-1').classList.remove('hidden');
-            document.getElementById('auth-step-2').classList.add('hidden');
-            document.getElementById('auth-email').value = '';
-            document.getElementById('auth-otp').value = '';
-
-            const modal = document.getElementById('auth-modal');
-            modal.classList.remove('pointer-events-none', 'opacity-0');
-            modal.classList.add('opacity-100');
-        }
-
-        function closeAuthModal() {
-            const modal = document.getElementById('auth-modal');
-            modal.classList.add('opacity-0', 'pointer-events-none');
-            modal.classList.remove('opacity-100');
-            pendingCartItem = null;
-        }
-
-        function sendOTP() {
-            const emailInput = document.getElementById('auth-email').value;
-            if(!emailInput.includes('@gmail.com')) {
-                alert("Please enter a valid existing Gmail ID.");
-                return;
-            }
-            registeredEmail = emailInput;
-            // Simulate sending OTP
-            document.getElementById('auth-step-1').classList.add('hidden');
-            document.getElementById('auth-step-2').classList.remove('hidden');
         }
 
         function verifyOTP() {
-            const otp = document.getElementById('auth-otp').value;
-            if(otp.length >= 4) { // Basic mock check
-                isMember = true;
-                
-                // Show Member status, hide Login button
-                document.getElementById('member-status').classList.remove('hidden');
-                document.getElementById('nav-login-btn').classList.add('hidden');
-                
-                // Close modal and reset
-                document.getElementById('auth-modal').classList.add('opacity-0', 'pointer-events-none');
-                document.getElementById('auth-modal').classList.remove('opacity-100');
-                
-                alert("Successfully signed in to Membership Dashboard!");
-                
-                // Add the pending item to cart now that they are logged in
-                if (pendingCartItem) {
-                    addToCart(pendingCartItem);
-                    pendingCartItem = null;
-                }
+            const otp = document.getElementById('signup-otp').value;
+            if(otp === generatedOTP && otp.length === 6) { switchAuthView('signup-profile'); showToast("Identity Verified.", "success"); } 
+            else { showToast("Incorrect OTP entered. Check your inbox.", "error"); }
+        }
+
+        async function submitRegistration() {
+            const f = document.getElementById('reg-fname').value; const l = document.getElementById('reg-lname').value;
+            const m = document.getElementById('reg-mobile').value; const a = document.getElementById('reg-address').value;
+            const u = document.getElementById('reg-uid').value; const p = document.getElementById('reg-pwd').value;
+
+            if(!f || !l || !u || !p || !m || !a) { showToast("All profile parameters are mandatory.", "error"); return; }
+
+            document.getElementById('reg-submit-text').classList.add('hidden'); document.getElementById('reg-submit-loader').classList.remove('hidden');
+
+            const userData = { action: 'register', firstName: f, lastName: l, mobile: m, address: a, userId: u, password: p, email: currentSignupEmail };
+            const res = await apiRequest(userData);
+            
+            document.getElementById('reg-submit-text').classList.remove('hidden'); document.getElementById('reg-submit-loader').classList.add('hidden');
+
+            if(res.status === 'success') {
+                showToast(`Registration Complete! Credentials transmitted securely to your inbox.`, "success");
+                document.getElementById('login-uid').value = u; switchAuthView('login');
             } else {
-                alert("Invalid OTP. Please enter the correct code sent to your Gmail.");
+                showToast("Registration Failed. Ensure Google API URL is active.", "error");
             }
+        }
+
+        async function executeLogin() {
+            const uid = document.getElementById('login-uid').value;
+            const pwd = document.getElementById('login-pwd').value;
+            if(!uid || !pwd) { showToast("Enter credentials.", "error"); return; }
+
+            // ADMIN LOGIN
+            if(uid === "Admin12323" && pwd === "asd123@") {
+                closeAuthModal();
+                showToast("Admin credentials recognized. Fetching database...", "success");
+                const res = await apiRequest({ action: 'getAdminData' });
+                if(res.status === 'success') { openAdminDashboard(res.users, res.orders); }
+                else { showToast("Failed to fetch admin data.", "error"); }
+                return;
+            }
+
+            document.getElementById('login-btn-text').classList.add('hidden'); document.getElementById('login-btn-loader').classList.remove('hidden');
+
+            const res = await apiRequest({ action: 'login', userId: uid, password: pwd });
+            
+            document.getElementById('login-btn-text').classList.remove('hidden'); document.getElementById('login-btn-loader').classList.add('hidden');
+
+            if(res.status === 'success') {
+                isMember = true; activeUser = uid;
+                
+                // Update UI for logged-in user
+                document.getElementById('nav-login-btn').classList.add('hidden');
+                document.getElementById('user-dash-btn').classList.replace('hidden', 'flex');
+                document.getElementById('logout-btn').classList.replace('hidden', 'flex');
+                
+                closeAuthModal();
+                if (pendingAction) { pendingAction(); pendingAction = null; } else { showToast(`Welcome back, ${uid}.`, "success"); }
+                lucide.createIcons();
+            } else { showToast("Incorrect User ID or Password.", "error"); }
         }
 
         function logout() {
-            isMember = false;
-            registeredEmail = "";
-            
-            // Revert Header UI
-            document.getElementById('member-status').classList.add('hidden');
+            isMember = false; activeUser = null;
             document.getElementById('nav-login-btn').classList.remove('hidden');
-            
-            // Empty Cart on Logout for security
-            cart = [];
-            updateCartUI();
-
-            alert("You have successfully logged out of the Membership Dashboard.");
+            document.getElementById('user-dash-btn').classList.replace('flex', 'hidden');
+            document.getElementById('logout-btn').classList.replace('flex', 'hidden');
+            document.getElementById('login-uid').value = ''; document.getElementById('login-pwd').value = '';
+            cart = []; updateCartUI(); showToast("Logged out.", "info");
         }
 
-        // --- Cart Actions ---
+        // --- User Dashboard ---
+        async function openUserDashboard() {
+            showToast("Loading your orders...", "info");
+            const res = await apiRequest({ action: 'getUserOrders', userId: activeUser });
+            if (res.status === 'success') {
+                const dash = document.getElementById('user-dashboard-modal');
+                dash.classList.remove('hidden'); dash.classList.add('flex');
+                setTimeout(() => dash.classList.replace('opacity-0', 'opacity-100'), 50);
+                
+                document.getElementById('user-orders-list').innerHTML = res.orders.length === 0 ? `<tr><td colspan="3" class="p-4 text-center text-slate-500">No orders found.</td></tr>` : res.orders.map(o => `
+                    <tr class="hover:bg-brand-teal/5 transition-colors">
+                        <td class="p-4 text-xs font-medium text-slate-200">${o.items}</td>
+                        <td class="p-4 font-mono font-bold text-white">₹${o.total}</td>
+                        <td class="p-4"><span class="px-3 py-1.5 rounded-md text-[10px] font-black uppercase tracking-widest border ${o.status === 'Approved' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'bg-rose-500/10 text-rose-400 border-rose-500/30'}">${o.status}</span></td>
+                    </tr>`).join('');
+                lucide.createIcons();
+            } else {
+                showToast("Failed to fetch order history.", "error");
+            }
+        }
+        function closeUserDashboard() {
+            const dash = document.getElementById('user-dashboard-modal');
+            dash.classList.replace('opacity-100', 'opacity-0');
+            setTimeout(() => { dash.classList.remove('flex'); dash.classList.add('hidden'); }, 500);
+        }
+
+        // --- Admin Dashboard ---
+        function openAdminDashboard(users, orders) {
+            const dash = document.getElementById('admin-dashboard-modal');
+            dash.classList.remove('hidden'); dash.classList.add('flex');
+            setTimeout(() => dash.classList.replace('opacity-0', 'opacity-100'), 50);
+            
+            document.getElementById('admin-users-list').innerHTML = users.map(u => `
+                <tr class="hover:bg-brand-teal/5 transition-colors group">
+                    <td class="p-4 font-bold text-white group-hover:text-brand-teal">${u.userId}</td><td class="p-4 text-xs font-mono">${u.email}</td>
+                    <td class="p-4 text-xs font-mono">${u.mobile}</td><td class="p-4 text-rose-400 text-xs font-mono tracking-widest">${u.password.replace(/./g, '*')} <span class="text-[8px] text-slate-500">(Hidden)</span></td><td class="p-4 text-xs truncate max-w-[200px]">${u.address}</td>
+                </tr>`).join('');
+            
+            document.getElementById('admin-orders-list').innerHTML = orders.map(o => `
+                <tr class="hover:bg-brand-teal/5 transition-colors">
+                    <td class="p-4 font-black text-brand-teal">${o.userId}</td>
+                    <td class="p-4 text-xs font-medium text-slate-200">${o.items}</td>
+                    <td class="p-4 font-mono font-bold text-white">₹${o.total}</td>
+                    <td class="p-4"><span class="px-3 py-1.5 rounded-md text-[10px] font-black uppercase tracking-widest border ${o.status === 'Approved' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'bg-rose-500/10 text-rose-400 border-rose-500/30'}">${o.status}</span></td>
+                    <td class="p-4"><button onclick="adminToggleOrderStatus(${o.rowIndex}, '${o.status}')" class="text-xs bg-brand-border border border-slate-600 px-3 py-1.5 rounded-lg hover:bg-brand-teal hover:text-brand-dark hover:border-brand-teal font-bold transition-all shadow-md">Change Status</button></td>
+                </tr>`).join('');
+            lucide.createIcons();
+        }
+        function closeAdminDashboard() {
+            const dash = document.getElementById('admin-dashboard-modal');
+            dash.classList.replace('opacity-100', 'opacity-0');
+            setTimeout(() => { dash.classList.remove('flex'); dash.classList.add('hidden'); }, 500);
+            document.getElementById('login-uid').value = ''; document.getElementById('login-pwd').value = '';
+            showToast("Admin node disconnected.", "info");
+        }
+        async function adminToggleOrderStatus(rowIndex, currentStatus) {
+            const newStatus = currentStatus === 'Approved' ? 'Not Approved' : 'Approved';
+            const res = await apiRequest({ action: 'updateOrderStatus', rowIndex: rowIndex, newStatus: newStatus });
+            if (res.status === 'success') {
+                showToast("Database Updated: Order status synced with Google Sheets.", "success");
+                // Refresh Admin Data
+                const freshRes = await apiRequest({ action: 'getAdminData' });
+                openAdminDashboard(freshRes.users, freshRes.orders);
+            } else {
+                showToast("Failed to update status in Google Sheets.", "error");
+            }
+        }
+
+        // --- Cart & Service Requests ---
+        function handleServiceClick(serviceName) { if (!isMember) { pendingAction = () => { processServiceOrder(serviceName); }; openAuthModal(); } else { processServiceOrder(serviceName); } }
+        function handleAddToCart(productId) { if (!isMember) { pendingAction = () => { addToCart(productId); }; openAuthModal(); } else { addToCart(productId); } }
+        function processServiceOrder(serviceName) { cart.push({ id: `srv-${Date.now()}`, title: serviceName, price: 0, quantity: 1, type: 'Service' }); updateCartUI(); openCart(); showToast(`${serviceName} added to queue.`, "success"); }
         function addToCart(productId) {
-            const product = products.find(p => p.id === productId);
-            if (!product) return;
-
+            const product = products.find(p => p.id === productId); if (!product) return;
             const existing = cart.find(item => item.id === productId);
-            if (existing) {
-                existing.quantity += 1;
-            } else {
-                cart.push({ ...product, quantity: 1 });
-            }
-            updateCartUI();
-            openCart();
+            if (existing) { existing.quantity += 1; } else { cart.push({ ...product, quantity: 1, type: 'Code' }); }
+            updateCartUI(); openCart();
         }
-
-        function removeFromCart(productId) {
-            cart = cart.filter(item => item.id !== productId);
-            updateCartUI();
-        }
-
-        function updateQuantity(productId, delta) {
-            const item = cart.find(i => i.id === productId);
-            if (item) {
-                item.quantity += delta;
-                if (item.quantity <= 0) {
-                    removeFromCart(productId);
-                    return;
-                }
-            }
-            updateCartUI();
-        }
-
+        function removeFromCart(id) { cart = cart.filter(i => i.id !== id); updateCartUI(); }
         function updateCartUI() {
-            const cartItemsEl = document.getElementById('cart-items');
-            const cartTotalEl = document.getElementById('cart-total');
-            const cartBadge = document.getElementById('cart-count-badge');
-
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const cartItemsEl = document.getElementById('cart-items'); 
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0); 
             const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            document.getElementById('cart-count-badge').innerText = totalItems;
+            document.getElementById('cart-count-badge').className = totalItems > 0 
+                ? 'absolute -top-2 -right-2 bg-gradient-to-r from-brand-orange to-brand-orangeLight text-white text-xs font-black rounded-full h-5 w-5 flex items-center justify-center scale-100 transition-transform shadow-[0_0_10px_rgba(255,107,74,0.5)] border border-brand-dark'
+                : 'absolute -top-2 -right-2 bg-gradient-to-r from-brand-orange to-brand-orangeLight text-white text-xs font-black rounded-full h-5 w-5 flex items-center justify-center scale-0 transition-transform border border-brand-dark';
+            
+            document.getElementById('cart-total').innerText = `₹${totalPrice}`;
 
-            if (totalItems > 0) {
-                cartBadge.innerText = totalItems;
-                cartBadge.classList.remove('scale-0');
-                cartBadge.classList.add('scale-100');
-            } else {
-                cartBadge.classList.remove('scale-100');
-                cartBadge.classList.add('scale-0');
-            }
-
-            cartTotalEl.innerText = `₹${totalPrice.toFixed(0)}`;
-
-            if (cart.length === 0) {
-                cartItemsEl.innerHTML = `
-                    <div class="text-center py-16 text-slate-500 space-y-3">
-                        <i data-lucide="shopping-cart" class="w-10 h-10 mx-auto opacity-40"></i>
-                        <p class="text-sm">Your shopping cart is empty.</p>
-                    </div>
-                `;
-            } else {
+            if (cart.length === 0) { cartItemsEl.innerHTML = `<div class="text-center py-12 text-slate-500"><i data-lucide="inbox" class="w-12 h-12 mx-auto opacity-20 mb-4"></i><p class="text-sm font-bold">Request Queue is Empty</p></div>`; } 
+            else {
                 cartItemsEl.innerHTML = cart.map(item => `
-                    <div class="bg-[#1a2228] p-4 rounded-lg border border-brand-border flex items-center justify-between gap-3">
-                        <div class="flex-1 min-w-0">
-                            <h4 class="text-xs font-bold text-white truncate">${item.title}</h4>                             <p class="text-xs font-mono text-brand-teal mt-0.5">₹${item.price.toFixed(0)}</p>
-                        </div>
-                        <div class="flex items-center gap-2 bg-[#11171c] px-2 py-1 rounded border border-brand-border">
-                            <button onclick="updateQuantity('${item.id}', -1)" class="text-slate-400 hover:text-white px-1 text-xs">-</button>
-                            <span class="text-xs font-mono text-white px-1">${item.quantity}</span>
-                            <button onclick="updateQuantity('${item.id}', 1)" class="text-slate-400 hover:text-white px-1 text-xs">+</button>
-                        </div>
-                        <button onclick="removeFromCart('${item.id}')" class="text-rose-400 hover:text-rose-300 p-1">
-                            <i data-lucide="trash-2" class="w-4 h-4"></i>
-                        </button>
-                    </div>
-                `).join('');
+                    <div class="bg-brand-card p-4 rounded-xl border border-brand-border flex items-center justify-between gap-4 shadow-sm hover:border-brand-teal/50 transition-colors">
+                        <div class="flex-1 min-w-0"><h4 class="text-xs font-extrabold text-white truncate">${item.title}</h4><p class="text-xs font-mono font-bold text-brand-teal mt-1">${item.price > 0 ? '₹'+item.price : 'Consult Owner'}</p></div>
+                        <button onclick="removeFromCart('${item.id}')" class="text-rose-400 hover:text-white hover:bg-rose-500 p-2 rounded-lg transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    </div>`).join('');
             }
             lucide.createIcons();
         }
+        function toggleCart() { const d = document.getElementById('cart-drawer'); d.classList.contains('pointer-events-none') ? openCart() : closeCart(); }
+        function openCart() { const d = document.getElementById('cart-drawer'); const p = document.getElementById('cart-panel'); d.classList.replace('opacity-0', 'opacity-100'); d.classList.remove('pointer-events-none'); setTimeout(() => p.classList.remove('translate-x-full'), 50); }
+        function closeCart() { const d = document.getElementById('cart-drawer'); const p = document.getElementById('cart-panel'); p.classList.add('translate-x-full'); setTimeout(() => { d.classList.replace('opacity-100', 'opacity-0'); d.classList.add('pointer-events-none'); }, 400); }
 
-        function toggleCart() {
-            const drawer = document.getElementById('cart-drawer');
-            if (drawer.classList.contains('pointer-events-none')) {
-                openCart();
+        async function submitOrderRequest() {
+            if(cart.length === 0) { showToast('Execution Halted: Cart is empty.', 'error'); return; }
+            document.getElementById('order-btn-text').classList.add('hidden'); document.getElementById('order-btn-loader').classList.remove('hidden');
+            
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const itemsStr = cart.map(i => i.title).join(" + ");
+            
+            const res = await apiRequest({ action: 'order', userId: activeUser, items: itemsStr, total: total, status: 'Not Approved' });
+            
+            document.getElementById('order-btn-text').classList.remove('hidden'); document.getElementById('order-btn-loader').classList.add('hidden');
+
+            if(res.status === 'success') {
+                showToast("Transmission Successful! Requisition logged to Google Sheets Database.", 'success');
+                cart = []; updateCartUI(); closeCart();
             } else {
-                closeCart();
+                showToast("Transmission Failed. Ensure Google API URL is active.", 'error');
             }
         }
 
-        function openCart() {
-            const drawer = document.getElementById('cart-drawer');
-            drawer.classList.remove('pointer-events-none', 'opacity-0');
-            drawer.classList.add('opacity-100');
-        }
-
-        function closeCart() {
-            const drawer = document.getElementById('cart-drawer');
-            drawer.classList.add('opacity-0', 'pointer-events-none');
-            drawer.classList.remove('opacity-100');
-        }
-
-        // --- UPI Checkout Logic ---
-        function triggerUPICheckout() {
-            if (cart.length === 0) {
-                alert('Your cart is empty. Please add code items before buying.');
-                return;
-            }
-
-            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const upiId = "sangmawebdeveloper@ptaxis";
-            const name = "Sangma Web Developer";
-            
-            // Format UPI Intent String
-            const upiString = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&am=${totalPrice}&cu=INR`;
-            
-            // Generate QR Code dynamically using an external API
-            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiString)}`;
-            
-            document.getElementById('upi-qr-code').src = qrUrl;
-            document.getElementById('payment-amount').innerText = `₹${totalPrice.toFixed(0)}`;
-            
-            closeCart();
-            
-            const modal = document.getElementById('payment-modal');
-            modal.classList.remove('pointer-events-none', 'opacity-0');
-            modal.classList.add('opacity-100');
-        }
-
-        function closePaymentModal() {
-            const modal = document.getElementById('payment-modal');
-            modal.classList.add('opacity-0', 'pointer-events-none');
-            modal.classList.remove('opacity-100');
-            // Reset success message
-            document.getElementById('payment-success').classList.add('hidden');
-            document.getElementById('payment-screenshot').value = '';
-        }
-
-        function submitPayment() {
-            const fileInput = document.getElementById('payment-screenshot');
-            if (!fileInput.files || fileInput.files.length === 0) {
-                alert("Please upload the payment screenshot to proceed.");
-                return;
-            }
-            
-            document.getElementById('payment-success').classList.remove('hidden');
-            
-            // Empty cart after successful submission
-            cart = [];
-            updateCartUI();
-            
-            setTimeout(() => {
-                closePaymentModal();
-            }, 4000);
-        }
-
-        // Initialize on load
-        window.addEventListener('DOMContentLoaded', () => {
-            renderProducts(products);
-            updateCartUI();
-            lucide.createIcons();
-        });
+        window.addEventListener('DOMContentLoaded', () => { renderProducts(products); lucide.createIcons(); });
     </script>
 </body>
 </html>
