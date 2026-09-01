@@ -10,7 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Required Libraries for ID Card -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -20,9 +19,7 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        brand: { dark: '#05080a', card: '#131b23', border: '#2a3642', teal: '#14b8a6', orange: '#ff6b4a' }
-                    },
+                    colors: { brand: { dark: '#05080a', card: '#131b23', border: '#2a3642', teal: '#14b8a6', orange: '#ff6b4a' } },
                     fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['Fira Code', 'monospace'] },
                     animation: { 'gradient-x': 'gradient-x 8s ease infinite', 'float': 'float 6s ease-in-out infinite' },
                     keyframes: {
@@ -98,7 +95,6 @@
     <section id="hero" class="relative py-28 px-4 text-center overflow-hidden border-b border-brand-border bg-gradient-to-br from-[#0a1118] via-brand-dark to-[#0f1a24] animate-gradient-x">
         <div class="absolute top-10 left-10 w-[500px] h-[500px] bg-brand-teal/20 rounded-full blur-[120px] pointer-events-none animate-float"></div>
         <div class="absolute bottom-10 right-10 w-[500px] h-[500px] bg-brand-orange/20 rounded-full blur-[120px] pointer-events-none animate-float" style="animation-delay: 2s;"></div>
-
         <div class="max-w-4xl mx-auto space-y-8 relative z-10">
             <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold bg-brand-teal/10 text-brand-teal border border-brand-teal/30 shadow-[0_0_20px_rgba(20,184,166,0.3)]">
                 <i data-lucide="rocket" class="w-4 h-4"></i> Advanced Interactive Portals
@@ -116,11 +112,7 @@
     <!-- 3D Products Catalog Section -->
     <section id="products" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full relative z-10">
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-            <div>
-                <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight flex items-center gap-3">
-                    <i data-lucide="code-2" class="w-8 h-8 text-brand-teal"></i> Official Code Marketplace
-                </h2>
-            </div>
+            <div><h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight flex items-center gap-3"><i data-lucide="code-2" class="w-8 h-8 text-brand-teal"></i> Official Code Marketplace</h2></div>
             <div class="flex flex-wrap gap-2 p-1.5 glass rounded-xl" id="filter-buttons">
                 <button onclick="filterProducts('all')" class="filter-btn active px-5 py-2 rounded-lg text-xs font-bold bg-brand-teal text-brand-dark shadow-md" data-cat="all">All</button>
                 <button onclick="filterProducts('HTML/CSS')" class="filter-btn px-5 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white" data-cat="HTML/CSS">UI/UX FrontEnd</button>
@@ -139,7 +131,7 @@
                 <h2 class="text-4xl font-extrabold text-white mt-2">Institutional IT & Board Services</h2>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- ID Ordering Update -->
+                <!-- ID Card Order -->
                 <div onclick="handleServiceClick('ID Card Ordering')" class="card-3d bg-brand-card p-6 rounded-2xl border border-brand-border flex flex-col justify-between cursor-pointer group">
                     <div class="relative z-10 text-center">
                         <div class="w-16 h-16 rounded-xl bg-brand-orange/10 flex items-center justify-center mx-auto mb-5 border border-brand-orange/20"><i data-lucide="badge-check" class="w-8 h-8 text-brand-orange"></i></div>
@@ -151,7 +143,7 @@
                     <button class="w-full bg-brand-dark hover:bg-brand-orange text-brand-orange hover:text-white border border-brand-orange/30 font-bold text-xs py-3 rounded-lg transition-colors">Initiate Order</button>
                 </div>
                 
-                <!-- MBOSE Update -->
+                <!-- MBOSE Order -->
                 <div class="card-3d bg-brand-card p-6 rounded-2xl border border-brand-border flex flex-col justify-between group">
                     <div class="relative z-10 text-center">
                         <div class="w-16 h-16 rounded-xl bg-emerald-500/10 flex items-center justify-center mx-auto mb-4 border border-emerald-500/20"><i data-lucide="file-text" class="w-8 h-8 text-emerald-400"></i></div>
@@ -167,7 +159,7 @@
                     </div>
                 </div>
 
-                <!-- Magazines Update -->
+                <!-- Magazines Order -->
                 <div onclick="handleServiceClick('Publishing & Calendar Design')" class="card-3d bg-brand-card p-6 rounded-2xl border border-brand-border flex flex-col justify-between cursor-pointer group">
                     <div class="relative z-10 text-center">
                         <div class="w-16 h-16 rounded-xl bg-cyan-500/10 flex items-center justify-center mx-auto mb-5 border border-cyan-500/20"><i data-lucide="book-open" class="w-8 h-8 text-cyan-400"></i></div>
@@ -287,7 +279,6 @@
         </div>
         
         <div class="flex-1 overflow-y-auto p-4 sm:p-8 max-w-5xl mx-auto w-full relative">
-            
             <!-- Orders View -->
             <div id="user-orders-view" class="bg-brand-card/50 p-6 rounded-2xl border border-brand-border/50 shadow-2xl transition-all">
                 <h3 class="text-white font-extrabold mb-5 flex items-center gap-2 text-lg"><i data-lucide="list-ordered" class="w-5 h-5 text-brand-teal"></i> My Order History & Forms</h3>
@@ -299,10 +290,9 @@
                 </div>
             </div>
 
-            <!-- Profile & ID View (Hidden by default) -->
+            <!-- Profile & ID View -->
             <div id="user-profile-view" class="hidden bg-brand-card/50 p-6 rounded-2xl border border-brand-border/50 shadow-2xl transition-all">
                 <h3 class="text-white font-extrabold mb-5 flex items-center gap-2 text-lg"><i data-lucide="id-card" class="w-5 h-5 text-brand-orange"></i> Membership Profile</h3>
-                
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <!-- Update Form -->
                     <div class="space-y-4">
@@ -328,22 +318,16 @@
                     <!-- ID Card Preview & Download -->
                     <div class="flex flex-col items-center justify-center border-l border-brand-border/50 pl-0 md:pl-8">
                         <div id="id-card-render-area" class="bg-white w-[250px] h-[380px] rounded-2xl relative overflow-hidden shadow-2xl scale-[0.8] origin-top">
-                            <!-- Green Header Curve Design -->
                             <div class="absolute top-0 left-0 w-full h-[120px] bg-brand-teal rounded-b-[50%] scale-x-[1.5] -translate-y-[20px]"></div>
-                            
                             <div class="relative z-10 flex flex-col items-center pt-6 px-4 text-center">
                                 <img src="images/favicologo.png" alt="Logo" class="w-8 h-8 mb-2">
                                 <h4 class="text-brand-dark font-black text-sm uppercase tracking-wider leading-tight">Sangma Web Developer</h4>
-                                
                                 <div class="w-24 h-24 rounded-full border-4 border-white overflow-hidden my-3 shadow-md bg-slate-200">
                                     <img id="id-card-photo" src="https://placehold.co/200x200/e2e8f0/64748b?text=Photo" class="w-full h-full object-cover">
                                 </div>
-                                
                                 <h3 id="id-card-uid" class="text-brand-dark font-extrabold text-lg uppercase mb-1">User Name</h3>
                                 <p class="text-brand-teal font-bold text-[10px] mb-3">OFFICIAL MEMBER</p>
-                                
                                 <div id="qrcode-container" class="w-16 h-16 mb-2"></div>
-                                
                                 <div class="absolute bottom-4 w-full flex justify-between px-6 items-end">
                                     <div class="text-[8px] text-left leading-tight text-slate-600 font-bold">
                                         <p>sangmawebdeveloper.work.gd</p>
@@ -363,7 +347,7 @@
         </div>
     </div>
 
-    <!-- Hidden Secure Admin Dashboard with Link Attachment -->
+    <!-- Hidden Secure Admin Dashboard with Link Attachment & Dropdown -->
     <div id="admin-dashboard-modal" class="fixed inset-0 z-[80] bg-[#05080a] hidden flex-col transition-opacity duration-500 opacity-0">
         <div class="glass border-b border-brand-border p-4 sm:p-6 flex justify-between items-center relative overflow-hidden">
             <div class="absolute inset-0 bg-brand-teal/5 pointer-events-none"></div>
@@ -381,7 +365,7 @@
                 <h3 class="text-white font-extrabold mb-5 flex items-center gap-2 text-lg"><i data-lucide="server" class="w-5 h-5 text-brand-orange"></i> Service Confirmation Port (Orders)</h3>
                 <div class="bg-[#05080a] rounded-xl border border-brand-border overflow-x-auto shadow-inner">
                     <table class="w-full text-left text-sm text-slate-300 whitespace-nowrap">
-                        <thead class="bg-brand-dark"><tr class="border-b border-brand-border text-brand-teal text-xs tracking-wider uppercase font-bold"><th class="p-4">User ID</th><th class="p-4">Service</th><th class="p-4">Status</th><th class="p-4">Form Link / Attach URL</th><th class="p-4">Admin Action</th></tr></thead>
+                        <thead class="bg-brand-dark"><tr class="border-b border-brand-border text-brand-teal text-xs tracking-wider uppercase font-bold"><th class="p-4">User ID</th><th class="p-4">Service</th><th class="p-4">Status</th><th class="p-4">Form Link / Attach URL</th><th class="p-4 text-center">Admin Action</th></tr></thead>
                         <tbody id="admin-orders-list" class="divide-y divide-brand-border/30"></tbody>
                     </table>
                 </div>
@@ -412,7 +396,7 @@
 
         // ============================================================================
         // YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL IS HERE:
-        const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwJ2mkkFnrAFTlK_zpDueQDv7qQoUv0OTItW57fc-tlXIGtCldB0nuHqz3JcSH4R-T3vA/exec"; 
+        const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbw2LyqKrbMUoUEUbYjIiZsiZU596N5c-M0_3hxR6XFgHPZ9cUom3zrMxjtZnlJ6N-GRlA/exec"; 
         // ============================================================================
 
         const products = [
@@ -428,10 +412,7 @@
 
         let cart = []; let isMember = false; let activeUser = null; let pendingAction = null; 
         let currentSignupEmail = ""; let generatedOTP = "";
-        
-        let activeUserProfileData = null;
-        let profilePhotoBase64 = null;
-        let activePasswordOTP = null;
+        let activeUserProfileData = null; let profilePhotoBase64 = null; let activePasswordOTP = null;
 
         function showToast(msg, type = 'info') {
             const t = document.getElementById('sys-toast'); const i = document.getElementById('sys-toast-icon');
@@ -443,15 +424,10 @@
 
         async function apiRequest(payload) {
             try {
-                const response = await fetch(GOOGLE_SHEET_API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(payload)
-                });
+                const response = await fetch(GOOGLE_SHEET_API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
                 return await response.json();
             } catch (error) {
-                console.error('API Error:', error); 
-                return { status: 'error', message: 'Delivery Failed. Check API URL.' };
+                console.error('API Error:', error); return { status: 'error', message: 'Delivery Failed. Check API URL.' };
             }
         }
 
@@ -473,10 +449,7 @@
                             ${p.features.map(f => `<li class="flex items-center gap-2"><div class="w-3.5 h-3.5 rounded-full bg-emerald-500/20 flex items-center justify-center"><i data-lucide="check" class="w-2.5 h-2.5 text-emerald-400"></i></div> ${f}</li>`).join('')}
                         </ul>
                         <div class="mt-6 pt-4 border-t border-brand-border/50 flex items-center justify-between">
-                            <div>
-                                <span class="text-[9px] text-slate-500 uppercase tracking-widest font-bold block mb-0.5">Total Cost</span>
-                                <span class="text-xl font-mono font-black text-white group-hover:text-brand-orange transition-colors">₹${p.price}</span>
-                            </div>
+                            <div><span class="text-[9px] text-slate-500 uppercase tracking-widest font-bold block mb-0.5">Total Cost</span><span class="text-xl font-mono font-black text-white group-hover:text-brand-orange transition-colors">₹${p.price}</span></div>
                             <button class="w-10 h-10 rounded-xl bg-brand-dark border border-brand-border group-hover:bg-brand-teal flex items-center justify-center transition-all pointer-events-none"><i data-lucide="plus" class="w-4 h-4 text-brand-teal group-hover:text-brand-dark"></i></button>
                         </div>
                     </div>
@@ -486,9 +459,7 @@
 
         function filterProducts(category) {
             document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.className = btn.dataset.cat === category 
-                    ? "filter-btn active px-5 py-2 rounded-lg text-xs font-bold bg-brand-teal text-brand-dark shadow-md"
-                    : "filter-btn px-5 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white";
+                btn.className = btn.dataset.cat === category ? "filter-btn active px-5 py-2 rounded-lg text-xs font-bold bg-brand-teal text-brand-dark shadow-md" : "filter-btn px-5 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white";
             });
             renderProducts(category === 'all' ? products : products.filter(p => p.category === category));
         }
@@ -500,22 +471,15 @@
         async function sendOTP() {
             const email = document.getElementById('signup-email').value.trim();
             if(!email.includes('@') || email.length < 5) { showToast("Invalid email format.", "error"); return; }
-            
             document.getElementById('send-otp-text').classList.add('hidden'); document.getElementById('send-otp-loader').classList.remove('hidden');
-
             generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
             currentSignupEmail = email.toLowerCase();
 
             const res = await apiRequest({ action: 'sendOTP', email: currentSignupEmail, otp: generatedOTP, isPasswordReset: false });
-            
             document.getElementById('send-otp-text').classList.remove('hidden'); document.getElementById('send-otp-loader').classList.add('hidden');
 
-            if(res.status === 'success') {
-                showToast(`OTP successfully sent to ${currentSignupEmail}`, "success");
-                switchAuthView('signup-otp');
-            } else {
-                showToast(res.message, "error");
-            }
+            if(res.status === 'success') { showToast(`OTP successfully sent to ${currentSignupEmail}`, "success"); switchAuthView('signup-otp'); } 
+            else { showToast(res.message, "error"); }
         }
 
         function verifyOTP() {
@@ -530,12 +494,9 @@
             const u = document.getElementById('reg-uid').value; const p = document.getElementById('reg-pwd').value;
 
             if(!f || !l || !u || !p || !m || !a) { showToast("All profile parameters are mandatory.", "error"); return; }
-
             document.getElementById('reg-submit-text').classList.add('hidden'); document.getElementById('reg-submit-loader').classList.remove('hidden');
 
-            const userData = { action: 'register', firstName: f, lastName: l, mobile: m, address: a, userId: u, password: p, email: currentSignupEmail };
-            const res = await apiRequest(userData);
-            
+            const res = await apiRequest({ action: 'register', firstName: f, lastName: l, mobile: m, address: a, userId: u, password: p, email: currentSignupEmail });
             document.getElementById('reg-submit-text').classList.remove('hidden'); document.getElementById('reg-submit-loader').classList.add('hidden');
 
             if(res.status === 'success') {
@@ -545,34 +506,26 @@
         }
 
         async function executeLogin() {
-            const uid = document.getElementById('login-uid').value;
-            const pwd = document.getElementById('login-pwd').value;
+            const uid = document.getElementById('login-uid').value; const pwd = document.getElementById('login-pwd').value;
             if(!uid || !pwd) { showToast("Enter credentials.", "error"); return; }
 
             if(uid === "Admin12323" && pwd === "asd123@") {
-                closeAuthModal();
-                showToast("Admin credentials recognized. Fetching database...", "success");
+                closeAuthModal(); showToast("Admin credentials recognized. Fetching database...", "success");
                 const res = await apiRequest({ action: 'getAdminData' });
                 if(res.status === 'success') { openAdminDashboard(res.users, res.orders); }
-                else { showToast("Failed to fetch admin data.", "error"); }
-                return;
+                else { showToast("Failed to fetch admin data.", "error"); } return;
             }
 
             document.getElementById('login-btn-text').classList.add('hidden'); document.getElementById('login-btn-loader').classList.remove('hidden');
-
             const res = await apiRequest({ action: 'login', userId: uid, password: pwd });
-            
             document.getElementById('login-btn-text').classList.remove('hidden'); document.getElementById('login-btn-loader').classList.add('hidden');
 
             if(res.status === 'success') {
                 isMember = true; activeUser = uid; activeUserProfileData = res.user;
                 
-                // Initialize ID Card Data
                 document.getElementById('update-mobile').value = res.user.mobile;
                 document.getElementById('qrcode-container').innerHTML = '';
-                new QRCode(document.getElementById('qrcode-container'), {
-                    text: `ID:${res.user.userId}|Email:${res.user.email}`, width: 64, height: 64, colorDark: "#05080a", colorLight: "#ffffff"
-                });
+                new QRCode(document.getElementById('qrcode-container'), { text: `ID:${res.user.userId}|Email:${res.user.email}`, width: 64, height: 64, colorDark: "#05080a", colorLight: "#ffffff" });
                 document.getElementById('id-card-uid').innerText = res.user.userId;
                 document.getElementById('id-card-email').innerText = res.user.email;
                 if(res.user.photo) { document.getElementById('id-card-photo').src = res.user.photo; profilePhotoBase64 = res.user.photo; }
@@ -596,25 +549,19 @@
             cart = []; updateCartUI(); showToast("Logged out.", "info");
         }
 
-        // Profile & ID Logic
+        // Profile Logic
         function toggleProfileView() {
             const ordersView = document.getElementById('user-orders-view');
             const profileView = document.getElementById('user-profile-view');
-            if (ordersView.classList.contains('hidden')) {
-                ordersView.classList.remove('hidden'); profileView.classList.add('hidden');
-            } else {
-                ordersView.classList.add('hidden'); profileView.classList.remove('hidden');
-            }
+            if (ordersView.classList.contains('hidden')) { ordersView.classList.remove('hidden'); profileView.classList.add('hidden'); } 
+            else { ordersView.classList.add('hidden'); profileView.classList.remove('hidden'); }
         }
 
         function previewPhoto(input) {
             const file = input.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    profilePhotoBase64 = e.target.result;
-                    document.getElementById('id-card-photo').src = profilePhotoBase64;
-                }
+                reader.onload = function(e) { profilePhotoBase64 = e.target.result; document.getElementById('id-card-photo').src = profilePhotoBase64; }
                 reader.readAsDataURL(file);
             }
         }
@@ -624,10 +571,8 @@
             showToast("Requesting OTP...", "info");
             activePasswordOTP = Math.floor(100000 + Math.random() * 900000).toString();
             const res = await apiRequest({ action: 'sendOTP', email: activeUserProfileData.email, otp: activePasswordOTP, isPasswordReset: true });
-            if (res.status === 'success') {
-                document.getElementById('verify-pass-otp').classList.remove('hidden');
-                showToast("OTP sent to your registered email.", "success");
-            } else { showToast(res.message, "error"); }
+            if (res.status === 'success') { document.getElementById('verify-pass-otp').classList.remove('hidden'); showToast("OTP sent to your registered email.", "success"); } 
+            else { showToast(res.message, "error"); }
         }
 
         async function saveProfileUpdates() {
@@ -636,37 +581,28 @@
             const enteredOTP = document.getElementById('verify-pass-otp').value;
             
             let payload = { action: 'updateProfile', userId: activeUser, mobile: newMobile, photo: profilePhotoBase64 };
-            
             if (newPass) {
                 if (enteredOTP !== activePasswordOTP) { showToast("Invalid OTP for password change.", "error"); return; }
                 payload.newPassword = newPass;
             }
-            
             showToast("Saving profile...", "info");
             const res = await apiRequest(payload);
             if (res.status === 'success') {
-                showToast("Profile updated successfully. Email notification sent.", "success");
-                document.getElementById('update-password').value = '';
-                document.getElementById('verify-pass-otp').value = '';
-                document.getElementById('verify-pass-otp').classList.add('hidden');
-            } else {
-                showToast("Failed to update profile.", "error");
-            }
+                showToast("Profile updated successfully.", "success");
+                document.getElementById('update-password').value = ''; document.getElementById('verify-pass-otp').value = ''; document.getElementById('verify-pass-otp').classList.add('hidden');
+            } else { showToast("Failed to update profile.", "error"); }
         }
 
         function downloadIDCard() {
             const card = document.getElementById('id-card-render-area');
             card.classList.remove('scale-[0.8]');
             html2canvas(card, { scale: 3, backgroundColor: null }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `Membership_ID_${activeUser}.png`;
-                link.href = canvas.toDataURL('image/png');
-                link.click();
+                const link = document.createElement('a'); link.download = `Membership_ID_${activeUser}.png`; link.href = canvas.toDataURL('image/png'); link.click();
                 card.classList.add('scale-[0.8]'); 
             });
         }
 
-        // Orders Logic
+        // Dashboard & Orders
         async function openUserDashboard() {
             showToast("Loading your orders...", "info");
             const res = await apiRequest({ action: 'getUserOrders', userId: activeUser });
@@ -681,7 +617,7 @@
                     <tr class="hover:bg-brand-teal/5 transition-colors">
                         <td class="p-4 text-xs font-medium text-slate-200">${o.items}</td>
                         <td class="p-4 font-mono font-bold text-white">₹${o.total}</td>
-                        <td class="p-4"><div class="inline-block px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest border whitespace-normal text-left max-w-[200px] leading-relaxed ${o.status.includes('Approved') ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'bg-amber-500/10 text-amber-400 border-amber-500/30'}">${o.status}</div></td>
+                        <td class="p-4"><div class="inline-block px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest border whitespace-normal text-left max-w-[200px] leading-relaxed ${o.status.includes('Done') ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'bg-amber-500/10 text-amber-400 border-amber-500/30'}">${o.status}</div></td>
                         <td class="p-4">
                             ${o.link ? `<a href="${o.link}" target="_blank" class="text-xs bg-brand-teal text-brand-dark px-4 py-2 rounded-lg font-bold shadow-md hover:bg-teal-400 flex items-center w-max gap-2"><i data-lucide="external-link" class="w-3 h-3"></i> Open Form Link</a>` : `<span class="text-[10px] text-slate-500 italic">Pending Admin Link</span>`}
                         </td>
@@ -689,37 +625,46 @@
                 lucide.createIcons();
             } else { showToast("Failed to fetch order history.", "error"); }
         }
+
         function closeUserDashboard() {
             const dash = document.getElementById('user-dashboard-modal');
             dash.classList.replace('opacity-100', 'opacity-0');
             setTimeout(() => { dash.classList.remove('flex'); dash.classList.add('hidden'); }, 500);
         }
 
-        // Admin Logic
+        // Admin Dashboard Updates
         function openAdminDashboard(users, orders) {
             const dash = document.getElementById('admin-dashboard-modal');
             dash.classList.remove('hidden'); dash.classList.add('flex');
             setTimeout(() => dash.classList.replace('opacity-0', 'opacity-100'), 50);
             
-            document.getElementById('admin-users-list').innerHTML = users.map(u => `
+            document.getElementById('admin-users-list').innerHTML = users.length === 0 ? `<tr><td colspan="5" class="p-4 text-center text-slate-500 text-xs">No users found.</td></tr>` : users.map(u => `
                 <tr class="hover:bg-brand-teal/5 transition-colors group">
                     <td class="p-4 font-bold text-white group-hover:text-brand-teal">${u.userId}</td><td class="p-4 text-xs font-mono">${u.email}</td>
                     <td class="p-4 text-xs font-mono">${u.mobile}</td><td class="p-4 text-rose-400 text-xs font-mono tracking-widest">${u.password.replace(/./g, '*')} <span class="text-[8px] text-slate-500">(Hidden)</span></td><td class="p-4 text-xs truncate max-w-[200px]">${u.address}</td>
                 </tr>`).join('');
             
-            document.getElementById('admin-orders-list').innerHTML = orders.map(o => `
-                <tr class="hover:bg-brand-teal/5 transition-colors">
+            document.getElementById('admin-orders-list').innerHTML = orders.length === 0 ? `<tr><td colspan="5" class="p-4 text-center text-slate-500 text-xs">No orders found.</td></tr>` : orders.map(o => `
+                <tr class="hover:bg-brand-teal/5 transition-colors border-b border-brand-border/50">
                     <td class="p-4 font-black text-brand-teal">${o.userId}</td>
                     <td class="p-4 text-xs font-medium text-slate-200">${o.items}</td>
-                    <td class="p-4 text-[10px] text-amber-400">${o.status}</td>
-                    <td class="p-4"><input type="text" id="admin-link-${o.rowIndex}" value="${o.link || ''}" placeholder="Paste URL Here" class="bg-brand-dark border border-brand-border text-xs px-2 py-1.5 rounded-md w-full focus:border-brand-teal text-white"></td>
-                    <td class="p-4 flex gap-2">
-                        <button onclick="adminToggleOrderStatus(${o.rowIndex}, '${o.status}')" class="text-[10px] bg-brand-border px-2 py-1.5 rounded hover:bg-brand-orange hover:text-white font-bold transition-all">Toggle Status</button>
-                        <button onclick="adminSaveOrderLink(${o.rowIndex})" class="text-[10px] bg-brand-teal text-brand-dark px-2 py-1.5 rounded hover:bg-teal-400 font-bold transition-all shadow-md">Save Link</button>
+                    <td class="p-4">
+                        <select id="admin-status-${o.rowIndex}" class="bg-brand-dark border border-brand-border text-xs px-2 py-1.5 rounded-md text-white focus:border-brand-teal w-full">
+                            <option value="On the process" ${o.status === 'On the process' ? 'selected' : ''}>On the process</option>
+                            <option value="Done" ${o.status === 'Done' ? 'selected' : ''}>Done</option>
+                            <option value="${o.status}" hidden ${['On the process', 'Done'].includes(o.status) ? '' : 'selected'}>${o.status}</option>
+                        </select>
+                    </td>
+                    <td class="p-4">
+                        <input type="text" id="admin-link-${o.rowIndex}" value="${o.link || ''}" placeholder="Paste URL Here" class="bg-brand-dark border border-brand-border text-xs px-2 py-1.5 rounded-md w-full focus:border-brand-teal text-white">
+                    </td>
+                    <td class="p-4 text-center">
+                        <button onclick="adminUpdateOrderRecord(${o.rowIndex})" class="text-[10px] bg-brand-teal text-brand-dark px-3 py-1.5 rounded hover:bg-teal-400 font-bold transition-all shadow-md w-full">Save Updates</button>
                     </td>
                 </tr>`).join('');
             lucide.createIcons();
         }
+
         function closeAdminDashboard() {
             const dash = document.getElementById('admin-dashboard-modal');
             dash.classList.replace('opacity-100', 'opacity-0');
@@ -727,26 +672,22 @@
             document.getElementById('login-uid').value = ''; document.getElementById('login-pwd').value = '';
             showToast("Admin node disconnected.", "info");
         }
-        async function adminToggleOrderStatus(rowIndex, currentStatus) {
-            const newStatus = currentStatus === 'Under process' 
-                ? 'Approved for delivering and payment please contact given number 8258813963/8131813772' 
-                : 'Under process';
-            const res = await apiRequest({ action: 'updateOrderStatus', rowIndex: rowIndex, newStatus: newStatus });
-            if (res.status === 'success') {
-                showToast("Order status synced with Google Sheets.", "success");
+
+        async function adminUpdateOrderRecord(rowIndex) {
+            const statusInput = document.getElementById(`admin-status-${rowIndex}`).value;
+            const linkInput = document.getElementById(`admin-link-${rowIndex}`).value;
+            showToast("Updating order record...", "info");
+            
+            const res = await apiRequest({ action: 'adminUpdateOrder', rowIndex: rowIndex, newStatus: statusInput, formLink: linkInput });
+            
+            if (res.status === 'success') { 
+                showToast("Order and Link updated successfully.", "success"); 
                 const freshRes = await apiRequest({ action: 'getAdminData' });
                 openAdminDashboard(freshRes.users, freshRes.orders);
-            }
-        }
-        async function adminSaveOrderLink(rowIndex) {
-            const linkInput = document.getElementById(`admin-link-${rowIndex}`).value;
-            showToast("Attaching link to order...", "info");
-            const res = await apiRequest({ action: 'updateOrderStatus', rowIndex: rowIndex, formLink: linkInput });
-            if (res.status === 'success') { showToast("Link successfully attached.", "success"); } 
-            else { showToast("Failed to attach link.", "error"); }
+            } else { showToast("Failed to update order.", "error"); }
         }
 
-        // Cart Logic
+        // Cart
         function processServiceOrder(serviceName) { 
             let price = 0;
             if (serviceName.includes('ID Card')) { price = 70; }
@@ -774,7 +715,6 @@
                 : 'absolute -top-2 -right-2 bg-gradient-to-r from-brand-orange to-brand-orangeLight text-white text-xs font-black rounded-full h-5 w-5 flex items-center justify-center scale-0 transition-transform border border-brand-dark';
             
             document.getElementById('cart-total').innerText = `₹${totalPrice}`;
-
             if (cart.length === 0) { cartItemsEl.innerHTML = `<div class="text-center py-12 text-slate-500"><i data-lucide="inbox" class="w-12 h-12 mx-auto opacity-20 mb-4"></i><p class="text-sm font-bold">Request Queue is Empty</p></div>`; } 
             else {
                 cartItemsEl.innerHTML = cart.map(item => `
@@ -796,16 +736,12 @@
             const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             const itemsStr = cart.map(i => i.title).join(" + ");
             
-            const res = await apiRequest({ action: 'order', userId: activeUser, items: itemsStr, total: total, status: 'Under process' });
+            const res = await apiRequest({ action: 'order', userId: activeUser, items: itemsStr, total: total, status: 'On the process' });
             
             document.getElementById('order-btn-text').classList.remove('hidden'); document.getElementById('order-btn-loader').classList.add('hidden');
-
-            if(res.status === 'success') {
-                showToast("Transmission Successful! Requisition logged to Google Sheets Database.", 'success');
-                cart = []; updateCartUI(); closeCart();
-            } else { showToast("Transmission Failed. Ensure Google API URL is active.", 'error'); }
+            if(res.status === 'success') { showToast("Transmission Successful!", 'success'); cart = []; updateCartUI(); closeCart(); } 
+            else { showToast("Transmission Failed. Ensure Google API URL is active.", 'error'); }
         }
-
         window.addEventListener('DOMContentLoaded', () => { renderProducts(products); lucide.createIcons(); });
     </script>
 </body>
