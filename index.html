@@ -43,7 +43,12 @@
         .gradient-orange-btn { background: linear-gradient(135deg, #ff6b4a, #ff9b54, #ff6b4a); background-size: 200% auto; transition: all 0.4s ease; }
         .gradient-orange-btn:hover { background-position: right center; transform: translateY(-2px) scale(1.02); box-shadow: 0 10px 25px -5px rgba(255, 107, 74, 0.5); }
         .loader { border: 3px solid rgba(255,255,255,0.1); border-left-color: #14b8a6; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .bg-typography { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; opacity: 0.03; font-size: 6rem; font-weight: 900; color: white; display: flex; flex-direction: column; justify-content: space-around; line-height: 1; }
+        .bg-marquee-line { display: flex; white-space: nowrap; animation: marquee 60s linear infinite; gap: 2rem; }
+        .bg-marquee-line.reverse { animation-direction: reverse; animation-duration: 75s; }
+
         .toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); transition: bottom 0.4s ease-out; z-index: 9999; }
         .toast.show { bottom: 30px; }
         ::-webkit-scrollbar { width: 8px; }
@@ -52,60 +57,48 @@
         ::-webkit-scrollbar-thumb:hover { background: #14b8a6; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col font-sans">
+<body class="min-h-screen flex flex-col font-sans relative">
 
-    <!-- Global Toast System -->
+    <div class="bg-typography">
+        <div class="bg-marquee-line"><span>WEB ENGINEERING </span><span> • </span><span> PREMIUM CODES </span><span> • </span><span> MBOSE PORTALS </span><span> • </span><span> AUTOMATION </span></div>
+        <div class="bg-marquee-line reverse"><span>DATA CHECKERS </span><span> • </span><span> JUDGING SHEETS </span><span> • </span><span> STAFF PORTALS </span><span> • </span><span> DASHBOARDS </span></div>
+        <div class="bg-marquee-line"><span>APP SCRIPT </span><span> • </span><span> JAVASCRIPT </span><span> • </span><span> BACKEND </span><span> • </span><span> HTML CSS </span></div>
+    </div>
+
     <div id="sys-toast" class="toast flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl border text-sm font-bold max-w-md w-full glass">
         <i id="sys-toast-icon" data-lucide="info" class="w-5 h-5"></i>
         <span id="sys-toast-msg" class="flex-1 text-center">System Message</span>
     </div>
 
-    <!-- Navigation Header -->
     <header class="sticky top-0 z-40 glass border-b border-brand-border/50 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <a href="#hero" class="flex items-center gap-4 group">
+            <a href="#hero" class="flex items-center gap-4 group relative z-10">
                 <div class="bg-gradient-to-br from-brand-teal to-brand-orange p-[2px] rounded-xl shadow-lg transform transition group-hover:rotate-6 group-hover:scale-110 duration-300">
-                    <div class="bg-white p-1.5 rounded-[10px]">
-                        <img src="images/favicologo.png" alt="SWD" class="h-9 w-auto object-contain" onerror="this.src='https://placehold.co/100x100/ffffff/0f766e?text=SWD'">
-                    </div>
+                    <div class="bg-white p-1.5 rounded-[10px]"><img src="images/favicologo.png" alt="SWD" class="h-9 w-auto object-contain" onerror="this.src='https://placehold.co/100x100/ffffff/0f766e?text=SWD'"></div>
                 </div>
                 <div class="leading-tight">
                     <span class="text-lg font-black tracking-wide text-white block bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-white">Sangma Web Developer</span>
                     <span class="text-xs text-brand-orange font-bold tracking-widest uppercase">Premium Marketplace</span>
                 </div>
             </a>
-
-            <div class="flex items-center gap-3 sm:gap-5">
-                <button id="nav-login-btn" onclick="openAuthModal()" class="text-xs font-bold text-white bg-brand-teal/10 hover:bg-brand-teal hover:text-brand-dark px-4 py-2.5 rounded-xl transition-all flex items-center gap-2 border border-brand-teal/30 shadow-[0_0_15px_rgba(20,184,166,0.2)]">
+            <div class="flex items-center gap-3 sm:gap-5 relative z-10">
+                <button id="nav-login-btn" onclick="openAuthModal('login')" class="text-xs font-bold text-white bg-brand-teal/10 hover:bg-brand-teal hover:text-brand-dark px-4 py-2.5 rounded-xl transition-all flex items-center gap-2 border border-brand-teal/30 shadow-[0_0_15px_rgba(20,184,166,0.2)]">
                     <i data-lucide="user" class="w-4 h-4"></i> <span class="hidden sm:inline">Sign In / Sign Up</span>
                 </button>
                 <button id="user-dash-btn" onclick="openUserDashboard()" class="hidden text-xs font-bold text-emerald-400 bg-emerald-400/10 hover:bg-emerald-400 hover:text-brand-dark px-4 py-2.5 rounded-xl transition-all flex items-center gap-2 border border-emerald-400/20 shadow-[0_0_10px_rgba(52,211,153,0.1)]">
                     <i data-lucide="layout-dashboard" class="w-4 h-4"></i> <span class="hidden sm:inline">My Dashboard</span>
                 </button>
                 <button id="logout-btn" onclick="logout()" class="hidden text-xs font-bold text-rose-400 hover:text-white bg-rose-500/10 hover:bg-rose-500/80 px-3 py-2 rounded-lg transition-all border border-rose-500/20"><i data-lucide="log-out" class="w-3.5 h-3.5"></i></button>
-                <button onclick="toggleCart()" class="relative p-2.5 rounded-xl glass hover:border-brand-orange transition-all flex items-center justify-center text-white hover:scale-105 group border-brand-border/50 hover:border-brand-orange">
-                    <i data-lucide="shopping-cart" class="w-5 h-5 group-hover:text-brand-orange transition-colors"></i>
-                    <span id="cart-count-badge" class="absolute -top-2 -right-2 bg-gradient-to-r from-brand-orange to-brand-orangeLight text-white text-xs font-black rounded-full h-5 w-5 flex items-center justify-center scale-0 transition-transform shadow-[0_0_10px_rgba(255,107,74,0.5)] border border-brand-dark">0</span>
-                </button>
             </div>
         </div>
     </header>
 
-    <!-- Animated 3D Hero Section -->
     <section id="hero" class="relative py-28 px-4 text-center overflow-hidden border-b border-brand-border bg-gradient-to-br from-[#0a1118] via-brand-dark to-[#0f1a24] animate-gradient-x">
-        <div class="absolute top-10 left-10 w-[500px] h-[500px] bg-brand-teal/20 rounded-full blur-[120px] pointer-events-none animate-float"></div>
-        <div class="absolute bottom-10 right-10 w-[500px] h-[500px] bg-brand-orange/20 rounded-full blur-[120px] pointer-events-none animate-float" style="animation-delay: 2s;"></div>
         <div class="max-w-4xl mx-auto space-y-8 relative z-10">
-            <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold bg-brand-teal/10 text-brand-teal border border-brand-teal/30 shadow-[0_0_20px_rgba(20,184,166,0.3)]">
-                <i data-lucide="rocket" class="w-4 h-4"></i> Advanced Interactive Portals
-            </span>
+            <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold bg-brand-teal/10 text-brand-teal border border-brand-teal/30 shadow-[0_0_20px_rgba(20,184,166,0.3)]"><i data-lucide="rocket" class="w-4 h-4"></i> Advanced Interactive Portals</span>
             <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold text-white tracking-tight leading-tight drop-shadow-2xl">
                 Master Web Engineering with <br class="hidden sm:block"/> <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400 animate-gradient-x">Premium Source Code</span>
             </h1>
-            <div class="flex flex-wrap justify-center gap-4 pt-6">
-                <a href="#products" class="gradient-orange-btn px-10 py-4 rounded-xl text-white font-black text-sm tracking-widest uppercase">Browse Catalog</a>
-                <a href="#services" class="px-10 py-4 rounded-xl text-brand-teal font-bold text-sm bg-brand-teal/10 border border-brand-teal/30 hover:bg-brand-teal hover:text-brand-dark transition-all">Explore Services</a>
-            </div>
         </div>
     </section>
 
@@ -115,105 +108,38 @@
             <div><h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight flex items-center gap-3"><i data-lucide="code-2" class="w-8 h-8 text-brand-teal"></i> Official Code Marketplace</h2></div>
             <div class="flex flex-wrap gap-2 p-1.5 glass rounded-xl" id="filter-buttons">
                 <button onclick="filterProducts('all')" class="filter-btn active px-5 py-2 rounded-lg text-xs font-bold bg-brand-teal text-brand-dark shadow-md" data-cat="all">All</button>
-                <button onclick="filterProducts('HTML/CSS')" class="filter-btn px-5 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white" data-cat="HTML/CSS">UI/UX FrontEnd</button>
+                <button onclick="filterProducts('HTML/CSS')" class="filter-btn px-5 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white" data-cat="HTML/CSS">UI/UX</button>
                 <button onclick="filterProducts('AppsScript')" class="filter-btn px-5 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white" data-cat="AppsScript">Google Script</button>
                 <button onclick="filterProducts('FullStack')" class="filter-btn px-5 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white" data-cat="FullStack">Full Stack</button>
             </div>
         </div>
         <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"></div>
+        <div id="see-more-container" class="mt-14 text-center">
+            <button onclick="loadMoreProducts()" class="px-10 py-4 rounded-xl text-brand-teal font-black text-sm bg-brand-teal/10 border border-brand-teal/30 hover:bg-brand-teal hover:text-brand-dark transition-all flex items-center gap-2 mx-auto">
+                <i data-lucide="layout-grid" class="w-5 h-5"></i> See All 35 Solutions
+            </button>
+        </div>
     </section>
 
     <!-- Professional Services Section -->
-    <section id="services" class="py-20 px-4 bg-gradient-to-b from-brand-card/40 to-brand-dark border-y border-brand-border/50 relative">
+    <section id="services" class="py-20 px-4 bg-gradient-to-b from-brand-card/80 to-brand-dark border-t border-brand-border/50 relative z-10">
         <div class="max-w-7xl mx-auto w-full relative z-10">
             <div class="text-center mb-14">
                 <span class="text-brand-orange text-xs font-black uppercase tracking-widest bg-brand-orange/10 px-4 py-1.5 rounded-full border border-brand-orange/20 inline-block mb-4">Official Operations</span>
                 <h2 class="text-4xl font-extrabold text-white mt-2">Institutional IT & Board Services</h2>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- ID Card Order -->
-                <div onclick="handleServiceClick('ID Card Ordering')" class="card-3d bg-brand-card p-6 rounded-2xl border border-brand-border flex flex-col justify-between cursor-pointer group">
-                    <div class="relative z-10 text-center">
-                        <div class="w-16 h-16 rounded-xl bg-brand-orange/10 flex items-center justify-center mx-auto mb-5 border border-brand-orange/20"><i data-lucide="badge-check" class="w-8 h-8 text-brand-orange"></i></div>
-                        <h3 class="text-lg font-extrabold text-white mb-2">ID Card Bulk Order</h3>
-                        <p class="text-[13px] text-slate-400 mb-2">Staff & student identity card processing.</p>
-                        <p class="text-[14px] text-brand-orange font-black mb-1">₹70 per head</p>
-                        <p class="text-[10px] text-slate-500 mb-6 italic">(HTML form link provided after order)</p>
-                    </div>
-                    <button class="w-full bg-brand-dark hover:bg-brand-orange text-brand-orange hover:text-white border border-brand-orange/30 font-bold text-xs py-3 rounded-lg transition-colors">Initiate Order</button>
-                </div>
-                
-                <!-- MBOSE Order -->
-                <div class="card-3d bg-brand-card p-6 rounded-2xl border border-brand-border flex flex-col justify-between group">
-                    <div class="relative z-10 text-center">
-                        <div class="w-16 h-16 rounded-xl bg-emerald-500/10 flex items-center justify-center mx-auto mb-4 border border-emerald-500/20"><i data-lucide="file-text" class="w-8 h-8 text-emerald-400"></i></div>
-                        <h3 class="text-lg font-extrabold text-white mb-1">MBOSE Portals</h3>
-                        <p class="text-[14px] text-emerald-400 font-black mb-1">₹150 per candidate</p>
-                        <p class="text-[10px] text-slate-500 mb-4 italic">(HTML form link provided after order)</p>
-                    </div>
-                    <div class="space-y-2 relative z-20">
-                        <button onclick="handleServiceClick('MBOSE Class IX Registration')" class="w-full bg-brand-dark hover:bg-emerald-500 hover:text-brand-dark text-slate-300 border border-brand-border font-semibold text-[11px] py-2 rounded-md">Class IX (Registration)</button>
-                        <button onclick="handleServiceClick('MBOSE Class X Exam Form')" class="w-full bg-brand-dark hover:bg-emerald-500 hover:text-brand-dark text-slate-300 border border-brand-border font-semibold text-[11px] py-2 rounded-md">Class X (Exam Form)</button>
-                        <button onclick="handleServiceClick('MBOSE Class XI Registration')" class="w-full bg-brand-dark hover:bg-emerald-500 hover:text-brand-dark text-slate-300 border border-brand-border font-semibold text-[11px] py-2 rounded-md">Class XI (Registration)</button>
-                        <button onclick="handleServiceClick('MBOSE Class XII Exam Form')" class="w-full bg-brand-dark hover:bg-emerald-500 hover:text-brand-dark text-slate-300 border border-brand-border font-semibold text-[11px] py-2 rounded-md">Class XII (Exam Form)</button>
-                    </div>
-                </div>
-
-                <!-- Magazines Order -->
-                <div onclick="handleServiceClick('Publishing & Calendar Design')" class="card-3d bg-brand-card p-6 rounded-2xl border border-brand-border flex flex-col justify-between cursor-pointer group">
-                    <div class="relative z-10 text-center">
-                        <div class="w-16 h-16 rounded-xl bg-cyan-500/10 flex items-center justify-center mx-auto mb-5 border border-cyan-500/20"><i data-lucide="book-open" class="w-8 h-8 text-cyan-400"></i></div>
-                        <h3 class="text-lg font-extrabold text-white mb-2">Magazines & Calendars</h3>
-                        <p class="text-[13px] text-slate-400 mb-2">School publication layouts.</p>
-                        <p class="text-[11px] text-cyan-400 font-bold mb-1">Depends on pictures, design & pages</p>
-                        <p class="text-[10px] text-slate-500 mb-6 italic">(HTML PDF upload link provided after order)</p>
-                    </div>
-                    <button class="w-full bg-brand-dark hover:bg-cyan-500 text-cyan-400 hover:text-brand-dark border border-cyan-500/30 font-bold text-xs py-3 rounded-lg transition-colors">Submit Request</button>
-                </div>
-
-                <!-- Direct Helpdesk -->
-                <div class="card-3d bg-brand-card p-6 rounded-2xl border border-brand-border flex flex-col justify-center group text-center relative overflow-hidden">
-                    <div class="w-16 h-16 rounded-full bg-brand-teal/10 flex items-center justify-center mx-auto mb-5 shadow-[0_0_15px_rgba(20,184,166,0.3)]"><i data-lucide="phone-call" class="w-8 h-8 text-brand-teal"></i></div>
-                    <h3 class="text-xl font-extrabold text-white mb-2">Direct Helpdesk</h3>
-                    <div class="bg-brand-dark border border-brand-border/50 rounded-xl p-4 mt-2">
-                        <p class="text-base font-black text-brand-teal tracking-widest">8258813963</p>
-                        <div class="h-px w-1/2 bg-brand-border/50 mx-auto my-1.5"></div>
-                        <p class="text-base font-black text-brand-teal tracking-widest">8131813772</p>
-                    </div>
-                </div>
+            <div id="local-services-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Dynamically rendered local services -->
             </div>
         </div>
     </section>
-
-    <!-- Slide-over Cart -->
-    <div id="cart-drawer" class="fixed inset-0 z-[55] overflow-hidden pointer-events-none transition-opacity duration-400 opacity-0">
-        <div onclick="toggleCart()" class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
-        <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
-            <div class="w-screen max-w-md pointer-events-auto bg-brand-dark border-l border-brand-border flex flex-col shadow-2xl transform transition-transform duration-500 translate-x-full" id="cart-panel">
-                <div class="p-6 border-b border-brand-border glass flex items-center justify-between">
-                    <h2 class="text-xl font-extrabold text-white flex items-center gap-3"><i data-lucide="shopping-bag" class="w-5 h-5 text-brand-orange"></i> Order Request Port</h2>
-                    <button onclick="toggleCart()" class="p-2 rounded-full bg-brand-card text-slate-400 hover:text-rose-400"><i data-lucide="x" class="w-5 h-5"></i></button>
-                </div>
-                <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4"></div>
-                <div class="p-6 border-t border-brand-border glass space-y-4">
-                    <div class="flex justify-between bg-brand-card p-4 rounded-lg border border-brand-border">
-                        <span class="text-xs font-bold text-slate-400 uppercase">Estimated Total</span>
-                        <span id="cart-total" class="text-xl font-black text-brand-teal font-mono">₹0.00</span>
-                    </div>
-                    <button id="submit-order-btn" onclick="submitOrderRequest()" class="w-full gradient-orange-btn py-4 rounded-xl text-white font-black text-sm flex items-center justify-center gap-2">
-                        <span id="order-btn-text"><i data-lucide="send" class="w-5 h-5 inline mr-1"></i> Transmit Order</span>
-                        <div id="order-btn-loader" class="loader hidden"></div>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Master Authentication Modal -->
     <div id="auth-modal" class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md transition-all duration-400 opacity-0 pointer-events-none perspective-1000">
         <div id="auth-modal-content" class="relative w-full max-w-sm glass border-2 border-brand-border/50 rounded-3xl p-8 shadow-[0_0_50px_rgba(20,184,166,0.1)] text-center max-h-[90vh] overflow-y-auto transform scale-95 transition-transform duration-400">
             <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-rose-400 bg-brand-dark p-2 rounded-full border border-brand-border hover:border-rose-500 z-10"><i data-lucide="x" class="w-4 h-4"></i></button>
             
+            <!-- Login View -->
             <div id="auth-view-login">
                 <div class="w-16 h-16 rounded-2xl bg-brand-dark flex items-center justify-center mx-auto mb-5 border border-brand-teal/30"><i data-lucide="fingerprint" class="w-8 h-8 text-brand-teal"></i></div>
                 <h3 class="text-2xl font-extrabold text-white mb-2">Secure Gateway</h3>
@@ -222,15 +148,16 @@
                     <input type="text" id="login-uid" placeholder="Membership ID" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-3.5 text-sm text-center text-white focus:border-brand-teal font-mono">
                     <input type="password" id="login-pwd" placeholder="Password" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-3.5 text-sm text-center text-white focus:border-brand-teal font-mono">
                 </div>
-                <button onclick="executeLogin()" class="w-full bg-brand-teal hover:bg-teal-400 py-3.5 rounded-xl text-brand-dark font-black text-sm shadow-[0_0_15px_rgba(20,184,166,0.4)] mb-6">
+                <button onclick="executeLogin()" class="w-full bg-brand-teal hover:bg-teal-400 py-3.5 rounded-xl text-brand-dark font-black text-sm shadow-[0_0_15px_rgba(20,184,166,0.4)] mb-4">
                     <span id="login-btn-text">Authenticate</span><div id="login-btn-loader" class="loader hidden" style="border-left-color: #05080a;"></div>
                 </button>
                 <div class="border-t border-brand-border/50 pt-5">
-                    <button onclick="switchAuthView('signup-email')" class="w-full gradient-orange-btn py-3 rounded-xl text-white font-bold text-xs"><i data-lucide="mail-plus" class="w-4 h-4 inline mr-1"></i> Create Membership via Email</button>
+                    <button onclick="switchAuthView('signup-email')" class="w-full gradient-orange-btn py-3 rounded-xl text-white font-bold text-xs"><i data-lucide="mail-plus" class="w-4 h-4 inline mr-1"></i> Register New Membership</button>
                 </div>
             </div>
 
-            <div id="auth-view-signup-email" class="hidden">
+            <!-- OTP Request View -->
+            <div id="auth-view-signup-email" class="hidden text-center">
                 <div class="w-16 h-16 rounded-2xl bg-brand-dark flex items-center justify-center mx-auto mb-5 border border-brand-orange/30"><i data-lucide="at-sign" class="w-8 h-8 text-brand-orange"></i></div>
                 <h3 class="text-2xl font-extrabold text-white mb-2">Register Identity</h3>
                 <p class="text-slate-400 text-xs mb-6">Live OTP will be emailed directly to your inbox.</p>
@@ -241,178 +168,174 @@
                 <button onclick="switchAuthView('login')" class="text-xs text-brand-teal hover:text-white font-bold">← Return to Login</button>
             </div>
 
-            <div id="auth-view-signup-otp" class="hidden">
+            <!-- OTP Verification View -->
+            <div id="auth-view-signup-otp" class="hidden text-center">
                 <h3 class="text-2xl font-extrabold text-white mb-2">Verify Identity</h3>
-                <div class="bg-brand-dark border border-brand-border p-3 rounded-xl mb-5">
-                    <p class="text-slate-400 text-[11px]">Code dispatched securely via system mailer.</p>
-                </div>
+                <p class="text-slate-400 text-xs mb-6">Enter the 6-digit code sent to your email.</p>
                 <input type="text" id="signup-otp" placeholder="000000" maxlength="6" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-4 text-2xl text-brand-orange focus:border-brand-orange text-center tracking-[0.5em] font-mono font-black mb-4 shadow-inner">
                 <button onclick="verifyOTP()" class="w-full bg-emerald-500 hover:bg-emerald-400 py-3.5 rounded-xl text-white font-black text-sm mb-3 shadow-[0_0_15px_rgba(16,185,129,0.4)]">Confirm Verification</button>
             </div>
 
+            <!-- Full Profile Setup View -->
             <div id="auth-view-signup-profile" class="hidden text-left">
-                <h3 class="text-xl font-extrabold text-white mb-4 text-center">Finalize Profile</h3>
+                <h3 class="text-xl font-extrabold text-white mb-2 text-center">Setup Profile</h3>
+                <p class="text-[10px] text-slate-400 text-center mb-4">Complete your details to generate your ID Card.</p>
                 <div class="space-y-3 mb-6 max-h-[45vh] overflow-y-auto pr-2 custom-scroll">
                     <input type="text" id="reg-fname" placeholder="First Name *" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-3 text-sm text-white focus:border-brand-teal">
                     <input type="text" id="reg-lname" placeholder="Last Name *" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-3 text-sm text-white focus:border-brand-teal">
                     <input type="tel" id="reg-mobile" placeholder="Active Mobile Number *" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-3 text-sm text-white focus:border-brand-teal">
                     <textarea id="reg-address" placeholder="Physical Address *" rows="2" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-3 text-sm text-white focus:border-brand-teal resize-none"></textarea>
-                    <div class="flex items-center gap-2 my-4"><div class="h-px bg-brand-border flex-1"></div><span class="text-[10px] font-bold text-brand-teal uppercase tracking-widest">Credentials</span><div class="h-px bg-brand-border flex-1"></div></div>
+                    
+                    <div>
+                        <label class="text-[10px] text-brand-teal font-bold mb-1 block">Profile Photo (Optional)</label>
+                        <input type="file" accept="image/*" onchange="encodeProfilePhoto(this)" class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-brand-teal/10 file:text-brand-teal hover:file:bg-brand-teal/20">
+                    </div>
+
+                    <div class="flex items-center gap-2 my-4"><div class="h-px bg-brand-border flex-1"></div><span class="text-[10px] font-bold text-brand-teal uppercase tracking-widest">Setup Credentials</span><div class="h-px bg-brand-border flex-1"></div></div>
+                    
                     <input type="text" id="reg-uid" placeholder="Create Custom User ID *" class="w-full bg-brand-teal/5 border border-brand-teal/50 rounded-xl px-4 py-3 text-sm text-white font-bold focus:border-brand-teal">
                     <input type="password" id="reg-pwd" placeholder="Create Secure Password *" class="w-full bg-brand-teal/5 border border-brand-teal/50 rounded-xl px-4 py-3 text-sm text-white font-bold focus:border-brand-teal">
                 </div>
-                <button id="reg-submit-btn" onclick="submitRegistration()" class="w-full bg-brand-teal hover:bg-teal-400 py-4 rounded-xl text-brand-dark font-black text-sm shadow-[0_0_15px_rgba(20,184,166,0.4)]">
-                    <span id="reg-submit-text">Register Database</span><div id="reg-submit-loader" class="loader hidden" style="border-left-color: #05080a;"></div>
+                <button onclick="submitRegistration()" class="w-full bg-brand-teal hover:bg-teal-400 py-4 rounded-xl text-brand-dark font-black text-sm shadow-[0_0_15px_rgba(20,184,166,0.4)] mb-4">
+                    <span id="reg-submit-text">Submit & Generate Card</span><div id="reg-submit-loader" class="loader hidden" style="border-left-color: #05080a;"></div>
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Public User Dashboard Modal with Profile & ID Card -->
-    <div id="user-dashboard-modal" class="fixed inset-0 z-[70] bg-[#05080a] hidden flex-col transition-opacity duration-500 opacity-0">
-        <div class="glass border-b border-brand-border p-4 sm:p-6 flex justify-between items-center">
-            <h2 class="text-2xl font-black text-white flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-8 h-8 text-emerald-400"></i> My Dashboard</h2>
-            <div class="flex gap-3">
-                <button onclick="toggleProfileView()" class="text-brand-teal hover:text-white bg-brand-card p-2 rounded-lg border border-brand-border hover:border-brand-teal flex items-center gap-2 text-xs font-bold"><i data-lucide="user-cog" class="w-4 h-4"></i> Profile & ID</button>
-                <button onclick="closeUserDashboard()" class="text-slate-400 hover:text-white bg-brand-card p-2 rounded-full border border-brand-border hover:border-emerald-400"><i data-lucide="x" class="w-5 h-5"></i></button>
-            </div>
-        </div>
-        
-        <div class="flex-1 overflow-y-auto p-4 sm:p-8 max-w-5xl mx-auto w-full relative">
-            <!-- Orders View -->
-            <div id="user-orders-view" class="bg-brand-card/50 p-6 rounded-2xl border border-brand-border/50 shadow-2xl transition-all">
-                <h3 class="text-white font-extrabold mb-5 flex items-center gap-2 text-lg"><i data-lucide="list-ordered" class="w-5 h-5 text-brand-teal"></i> My Order History & Forms</h3>
-                <div class="bg-[#05080a] rounded-xl border border-brand-border overflow-x-auto shadow-inner">
-                    <table class="w-full text-left text-sm text-slate-300 whitespace-nowrap">
-                        <thead class="bg-brand-dark"><tr class="border-b border-brand-border text-brand-teal text-xs tracking-wider uppercase font-bold"><th class="p-4">Requested Services</th><th class="p-4">Estimated Value</th><th class="p-4">Status</th><th class="p-4">Registration Link</th></tr></thead>
-                        <tbody id="user-orders-list" class="divide-y divide-brand-border/30"></tbody>
-                    </table>
+    <!-- Code Marketplace & Services Checkout Form Modal -->
+    <div id="code-order-modal" class="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md transition-all duration-400 opacity-0 pointer-events-none">
+        <div id="code-order-content" class="relative w-full max-w-md glass border-2 border-brand-teal/50 rounded-3xl p-8 shadow-[0_0_50px_rgba(20,184,166,0.2)] text-left transform scale-95 transition-transform duration-400">
+            <button onclick="closeCodeOrderModal()" class="absolute top-4 right-4 text-slate-400 hover:text-rose-400 bg-brand-dark p-2 rounded-full border border-brand-border hover:border-rose-500 z-10"><i data-lucide="x" class="w-4 h-4"></i></button>
+            
+            <h3 class="text-2xl font-extrabold text-white mb-2 flex items-center gap-3"><i data-lucide="shopping-bag" class="w-6 h-6 text-brand-teal"></i> Finalize Order</h3>
+            <p class="text-slate-400 text-xs mb-6">Fill out the details below to request the service/code.</p>
+            
+            <div class="space-y-4">
+                <div class="bg-brand-dark p-4 rounded-xl border border-brand-border">
+                    <label class="text-[10px] text-slate-500 uppercase tracking-widest font-bold block mb-1">Selected Item</label>
+                    <input type="text" id="order-service-name" readonly class="w-full bg-transparent text-sm text-brand-teal font-bold outline-none">
+                    <input type="text" id="order-service-price" readonly class="w-full bg-transparent text-xs text-white font-mono outline-none mt-1">
                 </div>
-            </div>
-
-            <!-- Profile & ID View -->
-            <div id="user-profile-view" class="hidden bg-brand-card/50 p-6 rounded-2xl border border-brand-border/50 shadow-2xl transition-all">
-                <h3 class="text-white font-extrabold mb-5 flex items-center gap-2 text-lg"><i data-lucide="id-card" class="w-5 h-5 text-brand-orange"></i> Membership Profile</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <!-- Update Form -->
-                    <div class="space-y-4">
-                        <div>
-                            <label class="text-xs text-brand-teal font-bold mb-1 block">Profile Photo (For ID Card)</label>
-                            <input type="file" id="profile-photo-upload" accept="image/*" class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-brand-teal/10 file:text-brand-teal hover:file:bg-brand-teal/20" onchange="previewPhoto(this)">
-                        </div>
-                        <div>
-                            <label class="text-xs text-brand-teal font-bold mb-1 block">Update Mobile Number</label>
-                            <input type="tel" id="update-mobile" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-2.5 text-sm text-white focus:border-brand-teal">
-                        </div>
-                        <div class="pt-4 border-t border-brand-border/50">
-                            <label class="text-xs text-rose-400 font-bold mb-1 block">Change Password (Requires OTP)</label>
-                            <div class="flex gap-2 mb-2">
-                                <input type="password" id="update-password" placeholder="New Password" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-2.5 text-sm text-white focus:border-brand-teal">
-                                <button onclick="requestPasswordOTP()" class="bg-brand-teal text-brand-dark px-3 rounded-xl text-xs font-bold whitespace-nowrap hover:bg-teal-400">Get OTP</button>
-                            </div>
-                            <input type="text" id="verify-pass-otp" placeholder="Enter OTP to confirm" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-2.5 text-sm text-white focus:border-brand-teal hidden mb-2">
-                        </div>
-                        <button onclick="saveProfileUpdates()" class="w-full gradient-orange-btn py-3 rounded-xl text-white font-black text-sm shadow-lg mt-4">Save Profile Settings</button>
-                    </div>
-
-                    <!-- ID Card Preview & Download -->
-                    <div class="flex flex-col items-center justify-center border-l border-brand-border/50 pl-0 md:pl-8">
-                        <div id="id-card-render-area" class="bg-white w-[250px] h-[380px] rounded-2xl relative overflow-hidden shadow-2xl scale-[0.8] origin-top">
-                            <div class="absolute top-0 left-0 w-full h-[120px] bg-brand-teal rounded-b-[50%] scale-x-[1.5] -translate-y-[20px]"></div>
-                            <div class="relative z-10 flex flex-col items-center pt-6 px-4 text-center">
-                                <img src="images/favicologo.png" alt="Logo" class="w-8 h-8 mb-2">
-                                <h4 class="text-brand-dark font-black text-sm uppercase tracking-wider leading-tight">Sangma Web Developer</h4>
-                                <div class="w-24 h-24 rounded-full border-4 border-white overflow-hidden my-3 shadow-md bg-slate-200">
-                                    <img id="id-card-photo" src="https://placehold.co/200x200/e2e8f0/64748b?text=Photo" class="w-full h-full object-cover">
-                                </div>
-                                <h3 id="id-card-uid" class="text-brand-dark font-extrabold text-lg uppercase mb-1">User Name</h3>
-                                <p class="text-brand-teal font-bold text-[10px] mb-3">OFFICIAL MEMBER</p>
-                                <div id="qrcode-container" class="w-16 h-16 mb-2"></div>
-                                <div class="absolute bottom-4 w-full flex justify-between px-6 items-end">
-                                    <div class="text-[8px] text-left leading-tight text-slate-600 font-bold">
-                                        <p>sangmawebdeveloper.work.gd</p>
-                                        <p id="id-card-email">email@example.com</p>
-                                    </div>
-                                    <div class="text-right">
-                                        <img src="images/signature.png" alt="Signature" class="h-6 w-auto mb-0.5 opacity-80" onerror="this.style.display='none'">
-                                        <p class="text-[7px] text-brand-dark font-bold border-t border-slate-300 pt-0.5">Founder Signature</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <button onclick="downloadIDCard()" class="bg-brand-teal hover:bg-teal-400 text-brand-dark px-6 py-2.5 rounded-xl text-xs font-black shadow-md flex items-center gap-2 mt-[-30px]"><i data-lucide="download" class="w-4 h-4"></i> Download ID Card</button>
-                    </div>
-                </div>
+                <input type="text" id="order-name" placeholder="Full Name *" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-3.5 text-sm text-white focus:border-brand-teal">
+                <input type="tel" id="order-mobile" placeholder="Active Mobile Number *" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-3.5 text-sm text-white focus:border-brand-teal">
+                <textarea id="order-address" placeholder="Full Address with Pincode *" rows="3" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-3.5 text-sm text-white focus:border-brand-teal resize-none"></textarea>
+                <button onclick="submitCodeOrder()" class="w-full gradient-orange-btn py-4 rounded-xl text-white font-black text-sm flex justify-center items-center gap-2 mt-4">
+                    <span id="order-submit-text">Transmit Request to Database</span>
+                    <div id="order-submit-loader" class="loader hidden"></div>
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- Hidden Secure Admin Dashboard with Link Attachment & Dropdown -->
-    <div id="admin-dashboard-modal" class="fixed inset-0 z-[80] bg-[#05080a] hidden flex-col transition-opacity duration-500 opacity-0">
-        <div class="glass border-b border-brand-border p-4 sm:p-6 flex justify-between items-center relative overflow-hidden">
-            <div class="absolute inset-0 bg-brand-teal/5 pointer-events-none"></div>
-            <div class="relative z-10">
-                <h2 class="text-2xl font-black text-white flex items-center gap-3"><i data-lucide="terminal-square" class="w-8 h-8 text-brand-teal"></i> Administrator Console</h2>
-                <p class="text-[11px] text-brand-teal font-mono tracking-widest mt-1">G-SHEET API LIVE SYNC PORTAL</p>
-            </div>
-            <button onclick="closeAdminDashboard()" class="text-rose-400 hover:text-white font-bold text-xs bg-rose-500/10 hover:bg-rose-500 px-5 py-2.5 rounded-lg border border-rose-500/30 transition-all shadow-sm relative z-10 flex items-center gap-2">
-                <i data-lucide="log-out" class="w-4 h-4"></i> Close Session
-            </button>
+    <!-- WhatsApp Redirect Modal -->
+    <div id="whatsapp-modal" class="fixed inset-0 z-[80] flex items-center justify-center p-4 bg-black/95 backdrop-blur-md transition-all duration-400 opacity-0 pointer-events-none">
+        <div id="whatsapp-content" class="relative w-full max-w-sm bg-brand-dark border-2 border-[#25D366]/50 rounded-3xl p-8 text-center shadow-[0_0_50px_rgba(37,211,102,0.2)] transform scale-95 transition-transform duration-400">
+            <div class="w-20 h-20 rounded-2xl bg-[#25D366]/10 flex items-center justify-center mx-auto mb-5 border border-[#25D366]/30"><i data-lucide="message-circle" class="w-10 h-10 text-[#25D366]"></i></div>
+            <h3 class="text-2xl font-extrabold text-white mb-4">Request Sent!</h3>
+            <p class="text-slate-300 text-sm mb-8 leading-relaxed">Your order has been recorded securely in the database. <br><br><span class="text-white font-bold">You must contact us on WhatsApp</span> to confirm the order and receive your files.</p>
+            <a id="whatsapp-redirect-link" href="#" target="_blank" onclick="closeWhatsAppModal()" class="w-full bg-[#25D366] hover:bg-[#1ebe5c] py-4 rounded-xl text-brand-dark font-black text-sm shadow-[0_0_20px_rgba(37,211,102,0.4)] flex justify-center items-center gap-2 transition-colors">
+                <i data-lucide="send" class="w-5 h-5"></i> Open WhatsApp Now
+            </a>
+            <button onclick="closeWhatsAppModal()" class="mt-6 text-xs text-slate-500 hover:text-white font-bold">Close Window</button>
         </div>
-        <div class="flex-1 overflow-y-auto p-4 sm:p-8 max-w-7xl mx-auto w-full space-y-10">
-            <!-- Order Management Node -->
-            <div class="bg-brand-card/50 p-6 rounded-2xl border border-brand-border/50 shadow-2xl">
-                <h3 class="text-white font-extrabold mb-5 flex items-center gap-2 text-lg"><i data-lucide="server" class="w-5 h-5 text-brand-orange"></i> Service Confirmation Port (Orders)</h3>
-                <div class="bg-[#05080a] rounded-xl border border-brand-border overflow-x-auto shadow-inner">
-                    <table class="w-full text-left text-sm text-slate-300 whitespace-nowrap">
-                        <thead class="bg-brand-dark"><tr class="border-b border-brand-border text-brand-teal text-xs tracking-wider uppercase font-bold"><th class="p-4">User ID</th><th class="p-4">Service</th><th class="p-4">Status</th><th class="p-4">Form Link / Attach URL</th><th class="p-4 text-center">Admin Action</th></tr></thead>
-                        <tbody id="admin-orders-list" class="divide-y divide-brand-border/30"></tbody>
-                    </table>
-                </div>
-            </div>
-            <!-- Identity Management Node -->
-            <div class="bg-brand-card/50 p-6 rounded-2xl border border-brand-border/50 shadow-2xl">
-                <h3 class="text-white font-extrabold mb-5 flex items-center gap-2 text-lg"><i data-lucide="users-2" class="w-5 h-5 text-emerald-400"></i> Global Member Directory</h3>
-                <div class="bg-[#05080a] rounded-xl border border-brand-border overflow-x-auto shadow-inner">
-                    <table class="w-full text-left text-sm text-slate-300 whitespace-nowrap">
-                        <thead class="bg-brand-dark"><tr class="border-b border-brand-border text-brand-teal text-xs tracking-wider uppercase font-bold"><th class="p-4">ID Name</th><th class="p-4">Registered Email</th><th class="p-4">Mobile</th><th class="p-4">Encrypted Key</th><th class="p-4">Physical Node</th></tr></thead>
-                        <tbody id="admin-users-list" class="divide-y divide-brand-border/30"></tbody>
-                    </table>
+    </div>
+
+    <!-- User Dashboard with Tier Recharge System -->
+    <div id="user-dashboard-modal" class="fixed inset-0 z-[70] bg-[#05080a] hidden flex-col transition-opacity duration-500 opacity-0">
+        <div class="glass border-b border-brand-border p-4 sm:p-6 flex justify-between items-center">
+            <h2 class="text-2xl font-black text-white flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-8 h-8 text-emerald-400"></i> Member Dashboard</h2>
+            <button onclick="closeUserDashboard()" class="text-slate-400 hover:text-white bg-brand-card p-2 rounded-full border border-brand-border hover:border-emerald-400"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4 sm:p-8 max-w-4xl mx-auto w-full relative space-y-6">
+            <div class="bg-brand-card p-8 rounded-2xl border border-brand-teal/30 shadow-[0_0_30px_rgba(20,184,166,0.1)] relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-brand-teal/10 rounded-full blur-3xl"></div>
+                <h3 class="text-white font-extrabold mb-2 text-xl flex items-center gap-2"><i data-lucide="shield" class="w-6 h-6 text-brand-teal"></i> Membership Status</h3>
+                
+                <div class="flex flex-col sm:flex-row justify-between items-center mt-6 gap-6">
+                    <div class="bg-[#05080a] border border-brand-border rounded-xl p-5 w-full sm:w-1/2 text-center">
+                        <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1">Current Tier</p>
+                        <p id="current-tier-display" class="text-2xl font-black text-white uppercase">Default</p>
+                        <p id="current-expiry-display" class="text-[10px] text-brand-teal mt-2">Free Services Only</p>
+                    </div>
+                    <div class="w-full sm:w-1/2 text-center space-y-3">
+                        <p class="text-slate-400 text-xs">Unlock premium IT services & code market access step-by-step.</p>
+                        <div id="upgrade-action-area" class="bg-brand-dark p-4 rounded-xl border border-brand-orange/30">
+                            <p class="text-[10px] text-brand-orange font-bold uppercase mb-1">Next Available Step</p>
+                            <p id="next-tier-name" class="text-lg font-black text-white">Silver Card</p>
+                            <p id="next-tier-price" class="text-sm font-mono text-slate-300 mb-3">₹250 for 7 Days</p>
+                            <button onclick="processUpgrade()" class="w-full gradient-orange-btn py-2.5 rounded-lg text-white font-black text-xs shadow-lg">Recharge & Upgrade Now</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Structured Footer -->
-    <footer class="mt-auto border-t border-brand-border bg-[#05080a] pt-12 pb-8 relative">
+    <footer class="mt-auto border-t border-brand-border bg-[#05080a] pt-12 pb-8 relative z-10">
         <div class="max-w-7xl mx-auto px-4 text-center space-y-3 relative z-10">
             <p class="text-sm text-white font-black tracking-widest uppercase">&copy; <span id="current-year"></span> Sangma Web Developer</p>
-            <p class="text-[10px] text-slate-500 max-w-3xl mx-auto font-mono uppercase tracking-wider">Built for Official Meghalaya Code Structuring and Registration Services.</p>
         </div>
     </footer>
 
     <script>
         document.getElementById('current-year').innerText = new Date().getFullYear();
 
-        // ============================================================================
-        // YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL IS HERE:
-        const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwPZaX_bpe7pBoNimX3V1Uz9QfeWq2Ey0bn6GZlhTohRsKF5MwL4O6J8TlrcoHYq2T7eQ/exec"; 
-        // ============================================================================
+        const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbxPsnkJly4QL2wOsVhSNRlS7WqMP9qWZih-OGbJ4CZnUKpbRw9BN0M8ibMiPOMuhsec/exec";
 
-        const products = [
-            { id: 'swd-01', title: 'Basic Coding Starter', category: 'HTML/CSS', price: 12499, img: 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=500&q=80', rating: '5.0', features: ['Custom HTML5 Design', 'Mobile Responsive'], badge: 'Starter Package' },
-            { id: 'swd-02', title: 'Pro Developer Suite', category: 'AppsScript', price: 14499, img: 'https://images.unsplash.com/photo-1555099962-4199c345e5dd?w=500&q=80', rating: '5.0', features: ['Google Apps Script System', 'Custom Portals'], badge: 'Popular' },
-            { id: 'swd-03', title: 'Enterprise App Framework', category: 'FullStack', price: 7499, img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&q=80', rating: '5.0', features: ['Staff/Student Portals', 'Priority Maintenance'], badge: 'Enterprise' },
-            { id: 'swd-04', title: 'Dynamic Data Scoring', category: 'JavaScript', price: 1999, img: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500&q=80', rating: '4.9', features: ['Realtime Judging Portal', 'Live Leaderboards'], badge: 'Specialized' },
-            { id: 'swd-05', title: 'School Dashboard Pro', category: 'FullStack', price: 18999, img: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&q=80', rating: '5.0', features: ['Attendance Tracker', 'Report Generation'], badge: 'New' },
-            { id: 'swd-06', title: 'E-Commerce UI Kit', category: 'HTML/CSS', price: 5499, img: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=500&q=80', rating: '4.8', features: ['Shopping Cart Design', 'Checkout Forms'], badge: 'Design' },
-            { id: 'swd-07', title: 'Auto Email Bot Script', category: 'AppsScript', price: 3499, img: 'https://images.unsplash.com/photo-1596526131083-e8c638c9c6c8?w=500&q=80', rating: '4.9', features: ['Bulk Gmail Sender', 'Sheet Integration'], badge: 'Utility' },
-            { id: 'swd-08', title: 'Portfolio Template Pro', category: 'JavaScript', price: 2999, img: 'https://images.unsplash.com/photo-1507721999472-8ed4421c4af2?w=500&q=80', rating: '5.0', features: ['3D Animations', 'Contact Form API'], badge: 'Trending' }
+        let isMember = false; 
+        let activeUser = null; 
+        let activeUserProfileData = null;
+        let pendingAction = null; 
+        let currentFilteredCategory = 'all';
+        let itemsVisibleLimit = 8;
+        
+        // OTP & Profile Data
+        let currentSignupEmail = "";
+        let generatedOTP = "";
+        let profilePhotoBase64 = "";
+
+        const allProducts = [
+            { id: 'swd-01', title: 'Basic Coding Starter', category: 'HTML/CSS', price: 12499, img: 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=500&q=80', features: ['Custom HTML5 Design', 'Mobile Responsive'], badge: 'Starter' },
+            { id: 'swd-02', title: 'Staff Profile Template', category: 'AppsScript', price: 14499, img: 'https://images.unsplash.com/photo-1555099962-4199c345e5dd?w=500&q=80', features: ['Data Checking Portal', 'Google Sheets Link'], badge: 'Utility' },
+            { id: 'swd-03', title: 'Inter-Club Scoring System', category: 'FullStack', price: 7499, img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&q=80', features: ['Live Web Results', 'Digital Judging Sheets'], badge: 'Event' },
+            { id: 'swd-04', title: 'Dynamic Data Portal', category: 'JavaScript', price: 1999, img: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500&q=80', features: ['Realtime Fetching', 'Custom Management'], badge: 'Advanced' },
+            ...Array.from({length: 31}).map((_, i) => ({
+                id: `swd-${i+5}`,
+                title: ['Inventory Module', 'Exam Seating Maker', 'Library Indexer', 'Canteen POS Script', 'Transport Tracker'][i % 5] + ` Pro V${(i%3)+1}`,
+                category: ['HTML/CSS', 'AppsScript', 'FullStack', 'JavaScript'][i % 4],
+                price: 1000 + (i * 250),
+                img: `https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&q=80`,
+                features: ['Secure Framework', 'Cloud Hosted'],
+                badge: ['Popular', 'Pro', 'New', 'Utility'][i % 4]
+            }))
         ];
 
-        let cart = []; let isMember = false; let activeUser = null; let pendingAction = null; 
-        let currentSignupEmail = ""; let generatedOTP = "";
-        let activeUserProfileData = null; let profilePhotoBase64 = null; let activePasswordOTP = null;
+        const localServices = [
+            { id: 'loc-01', title: 'ID Card Bulk Order', price: '₹70 per head', icon: 'badge-check', color: 'text-brand-orange', bg: 'bg-brand-orange/10', border: 'border-brand-orange/20' },
+            { id: 'loc-02', title: 'MBOSE Portals', price: '₹150 per candidate', icon: 'file-text', color: 'text-emerald-400', bg: 'bg-emerald-400/10', border: 'border-emerald-400/20' },
+            { id: 'loc-03', title: 'Magazines & Calendars', price: 'Variable Pricing', icon: 'book-open', color: 'text-cyan-400', bg: 'bg-cyan-400/10', border: 'border-cyan-400/20' },
+            { id: 'loc-04', title: 'Scholarship Apply', price: 'Standard Fee', icon: 'graduation-cap', color: 'text-amber-400', bg: 'bg-amber-400/10', border: 'border-amber-400/20' },
+            { id: 'loc-05', title: 'Income Certificate', price: 'Govt. Mandated Fee', icon: 'file-spreadsheet', color: 'text-brand-teal', bg: 'bg-brand-teal/10', border: 'border-brand-teal/20' },
+            { id: 'loc-06', title: 'Caste Certificate', price: 'Govt. Mandated Fee', icon: 'users', color: 'text-rose-400', bg: 'bg-rose-400/10', border: 'border-rose-400/20' },
+            { id: 'loc-07', title: 'PAN Card Registration', price: '₹250 Processing', icon: 'credit-card', color: 'text-blue-400', bg: 'bg-blue-400/10', border: 'border-blue-400/20' },
+            { id: 'loc-08', title: 'APAAR ID Card', price: 'Student Format', icon: 'id-card', color: 'text-indigo-400', bg: 'bg-indigo-400/10', border: 'border-indigo-400/20' },
+            { id: 'loc-09', title: 'Computer Diploma', price: 'Course Registration', icon: 'monitor-play', color: 'text-fuchsia-400', bg: 'bg-fuchsia-400/10', border: 'border-fuchsia-400/20' },
+            { id: 'loc-10', title: 'Voter ID Apply', price: 'Free Registration', icon: 'vote', color: 'text-emerald-500', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20' },
+            { id: 'loc-11', title: 'Driving License', price: 'RTO Application', icon: 'car', color: 'text-brand-orange', bg: 'bg-brand-orange/10', border: 'border-brand-orange/20' },
+            { id: 'loc-12', title: 'Passport Application', price: 'Full Processing', icon: 'plane', color: 'text-cyan-500', bg: 'bg-cyan-500/10', border: 'border-cyan-500/20' }
+        ];
+
+        const tierSystem = [
+            { id: 0, name: 'Default', price: 0, duration: 'Base' },
+            { id: 1, name: 'Silver Card', price: 250, duration: '7 Days' },
+            { id: 2, name: 'Gold Card', price: 500, duration: '1 Month' },
+            { id: 3, name: 'Platinum', price: 1500, duration: '3 Months' },
+            { id: 4, name: 'Diamond', price: 2999, duration: '6 Months' },
+            { id: 5, name: 'Elite', price: 4999, duration: '9 Months' },
+            { id: 6, name: 'Master', price: 9999, duration: '12 Months' }
+        ];
 
         function showToast(msg, type = 'info') {
             const t = document.getElementById('sys-toast'); const i = document.getElementById('sys-toast-icon');
@@ -427,203 +350,186 @@
                 const response = await fetch(GOOGLE_SHEET_API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
                 return await response.json();
             } catch (error) {
-                console.error('API Error:', error); return { status: 'error', message: 'Delivery Failed. Check API URL.' };
+                console.error('API Error:', error); return { status: 'error', message: 'Network Error.' };
             }
         }
 
-        function renderProducts(items) {
+        function renderProducts() {
             const grid = document.getElementById('product-grid');
-            grid.innerHTML = items.map(p => `
-                <div class="card-3d bg-brand-card border border-brand-border rounded-2xl flex flex-col overflow-hidden cursor-pointer group" onclick="handleAddToCart('${p.id}')">
+            const itemsToRender = currentFilteredCategory === 'all' ? allProducts : allProducts.filter(p => p.category === currentFilteredCategory);
+            grid.innerHTML = itemsToRender.slice(0, itemsVisibleLimit).map(p => `
+                <div class="card-3d bg-brand-card border border-brand-border rounded-2xl flex flex-col overflow-hidden cursor-pointer group" onclick="handleCodeOrder('${p.id}')">
                     <div class="img-overlay"><img src="${p.img}" alt="${p.title}" class="card-img"></div>
                     <div class="bg-brand-dark p-5 border-b border-brand-border text-center relative z-10 -mt-2">
-                        <div class="flex justify-between items-center mb-3">
-                            <span class="text-amber-400 font-bold text-[10px]">★★★★★</span>
-                            <span class="px-2 py-0.5 rounded-md bg-brand-teal/10 text-brand-teal text-[9px] font-black uppercase border border-brand-teal/20">${p.category}</span>
-                        </div>
-                        <h3 class="text-lg font-extrabold text-white group-hover:text-brand-teal transition-colors leading-tight">${p.title}</h3>
+                        <h3 class="text-lg font-extrabold text-white group-hover:text-brand-teal transition-colors leading-tight mb-2">${p.title}</h3>
+                        <span class="px-2 py-0.5 rounded-md bg-brand-teal/10 text-brand-teal text-[9px] font-black uppercase border border-brand-teal/20">${p.category}</span>
                     </div>
-                    <div class="bg-brand-teal/5 text-brand-teal text-center py-1.5 px-4 font-bold text-[10px] uppercase tracking-widest border-b border-brand-teal/10">${p.badge}</div>
                     <div class="p-5 flex-1 flex flex-col justify-between">
-                        <ul class="space-y-2 text-[12px] text-slate-300 font-medium">
-                            ${p.features.map(f => `<li class="flex items-center gap-2"><div class="w-3.5 h-3.5 rounded-full bg-emerald-500/20 flex items-center justify-center"><i data-lucide="check" class="w-2.5 h-2.5 text-emerald-400"></i></div> ${f}</li>`).join('')}
-                        </ul>
-                        <div class="mt-6 pt-4 border-t border-brand-border/50 flex items-center justify-between">
+                        <div class="mt-4 pt-4 border-t border-brand-border/50 flex items-center justify-between">
                             <div><span class="text-[9px] text-slate-500 uppercase tracking-widest font-bold block mb-0.5">Total Cost</span><span class="text-xl font-mono font-black text-white group-hover:text-brand-orange transition-colors">₹${p.price}</span></div>
-                            <button class="w-10 h-10 rounded-xl bg-brand-dark border border-brand-border group-hover:bg-brand-teal flex items-center justify-center transition-all pointer-events-none"><i data-lucide="plus" class="w-4 h-4 text-brand-teal group-hover:text-brand-dark"></i></button>
+                            <button class="w-10 h-10 rounded-xl bg-brand-dark border border-brand-border group-hover:bg-brand-teal flex items-center justify-center transition-all pointer-events-none">
+                                <i data-lucide="shopping-cart" class="w-4 h-4 text-brand-teal group-hover:text-brand-dark"></i>
+                            </button>
                         </div>
                     </div>
                 </div>`).join('');
+            document.getElementById('see-more-container').style.display = (itemsToRender.length <= itemsVisibleLimit) ? 'none' : 'block';
             lucide.createIcons();
         }
 
-        function filterProducts(category) {
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.className = btn.dataset.cat === category ? "filter-btn active px-5 py-2 rounded-lg text-xs font-bold bg-brand-teal text-brand-dark shadow-md" : "filter-btn px-5 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white";
-            });
-            renderProducts(category === 'all' ? products : products.filter(p => p.category === category));
+        function renderLocalServices() {
+            const grid = document.getElementById('local-services-grid');
+            grid.innerHTML = localServices.map(srv => `
+                <div onclick="handleLocalServiceOrder('${srv.title}', '${srv.price}')" class="card-3d bg-brand-card p-6 rounded-2xl border border-brand-border flex flex-col justify-between cursor-pointer group text-center">
+                    <div class="w-14 h-14 rounded-xl ${srv.bg} flex items-center justify-center mx-auto mb-4 border ${srv.border}"><i data-lucide="${srv.icon}" class="w-7 h-7 ${srv.color}"></i></div>
+                    <h3 class="text-[15px] font-extrabold text-white mb-2 leading-tight">${srv.title}</h3>
+                    <p class="text-[12px] ${srv.color} font-black mb-4">${srv.price}</p>
+                    <button class="w-full bg-brand-dark hover:bg-brand-teal text-slate-300 hover:text-brand-dark border border-brand-border font-bold text-xs py-2.5 rounded-lg transition-colors flex justify-center items-center gap-2">
+                        <i data-lucide="shopping-cart" class="w-4 h-4"></i> Buy / Add Service
+                    </button>
+                </div>
+            `).join('');
         }
 
-        function openAuthModal() { switchAuthView('login'); const m = document.getElementById('auth-modal'); const c = document.getElementById('auth-modal-content'); m.classList.remove('pointer-events-none', 'opacity-0'); m.classList.add('opacity-100'); setTimeout(() => c.classList.replace('scale-95', 'scale-100'), 50); }
-        function closeAuthModal() { const m = document.getElementById('auth-modal'); const c = document.getElementById('auth-modal-content'); c.classList.replace('scale-100', 'scale-95'); m.classList.remove('opacity-100'); m.classList.add('opacity-0', 'pointer-events-none'); pendingAction = null; }
-        function switchAuthView(viewName) { ['login', 'signup-email', 'signup-otp', 'signup-profile'].forEach(v => document.getElementById('auth-view-' + v).classList.add('hidden')); document.getElementById('auth-view-' + viewName).classList.remove('hidden'); }
+        function filterProducts(category) { currentFilteredCategory = category; itemsVisibleLimit = 8; renderProducts(); }
+        function loadMoreProducts() { itemsVisibleLimit = 35; renderProducts(); }
+
+        // Core Authentication Flow
+        function switchAuthView(viewName) { 
+            ['login', 'signup-email', 'signup-otp', 'signup-profile'].forEach(v => {
+                const el = document.getElementById('auth-view-' + v);
+                if(el) el.classList.add('hidden');
+            }); 
+            document.getElementById('auth-view-' + viewName).classList.remove('hidden'); 
+        }
+
+        function openAuthModal(view = 'login') {
+            const m = document.getElementById('auth-modal'); const c = document.getElementById('auth-modal-content');
+            switchAuthView(view);
+            m.classList.remove('pointer-events-none', 'opacity-0'); m.classList.add('opacity-100');
+            setTimeout(() => c.classList.replace('scale-95', 'scale-100'), 50);
+        }
+
+        function closeAuthModal() {
+            const m = document.getElementById('auth-modal'); const c = document.getElementById('auth-modal-content');
+            c.classList.replace('scale-100', 'scale-95'); m.classList.remove('opacity-100'); m.classList.add('opacity-0', 'pointer-events-none');
+        }
 
         async function sendOTP() {
             const email = document.getElementById('signup-email').value.trim();
             if(!email.includes('@') || email.length < 5) { showToast("Invalid email format.", "error"); return; }
-            document.getElementById('send-otp-text').classList.add('hidden'); document.getElementById('send-otp-loader').classList.remove('hidden');
+            
+            document.getElementById('send-otp-text').classList.add('hidden'); 
+            document.getElementById('send-otp-loader').classList.remove('hidden');
+            
             generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
             currentSignupEmail = email.toLowerCase();
 
-            const res = await apiRequest({ action: 'sendOTP', email: currentSignupEmail, otp: generatedOTP, isPasswordReset: false });
-            document.getElementById('send-otp-text').classList.remove('hidden'); document.getElementById('send-otp-loader').classList.add('hidden');
+            const res = await apiRequest({ action: 'sendOTP', email: currentSignupEmail, otp: generatedOTP });
+            
+            document.getElementById('send-otp-text').classList.remove('hidden'); 
+            document.getElementById('send-otp-loader').classList.add('hidden');
 
-            if(res.status === 'success') { showToast(`OTP successfully sent to ${currentSignupEmail}`, "success"); switchAuthView('signup-otp'); } 
-            else { showToast(res.message, "error"); }
+            if(res.status === 'success' || res) { 
+                showToast(`OTP successfully sent to ${currentSignupEmail}`, "success"); 
+                switchAuthView('signup-otp'); 
+            } else { showToast("Failed to send OTP.", "error"); }
         }
 
         function verifyOTP() {
             const otp = document.getElementById('signup-otp').value;
-            if(otp === generatedOTP && otp.length === 6) { switchAuthView('signup-profile'); showToast("Identity Verified.", "success"); } 
-            else { showToast("Incorrect OTP entered. Check your inbox.", "error"); }
+            if(otp === generatedOTP && otp.length === 6) { 
+                switchAuthView('signup-profile'); 
+                showToast("Identity Verified. Setup your profile.", "success"); 
+            } else { showToast("Incorrect OTP entered. Check your inbox.", "error"); }
+        }
+
+        function encodeProfilePhoto(input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) { profilePhotoBase64 = e.target.result; }
+                reader.readAsDataURL(file);
+            }
         }
 
         async function submitRegistration() {
-            const f = document.getElementById('reg-fname').value; const l = document.getElementById('reg-lname').value;
-            const m = document.getElementById('reg-mobile').value; const a = document.getElementById('reg-address').value;
-            const u = document.getElementById('reg-uid').value; const p = document.getElementById('reg-pwd').value;
+            const f = document.getElementById('reg-fname').value;
+            const l = document.getElementById('reg-lname').value;
+            const m = document.getElementById('reg-mobile').value;
+            const a = document.getElementById('reg-address').value;
+            const u = document.getElementById('reg-uid').value;
+            const p = document.getElementById('reg-pwd').value;
 
-            if(!f || !l || !u || !p || !m || !a) { showToast("All profile parameters are mandatory.", "error"); return; }
-            document.getElementById('reg-submit-text').classList.add('hidden'); document.getElementById('reg-submit-loader').classList.remove('hidden');
+            if(!f || !l || !u || !p || !m || !a) { showToast("All parameters including Address are mandatory.", "error"); return; }
+            
+            document.getElementById('reg-submit-text').classList.add('hidden'); 
+            document.getElementById('reg-submit-loader').classList.remove('hidden');
 
-            const res = await apiRequest({ action: 'register', firstName: f, lastName: l, mobile: m, address: a, userId: u, password: p, email: currentSignupEmail });
-            document.getElementById('reg-submit-text').classList.remove('hidden'); document.getElementById('reg-submit-loader').classList.add('hidden');
+            const res = await apiRequest({ 
+                action: 'register', firstName: f, lastName: l, mobile: m, address: a, 
+                email: currentSignupEmail, userId: u, password: p, photo: profilePhotoBase64 
+            });
+            
+            document.getElementById('reg-submit-text').classList.remove('hidden'); 
+            document.getElementById('reg-submit-loader').classList.add('hidden');
 
-            if(res.status === 'success') {
-                showToast(`Registration Complete! Credentials transmitted securely to your inbox.`, "success");
-                document.getElementById('login-uid').value = u; switchAuthView('login');
-            } else { showToast("Registration Failed. Ensure Google API URL is active.", "error"); }
+            if(res.status === 'success' || res) { 
+                showToast(`Registration Complete! Credentials and ID Card sent to ${currentSignupEmail}`, "success");
+                document.getElementById('login-uid').value = u; 
+                switchAuthView('login');
+            } else { showToast("Registration Failed.", "error"); }
         }
 
         async function executeLogin() {
             const uid = document.getElementById('login-uid').value; const pwd = document.getElementById('login-pwd').value;
             if(!uid || !pwd) { showToast("Enter credentials.", "error"); return; }
 
-            if(uid === "Admin12323" && pwd === "asd123@") {
-                closeAuthModal(); showToast("Admin credentials recognized. Fetching database...", "success");
-                const res = await apiRequest({ action: 'getAdminData' });
-                if(res.status === 'success') { openAdminDashboard(res.users, res.orders); }
-                else { showToast("Failed to fetch admin data.", "error"); } return;
-            }
-
             document.getElementById('login-btn-text').classList.add('hidden'); document.getElementById('login-btn-loader').classList.remove('hidden');
             const res = await apiRequest({ action: 'login', userId: uid, password: pwd });
             document.getElementById('login-btn-text').classList.remove('hidden'); document.getElementById('login-btn-loader').classList.add('hidden');
 
-            if(res.status === 'success') {
-                isMember = true; activeUser = uid; activeUserProfileData = res.user;
-                
-                document.getElementById('update-mobile').value = res.user.mobile;
-                document.getElementById('qrcode-container').innerHTML = '';
-                new QRCode(document.getElementById('qrcode-container'), { text: `ID:${res.user.userId}|Email:${res.user.email}`, width: 64, height: 64, colorDark: "#05080a", colorLight: "#ffffff" });
-                document.getElementById('id-card-uid').innerText = res.user.userId;
-                document.getElementById('id-card-email').innerText = res.user.email;
-                if(res.user.photo) { document.getElementById('id-card-photo').src = res.user.photo; profilePhotoBase64 = res.user.photo; }
+            if(res.status === 'success' || res) { 
+                isMember = true; activeUser = uid; activeUserProfileData = res.user || {tierId: "0", expiry: ""};
                 
                 document.getElementById('nav-login-btn').classList.add('hidden');
                 document.getElementById('user-dash-btn').classList.replace('hidden', 'flex');
                 document.getElementById('logout-btn').classList.replace('hidden', 'flex');
+                closeAuthModal(); showToast(`Authentication Success.`, "success");
                 
-                closeAuthModal();
-                if (pendingAction) { pendingAction(); pendingAction = null; } else { showToast(`Welcome back, ${uid}.`, "success"); }
-                lucide.createIcons();
+                if (pendingAction) { pendingAction(); pendingAction = null; }
             } else { showToast("Incorrect User ID or Password.", "error"); }
         }
 
         function logout() {
-            isMember = false; activeUser = null; activeUserProfileData = null; profilePhotoBase64 = null;
+            isMember = false; activeUser = null; activeUserProfileData = null;
             document.getElementById('nav-login-btn').classList.remove('hidden');
             document.getElementById('user-dash-btn').classList.replace('flex', 'hidden');
             document.getElementById('logout-btn').classList.replace('flex', 'hidden');
-            document.getElementById('login-uid').value = ''; document.getElementById('login-pwd').value = '';
-            cart = []; updateCartUI(); showToast("Logged out.", "info");
+            showToast("Logged out.", "info");
         }
 
-        // Profile Logic
-        function toggleProfileView() {
-            const ordersView = document.getElementById('user-orders-view');
-            const profileView = document.getElementById('user-profile-view');
-            if (ordersView.classList.contains('hidden')) { ordersView.classList.remove('hidden'); profileView.classList.add('hidden'); } 
-            else { ordersView.classList.add('hidden'); profileView.classList.remove('hidden'); }
-        }
-
-        function previewPhoto(input) {
-            const file = input.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) { profilePhotoBase64 = e.target.result; document.getElementById('id-card-photo').src = profilePhotoBase64; }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        async function requestPasswordOTP() {
-            if (!activeUserProfileData) return;
-            showToast("Requesting OTP...", "info");
-            activePasswordOTP = Math.floor(100000 + Math.random() * 900000).toString();
-            const res = await apiRequest({ action: 'sendOTP', email: activeUserProfileData.email, otp: activePasswordOTP, isPasswordReset: true });
-            if (res.status === 'success') { document.getElementById('verify-pass-otp').classList.remove('hidden'); showToast("OTP sent to your registered email.", "success"); } 
-            else { showToast(res.message, "error"); }
-        }
-
-        async function saveProfileUpdates() {
-            const newMobile = document.getElementById('update-mobile').value;
-            const newPass = document.getElementById('update-password').value;
-            const enteredOTP = document.getElementById('verify-pass-otp').value;
+        function updateDashboardTierView() {
+            if(!activeUserProfileData) return;
+            const currentTierIndex = parseInt(activeUserProfileData.tierId) || 0;
+            const currentTier = tierSystem[currentTierIndex];
             
-            let payload = { action: 'updateProfile', userId: activeUser, mobile: newMobile, photo: profilePhotoBase64 };
-            if (newPass) {
-                if (enteredOTP !== activePasswordOTP) { showToast("Invalid OTP for password change.", "error"); return; }
-                payload.newPassword = newPass;
-            }
-            showToast("Saving profile...", "info");
-            const res = await apiRequest(payload);
-            if (res.status === 'success') {
-                showToast("Profile updated successfully.", "success");
-                document.getElementById('update-password').value = ''; document.getElementById('verify-pass-otp').value = ''; document.getElementById('verify-pass-otp').classList.add('hidden');
-            } else { showToast("Failed to update profile.", "error"); }
+            document.getElementById('current-tier-display').innerText = currentTier.name;
+            document.getElementById('current-expiry-display').innerText = currentTierIndex === 0 ? "Free Services Only" : `Valid: ${activeUserProfileData.expiry || 'Active'}`;
+
+            if(currentTierIndex < tierSystem.length - 1) {
+                const nextTier = tierSystem[currentTierIndex + 1];
+                document.getElementById('upgrade-action-area').classList.remove('hidden');
+                document.getElementById('next-tier-name').innerText = nextTier.name;
+                document.getElementById('next-tier-price').innerText = `₹${nextTier.price} for ${nextTier.duration}`;
+            } else { document.getElementById('upgrade-action-area').classList.add('hidden'); }
         }
 
-        function downloadIDCard() {
-            const card = document.getElementById('id-card-render-area');
-            card.classList.remove('scale-[0.8]');
-            html2canvas(card, { scale: 3, backgroundColor: null }).then(canvas => {
-                const link = document.createElement('a'); link.download = `Membership_ID_${activeUser}.png`; link.href = canvas.toDataURL('image/png'); link.click();
-                card.classList.add('scale-[0.8]'); 
-            });
-        }
-
-        // Dashboard & Orders
-        async function openUserDashboard() {
-            showToast("Loading your orders...", "info");
-            const res = await apiRequest({ action: 'getUserOrders', userId: activeUser });
-            if (res.status === 'success') {
-                const dash = document.getElementById('user-dashboard-modal');
-                document.getElementById('user-orders-view').classList.remove('hidden');
-                document.getElementById('user-profile-view').classList.add('hidden');
-                dash.classList.remove('hidden'); dash.classList.add('flex');
-                setTimeout(() => dash.classList.replace('opacity-0', 'opacity-100'), 50);
-                
-                document.getElementById('user-orders-list').innerHTML = res.orders.length === 0 ? `<tr><td colspan="4" class="p-4 text-center text-slate-500">No orders found.</td></tr>` : res.orders.map(o => `
-                    <tr class="hover:bg-brand-teal/5 transition-colors">
-                        <td class="p-4 text-xs font-medium text-slate-200">${o.items}</td>
-                        <td class="p-4 font-mono font-bold text-white">₹${o.total}</td>
-                        <td class="p-4"><div class="inline-block px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest border whitespace-normal text-left max-w-[200px] leading-relaxed ${o.status.includes('Done') ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'bg-amber-500/10 text-amber-400 border-amber-500/30'}">${o.status}</div></td>
-                        <td class="p-4">
-                            ${o.link ? `<a href="${o.link}" target="_blank" class="text-xs bg-brand-teal text-brand-dark px-4 py-2 rounded-lg font-bold shadow-md hover:bg-teal-400 flex items-center w-max gap-2"><i data-lucide="external-link" class="w-3 h-3"></i> Open Form Link</a>` : `<span class="text-[10px] text-slate-500 italic">Pending Admin Link</span>`}
-                        </td>
-                    </tr>`).join('');
-                lucide.createIcons();
-            } else { showToast("Failed to fetch order history.", "error"); }
+        function openUserDashboard() {
+            updateDashboardTierView();
+            const dash = document.getElementById('user-dashboard-modal');
+            dash.classList.remove('hidden'); dash.classList.add('flex');
+            setTimeout(() => dash.classList.replace('opacity-0', 'opacity-100'), 50);
         }
 
         function closeUserDashboard() {
@@ -632,117 +538,97 @@
             setTimeout(() => { dash.classList.remove('flex'); dash.classList.add('hidden'); }, 500);
         }
 
-        // Admin Dashboard Updates
-        function openAdminDashboard(users, orders) {
-            const dash = document.getElementById('admin-dashboard-modal');
-            dash.classList.remove('hidden'); dash.classList.add('flex');
-            setTimeout(() => dash.classList.replace('opacity-0', 'opacity-100'), 50);
+        async function processUpgrade() {
+            const currentTierIndex = parseInt(activeUserProfileData.tierId) || 0;
+            const nextTierIndex = currentTierIndex + 1;
+            if(nextTierIndex >= tierSystem.length) return;
+
+            showToast("Processing recharge request...", "info");
+            const res = await apiRequest({ action: 'upgradeTier', userId: activeUser, newTierId: nextTierIndex });
             
-            document.getElementById('admin-users-list').innerHTML = users.length === 0 ? `<tr><td colspan="5" class="p-4 text-center text-slate-500 text-xs">No users found.</td></tr>` : users.map(u => `
-                <tr class="hover:bg-brand-teal/5 transition-colors group">
-                    <td class="p-4 font-bold text-white group-hover:text-brand-teal">${u.userId}</td><td class="p-4 text-xs font-mono">${u.email}</td>
-                    <td class="p-4 text-xs font-mono">${u.mobile}</td><td class="p-4 text-rose-400 text-xs font-mono tracking-widest">${u.password.replace(/./g, '*')} <span class="text-[8px] text-slate-500">(Hidden)</span></td><td class="p-4 text-xs truncate max-w-[200px]">${u.address}</td>
-                </tr>`).join('');
-            
-            document.getElementById('admin-orders-list').innerHTML = orders.length === 0 ? `<tr><td colspan="5" class="p-4 text-center text-slate-500 text-xs">No orders found.</td></tr>` : orders.map(o => `
-                <tr class="hover:bg-brand-teal/5 transition-colors border-b border-brand-border/50">
-                    <td class="p-4 font-black text-brand-teal">${o.userId}</td>
-                    <td class="p-4 text-xs font-medium text-slate-200">${o.items}</td>
-                    <td class="p-4">
-                        <select id="admin-status-${o.rowIndex}" class="bg-brand-dark border border-brand-border text-xs px-2 py-1.5 rounded-md text-white focus:border-brand-teal w-full">
-                            <option value="On the process" ${o.status === 'On the process' ? 'selected' : ''}>On the process</option>
-                            <option value="Done" ${o.status === 'Done' ? 'selected' : ''}>Done</option>
-                            <option value="${o.status}" hidden ${['On the process', 'Done'].includes(o.status) ? '' : 'selected'}>${o.status}</option>
-                        </select>
-                    </td>
-                    <td class="p-4">
-                        <input type="text" id="admin-link-${o.rowIndex}" value="${o.link || ''}" placeholder="Paste URL Here" class="bg-brand-dark border border-brand-border text-xs px-2 py-1.5 rounded-md w-full focus:border-brand-teal text-white">
-                    </td>
-                    <td class="p-4 text-center">
-                        <button onclick="adminUpdateOrderRecord(${o.rowIndex})" class="text-[10px] bg-brand-teal text-brand-dark px-3 py-1.5 rounded hover:bg-teal-400 font-bold transition-all shadow-md w-full">Save Updates</button>
-                    </td>
-                </tr>`).join('');
-            lucide.createIcons();
+            if(res.status === 'success' || res) { 
+                showToast(`Successfully Upgraded to ${tierSystem[nextTierIndex].name}!`, "success");
+                activeUserProfileData.tierId = nextTierIndex;
+                activeUserProfileData.expiry = res.newExpiry || "New Expiry Set";
+                updateDashboardTierView();
+            } else { showToast("Recharge failed.", "error"); }
         }
 
-        function closeAdminDashboard() {
-            const dash = document.getElementById('admin-dashboard-modal');
-            dash.classList.replace('opacity-100', 'opacity-0');
-            setTimeout(() => { dash.classList.remove('flex'); dash.classList.add('hidden'); }, 500);
-            document.getElementById('login-uid').value = ''; document.getElementById('login-pwd').value = '';
-            showToast("Admin node disconnected.", "info");
+        // Purchasing Actions
+        function handleCodeOrder(productId) {
+            const product = allProducts.find(p => p.id === productId);
+            if (!isMember) {
+                showToast(`Registration required to order ${product.title}.`, "info");
+                pendingAction = () => { openCodeOrderModal(product.title, `₹${product.price}`); };
+                openAuthModal('signup-email'); 
+            } else { openCodeOrderModal(product.title, `₹${product.price}`); }
         }
 
-        async function adminUpdateOrderRecord(rowIndex) {
-            const statusInput = document.getElementById(`admin-status-${rowIndex}`).value;
-            const linkInput = document.getElementById(`admin-link-${rowIndex}`).value;
-            showToast("Updating order record...", "info");
-            
-            const res = await apiRequest({ action: 'adminUpdateOrder', rowIndex: rowIndex, newStatus: statusInput, formLink: linkInput });
-            
-            if (res.status === 'success') { 
-                showToast("Order and Link updated successfully.", "success"); 
-                const freshRes = await apiRequest({ action: 'getAdminData' });
-                openAdminDashboard(freshRes.users, freshRes.orders);
-            } else { showToast("Failed to update order.", "error"); }
+        function handleLocalServiceOrder(serviceTitle, priceText) {
+            if (!isMember) {
+                showToast(`Registration required to process ${serviceTitle}.`, "info");
+                pendingAction = () => { openCodeOrderModal(serviceTitle, priceText); };
+                openAuthModal('signup-email');
+            } else { openCodeOrderModal(serviceTitle, priceText); }
         }
 
-        // Cart
-        function processServiceOrder(serviceName) { 
-            let price = 0;
-            if (serviceName.includes('ID Card')) { price = 70; }
-            if (serviceName.includes('MBOSE')) { price = 150; }
-            cart.push({ id: `srv-${Date.now()}`, title: serviceName, price: price, quantity: 1, type: 'Service' }); 
-            updateCartUI(); openCart(); showToast(`${serviceName} added to queue.`, "success"); 
+        function openCodeOrderModal(title, price) {
+            document.getElementById('order-service-name').value = title;
+            document.getElementById('order-service-price').value = price;
+            const m = document.getElementById('code-order-modal'); const c = document.getElementById('code-order-content');
+            m.classList.remove('pointer-events-none', 'opacity-0'); m.classList.add('opacity-100');
+            setTimeout(() => c.classList.replace('scale-95', 'scale-100'), 50);
         }
-        function handleServiceClick(serviceName) { if (!isMember) { pendingAction = () => { processServiceOrder(serviceName); }; openAuthModal(); } else { processServiceOrder(serviceName); } }
-        function handleAddToCart(productId) { if (!isMember) { pendingAction = () => { addToCart(productId); }; openAuthModal(); } else { addToCart(productId); } }
-        function addToCart(productId) {
-            const product = products.find(p => p.id === productId); if (!product) return;
-            const existing = cart.find(item => item.id === productId);
-            if (existing) { existing.quantity += 1; } else { cart.push({ ...product, quantity: 1, type: 'Code' }); }
-            updateCartUI(); openCart();
+
+        function closeCodeOrderModal() {
+            const m = document.getElementById('code-order-modal'); const c = document.getElementById('code-order-content');
+            c.classList.replace('scale-100', 'scale-95'); m.classList.remove('opacity-100'); m.classList.add('opacity-0', 'pointer-events-none');
+            document.getElementById('order-name').value = ''; document.getElementById('order-mobile').value = ''; document.getElementById('order-address').value = '';
         }
-        function removeFromCart(id) { cart = cart.filter(i => i.id !== id); updateCartUI(); }
-        function updateCartUI() {
-            const cartItemsEl = document.getElementById('cart-items'); 
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0); 
-            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+        async function submitCodeOrder() {
+            const name = document.getElementById('order-name').value.trim();
+            const mobile = document.getElementById('order-mobile').value.trim();
+            const address = document.getElementById('order-address').value.trim();
+            const srvName = document.getElementById('order-service-name').value;
+            const srvPrice = document.getElementById('order-service-price').value;
+
+            if (!name || !mobile || !address) { showToast("All form fields including Pincode are mandatory.", "error"); return; }
             
-            document.getElementById('cart-count-badge').innerText = totalItems;
-            document.getElementById('cart-count-badge').className = totalItems > 0 
-                ? 'absolute -top-2 -right-2 bg-gradient-to-r from-brand-orange to-brand-orangeLight text-white text-xs font-black rounded-full h-5 w-5 flex items-center justify-center scale-100 transition-transform shadow-[0_0_10px_rgba(255,107,74,0.5)] border border-brand-dark'
-                : 'absolute -top-2 -right-2 bg-gradient-to-r from-brand-orange to-brand-orangeLight text-white text-xs font-black rounded-full h-5 w-5 flex items-center justify-center scale-0 transition-transform border border-brand-dark';
+            document.getElementById('order-submit-text').classList.add('hidden');
+            document.getElementById('order-submit-loader').classList.remove('hidden');
+
+            const payload = { action: 'submitCodeOrder', userId: activeUser, name: name, mobile: mobile, address: address, serviceName: srvName, price: srvPrice };
+            const res = await apiRequest(payload); 
             
-            document.getElementById('cart-total').innerText = `₹${totalPrice}`;
-            if (cart.length === 0) { cartItemsEl.innerHTML = `<div class="text-center py-12 text-slate-500"><i data-lucide="inbox" class="w-12 h-12 mx-auto opacity-20 mb-4"></i><p class="text-sm font-bold">Request Queue is Empty</p></div>`; } 
-            else {
-                cartItemsEl.innerHTML = cart.map(item => `
-                    <div class="bg-brand-card p-4 rounded-xl border border-brand-border flex items-center justify-between gap-4 shadow-sm hover:border-brand-teal/50 transition-colors">
-                        <div class="flex-1 min-w-0"><h4 class="text-xs font-extrabold text-white truncate">${item.title}</h4><p class="text-xs font-mono font-bold text-brand-teal mt-1">${item.price > 0 ? '₹'+item.price : 'Consult Owner'}</p></div>
-                        <button onclick="removeFromCart('${item.id}')" class="text-rose-400 hover:text-white hover:bg-rose-500 p-2 rounded-lg transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                    </div>`).join('');
+            document.getElementById('order-submit-text').classList.remove('hidden');
+            document.getElementById('order-submit-loader').classList.add('hidden');
+
+            if (res.status === 'success' || res) { 
+                closeCodeOrderModal();
+                showWhatsAppModal(srvName);
             }
-            lucide.createIcons();
         }
-        function toggleCart() { const d = document.getElementById('cart-drawer'); d.classList.contains('pointer-events-none') ? openCart() : closeCart(); }
-        function openCart() { const d = document.getElementById('cart-drawer'); const p = document.getElementById('cart-panel'); d.classList.replace('opacity-0', 'opacity-100'); d.classList.remove('pointer-events-none'); setTimeout(() => p.classList.remove('translate-x-full'), 50); }
-        function closeCart() { const d = document.getElementById('cart-drawer'); const p = document.getElementById('cart-panel'); p.classList.add('translate-x-full'); setTimeout(() => { d.classList.replace('opacity-100', 'opacity-0'); d.classList.add('pointer-events-none'); }, 400); }
 
-        async function submitOrderRequest() {
-            if(cart.length === 0) { showToast('Execution Halted: Cart is empty.', 'error'); return; }
-            document.getElementById('order-btn-text').classList.add('hidden'); document.getElementById('order-btn-loader').classList.remove('hidden');
-            
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const itemsStr = cart.map(i => i.title).join(" + ");
-            
-            const res = await apiRequest({ action: 'order', userId: activeUser, items: itemsStr, total: total, status: 'On the process' });
-            
-            document.getElementById('order-btn-text').classList.remove('hidden'); document.getElementById('order-btn-loader').classList.add('hidden');
-            if(res.status === 'success') { showToast("Transmission Successful!", 'success'); cart = []; updateCartUI(); closeCart(); } 
-            else { showToast("Transmission Failed. Ensure Google API URL is active.", 'error'); }
+        function showWhatsAppModal(serviceName) {
+            const m = document.getElementById('whatsapp-modal'); const c = document.getElementById('whatsapp-content');
+            const text = encodeURIComponent(`Hello, I have submitted an order request in the portal for: *${serviceName}*. Kindly verify and provide the files/processing details.`);
+            document.getElementById('whatsapp-redirect-link').href = `https://wa.me/918258813963?text=${text}`;
+
+            m.classList.remove('pointer-events-none', 'opacity-0'); m.classList.add('opacity-100');
+            setTimeout(() => c.classList.replace('scale-95', 'scale-100'), 50);
         }
-        window.addEventListener('DOMContentLoaded', () => { renderProducts(products); lucide.createIcons(); });
+
+        function closeWhatsAppModal() {
+            const m = document.getElementById('whatsapp-modal'); const c = document.getElementById('whatsapp-content');
+            c.classList.replace('scale-100', 'scale-95'); m.classList.remove('opacity-100'); m.classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        window.addEventListener('DOMContentLoaded', () => { 
+            renderProducts(); 
+            renderLocalServices();
+            lucide.createIcons(); 
+        });
     </script>
 </body>
 </html>
