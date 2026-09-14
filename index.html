@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sangma Web Developer | Premium Source Marketplace</title>
+    <title>Sangma Web Developer | Digital & Institutional Services</title>
     
     <link rel="icon" type="image/png" href="images/favicologo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,45 +12,34 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: { brand: { dark: '#05080a', card: '#131b23', border: '#2a3642', teal: '#14b8a6', orange: '#ff6b4a' } },
-                    fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['Fira Code', 'monospace'] },
-                    animation: { 'gradient-x': 'gradient-x 8s ease infinite', 'float': 'float 6s ease-in-out infinite' },
-                    keyframes: {
-                        'gradient-x': { '0%, 100%': { 'background-size': '200% 200%', 'background-position': 'left center' }, '50%': { 'background-size': '200% 200%', 'background-position': 'right center' } },
-                        'float': { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-15px)' } }
-                    }
+                    fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['Fira Code', 'monospace'] }
                 }
             }
         }
     </script>
 
     <style>
-        body { background-color: #05080a; color: #ffffff; overflow-x: hidden; }
-        .glass { background: rgba(19, 27, 35, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(42, 54, 66, 0.8); }
+        body { color: #ffffff; overflow-x: hidden; background-color: transparent; }
+        .glass { background: rgba(19, 27, 35, 0.6); backdrop-filter: blur(16px); border: 1px solid rgba(42, 54, 66, 0.8); }
         .card-3d { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; }
-        .card-3d:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 20px 40px -10px rgba(20, 184, 166, 0.4), 0 10px 20px -5px rgba(255, 107, 74, 0.3); border-color: #14b8a6; z-index: 10; }
+        .card-3d:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 20px 40px -10px rgba(20, 184, 166, 0.3), 0 10px 20px -5px rgba(255, 107, 74, 0.2); border-color: #14b8a6; z-index: 10; }
         .img-overlay { position: relative; overflow: hidden; border-bottom: 2px solid #14b8a6; }
         .img-overlay::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, #131b23 5%, transparent 100%); }
-        .card-img { width: 100%; height: 160px; object-fit: cover; transition: transform 0.5s ease; }
+        .card-img { width: 100%; height: 180px; object-fit: cover; transition: transform 0.5s ease; }
         .card-3d:hover .card-img { transform: scale(1.1) rotate(2deg); }
-        .gradient-orange-btn { background: linear-gradient(135deg, #ff6b4a, #ff9b54, #ff6b4a); background-size: 200% auto; transition: all 0.4s ease; }
-        .gradient-orange-btn:hover { background-position: right center; transform: translateY(-2px) scale(1.02); box-shadow: 0 10px 25px -5px rgba(255, 107, 74, 0.5); }
-        .loader { border: 3px solid rgba(255,255,255,0.1); border-left-color: #14b8a6; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block; }
         
-        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        .bg-typography { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; opacity: 0.03; font-size: 6rem; font-weight: 900; color: white; display: flex; flex-direction: column; justify-content: space-around; line-height: 1; }
-        .bg-marquee-line { display: flex; white-space: nowrap; animation: marquee 60s linear infinite; gap: 2rem; }
-        .bg-marquee-line.reverse { animation-direction: reverse; animation-duration: 75s; }
-
-        .toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); transition: bottom 0.4s ease-out; z-index: 9999; }
-        .toast.show { bottom: 30px; }
+        /* Dynamic Background Animations */
+        @keyframes blob { 0% { transform: translate(0px, 0px) scale(1); } 33% { transform: translate(30px, -50px) scale(1.1); } 66% { transform: translate(-20px, 20px) scale(0.9); } 100% { transform: translate(0px, 0px) scale(1); } }
+        .animate-blob { animation: blob 10s infinite alternate; }
+        .animation-delay-2000 { animation-delay: 2s; }
+        .animation-delay-4000 { animation-delay: 4s; }
+        
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0a0f14; }
         ::-webkit-scrollbar-thumb { background: #2a3642; border-radius: 4px; }
@@ -59,15 +48,11 @@
 </head>
 <body class="min-h-screen flex flex-col font-sans relative">
 
-    <div class="bg-typography">
-        <div class="bg-marquee-line"><span>WEB ENGINEERING </span><span> • </span><span> PREMIUM CODES </span><span> • </span><span> MBOSE PORTALS </span><span> • </span><span> AUTOMATION </span></div>
-        <div class="bg-marquee-line reverse"><span>DATA CHECKERS </span><span> • </span><span> JUDGING SHEETS </span><span> • </span><span> STAFF PORTALS </span><span> • </span><span> DASHBOARDS </span></div>
-        <div class="bg-marquee-line"><span>APP SCRIPT </span><span> • </span><span> JAVASCRIPT </span><span> • </span><span> BACKEND </span><span> • </span><span> HTML CSS </span></div>
-    </div>
-
-    <div id="sys-toast" class="toast flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl border text-sm font-bold max-w-md w-full glass">
-        <i id="sys-toast-icon" data-lucide="info" class="w-5 h-5"></i>
-        <span id="sys-toast-msg" class="flex-1 text-center">System Message</span>
+    <!-- Dynamic Custom Background -->
+    <div class="fixed inset-0 z-[-1] bg-[#05080a] overflow-hidden">
+        <div class="absolute top-0 left-[-10%] w-[500px] h-[500px] bg-brand-teal/20 rounded-full mix-blend-screen filter blur-[100px] opacity-50 animate-blob"></div>
+        <div class="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-brand-orange/10 rounded-full mix-blend-screen filter blur-[120px] opacity-50 animate-blob animation-delay-2000"></div>
+        <div class="absolute bottom-[-20%] left-[20%] w-[700px] h-[700px] bg-cyan-900/20 rounded-full mix-blend-screen filter blur-[150px] opacity-50 animate-blob animation-delay-4000"></div>
     </div>
 
     <header class="sticky top-0 z-40 glass border-b border-brand-border/50 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
@@ -78,556 +63,131 @@
                 </div>
                 <div class="leading-tight">
                     <span class="text-lg font-black tracking-wide text-white block bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-white">Sangma Web Developer</span>
-                    <span class="text-xs text-brand-orange font-bold tracking-widest uppercase">Premium Marketplace</span>
+                    <span class="text-xs text-brand-orange font-bold tracking-widest uppercase">Service Provider Portal</span>
                 </div>
             </a>
-            <div class="flex items-center gap-3 sm:gap-5 relative z-10">
-                <button id="nav-login-btn" onclick="openAuthModal('login')" class="text-xs font-bold text-white bg-brand-teal/10 hover:bg-brand-teal hover:text-brand-dark px-4 py-2.5 rounded-xl transition-all flex items-center gap-2 border border-brand-teal/30 shadow-[0_0_15px_rgba(20,184,166,0.2)]">
-                    <i data-lucide="user" class="w-4 h-4"></i> <span class="hidden sm:inline">Sign In / Sign Up</span>
-                </button>
-                <button id="user-dash-btn" onclick="openUserDashboard()" class="hidden text-xs font-bold text-emerald-400 bg-emerald-400/10 hover:bg-emerald-400 hover:text-brand-dark px-4 py-2.5 rounded-xl transition-all flex items-center gap-2 border border-emerald-400/20 shadow-[0_0_10px_rgba(52,211,153,0.1)]">
-                    <i data-lucide="layout-dashboard" class="w-4 h-4"></i> <span class="hidden sm:inline">My Dashboard</span>
-                </button>
-                <button id="logout-btn" onclick="logout()" class="hidden text-xs font-bold text-rose-400 hover:text-white bg-rose-500/10 hover:bg-rose-500/80 px-3 py-2 rounded-lg transition-all border border-rose-500/20"><i data-lucide="log-out" class="w-3.5 h-3.5"></i></button>
+            <div class="flex items-center gap-3 relative z-10">
+                <a href="https://wa.me/918258813963" target="_blank" class="text-xs font-bold text-white bg-[#25D366]/20 hover:bg-[#25D366] hover:text-brand-dark px-4 py-2.5 rounded-xl transition-all flex items-center gap-2 border border-[#25D366]/50 shadow-[0_0_15px_rgba(37,211,102,0.2)]">
+                    <i data-lucide="message-circle" class="w-4 h-4"></i> <span class="hidden sm:inline">WhatsApp Support</span>
+                </a>
             </div>
         </div>
     </header>
 
-    <section id="hero" class="relative py-28 px-4 text-center overflow-hidden border-b border-brand-border bg-gradient-to-br from-[#0a1118] via-brand-dark to-[#0f1a24] animate-gradient-x">
+    <section id="hero" class="relative py-20 px-4 text-center overflow-hidden border-b border-brand-border/30">
         <div class="max-w-4xl mx-auto space-y-8 relative z-10">
-            <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold bg-brand-teal/10 text-brand-teal border border-brand-teal/30 shadow-[0_0_20px_rgba(20,184,166,0.3)]"><i data-lucide="rocket" class="w-4 h-4"></i> Advanced Interactive Portals</span>
             <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold text-white tracking-tight leading-tight drop-shadow-2xl">
-                Master Web Engineering with <br class="hidden sm:block"/> <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400 animate-gradient-x">Premium Source Code</span>
+                Official Institutional & <br class="hidden sm:block"/> <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400">Digital Services</span>
             </h1>
-        </div>
-    </section>
-
-    <!-- 3D Products Catalog Section -->
-    <section id="products" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full relative z-10">
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-            <div><h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight flex items-center gap-3"><i data-lucide="code-2" class="w-8 h-8 text-brand-teal"></i> Official Code Marketplace</h2></div>
-            <div class="flex flex-wrap gap-2 p-1.5 glass rounded-xl" id="filter-buttons">
-                <button onclick="filterProducts('all')" class="filter-btn active px-5 py-2 rounded-lg text-xs font-bold bg-brand-teal text-brand-dark shadow-md" data-cat="all">All</button>
-                <button onclick="filterProducts('HTML/CSS')" class="filter-btn px-5 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white" data-cat="HTML/CSS">UI/UX</button>
-                <button onclick="filterProducts('AppsScript')" class="filter-btn px-5 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white" data-cat="AppsScript">Google Script</button>
-                <button onclick="filterProducts('FullStack')" class="filter-btn px-5 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white" data-cat="FullStack">Full Stack</button>
-            </div>
-        </div>
-        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"></div>
-        <div id="see-more-container" class="mt-14 text-center">
-            <button onclick="loadMoreProducts()" class="px-10 py-4 rounded-xl text-brand-teal font-black text-sm bg-brand-teal/10 border border-brand-teal/30 hover:bg-brand-teal hover:text-brand-dark transition-all flex items-center gap-2 mx-auto">
-                <i data-lucide="layout-grid" class="w-5 h-5"></i> See All 35 Solutions
-            </button>
-        </div>
-    </section>
-
-    <!-- Professional Services Section -->
-    <section id="services" class="py-20 px-4 bg-gradient-to-b from-brand-card/80 to-brand-dark border-t border-brand-border/50 relative z-10">
-        <div class="max-w-7xl mx-auto w-full relative z-10">
-            <div class="text-center mb-14">
-                <span class="text-brand-orange text-xs font-black uppercase tracking-widest bg-brand-orange/10 px-4 py-1.5 rounded-full border border-brand-orange/20 inline-block mb-4">Official Operations</span>
-                <h2 class="text-4xl font-extrabold text-white mt-2">Institutional IT & Board Services</h2>
-            </div>
-            <div id="local-services-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                <!-- Dynamically rendered local services -->
+            <p class="text-slate-400 max-w-2xl mx-auto text-lg">Browse our comprehensive list of MBOSE portals, government document applications, institutional design, and online services. Request directly via WhatsApp.</p>
+            
+            <!-- Global Search Box -->
+            <div class="max-w-2xl mx-auto relative mt-10 group">
+                <div class="absolute inset-0 bg-gradient-to-r from-brand-teal to-brand-orange rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-500"></div>
+                <input type="text" id="searchInput" onkeyup="filterServices()" placeholder="Search services (e.g., MBOSE, PAN, ID Card, UDISE)..." class="relative w-full bg-brand-dark/90 border-2 border-brand-border rounded-2xl px-6 py-5 text-white placeholder-slate-500 focus:outline-none focus:border-brand-teal focus:ring-4 focus:ring-brand-teal/20 text-lg transition-all glass pl-14">
+                <i data-lucide="search" class="absolute left-5 top-1/2 -translate-y-1/2 text-brand-teal w-6 h-6 z-10"></i>
             </div>
         </div>
     </section>
 
-    <!-- Master Authentication Modal -->
-    <div id="auth-modal" class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md transition-all duration-400 opacity-0 pointer-events-none perspective-1000">
-        <div id="auth-modal-content" class="relative w-full max-w-sm glass border-2 border-brand-border/50 rounded-3xl p-8 shadow-[0_0_50px_rgba(20,184,166,0.1)] text-center max-h-[90vh] overflow-y-auto transform scale-95 transition-transform duration-400">
-            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-rose-400 bg-brand-dark p-2 rounded-full border border-brand-border hover:border-rose-500 z-10"><i data-lucide="x" class="w-4 h-4"></i></button>
-            
-            <!-- Login View -->
-            <div id="auth-view-login">
-                <div class="w-16 h-16 rounded-2xl bg-brand-dark flex items-center justify-center mx-auto mb-5 border border-brand-teal/30"><i data-lucide="fingerprint" class="w-8 h-8 text-brand-teal"></i></div>
-                <h3 class="text-2xl font-extrabold text-white mb-2">Secure Gateway</h3>
-                <p class="text-slate-400 text-xs mb-6">Enter Membership ID and Password.</p>
-                <div class="space-y-4 mb-6">
-                    <input type="text" id="login-uid" placeholder="Membership ID" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-3.5 text-sm text-center text-white focus:border-brand-teal font-mono">
-                    <input type="password" id="login-pwd" placeholder="Password" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-3.5 text-sm text-center text-white focus:border-brand-teal font-mono">
-                </div>
-                <button onclick="executeLogin()" class="w-full bg-brand-teal hover:bg-teal-400 py-3.5 rounded-xl text-brand-dark font-black text-sm shadow-[0_0_15px_rgba(20,184,166,0.4)] mb-4">
-                    <span id="login-btn-text">Authenticate</span><div id="login-btn-loader" class="loader hidden" style="border-left-color: #05080a;"></div>
-                </button>
-                <div class="border-t border-brand-border/50 pt-5">
-                    <button onclick="switchAuthView('signup-email')" class="w-full gradient-orange-btn py-3 rounded-xl text-white font-bold text-xs"><i data-lucide="mail-plus" class="w-4 h-4 inline mr-1"></i> Register New Membership</button>
-                </div>
-            </div>
-
-            <!-- OTP Request View -->
-            <div id="auth-view-signup-email" class="hidden text-center">
-                <div class="w-16 h-16 rounded-2xl bg-brand-dark flex items-center justify-center mx-auto mb-5 border border-brand-orange/30"><i data-lucide="at-sign" class="w-8 h-8 text-brand-orange"></i></div>
-                <h3 class="text-2xl font-extrabold text-white mb-2">Register Identity</h3>
-                <p class="text-slate-400 text-xs mb-6">Live OTP will be emailed directly to your inbox.</p>
-                <input type="email" id="signup-email" placeholder="Enter valid Gmail address" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-3.5 text-sm text-white focus:border-brand-orange text-center mb-4">
-                <button id="send-otp-btn" onclick="sendOTP()" class="w-full gradient-orange-btn py-3.5 rounded-xl text-white font-black text-sm mb-4">
-                    <span id="send-otp-text">Send Live OTP</span><div id="send-otp-loader" class="loader hidden"></div>
-                </button>
-                <button onclick="switchAuthView('login')" class="text-xs text-brand-teal hover:text-white font-bold">← Return to Login</button>
-            </div>
-
-            <!-- OTP Verification View -->
-            <div id="auth-view-signup-otp" class="hidden text-center">
-                <h3 class="text-2xl font-extrabold text-white mb-2">Verify Identity</h3>
-                <p class="text-slate-400 text-xs mb-6">Enter the 6-digit code sent to your email.</p>
-                <input type="text" id="signup-otp" placeholder="000000" maxlength="6" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-4 text-2xl text-brand-orange focus:border-brand-orange text-center tracking-[0.5em] font-mono font-black mb-4 shadow-inner">
-                <button onclick="verifyOTP()" class="w-full bg-emerald-500 hover:bg-emerald-400 py-3.5 rounded-xl text-white font-black text-sm mb-3 shadow-[0_0_15px_rgba(16,185,129,0.4)]">Confirm Verification</button>
-            </div>
-
-            <!-- Full Profile Setup View -->
-            <div id="auth-view-signup-profile" class="hidden text-left">
-                <h3 class="text-xl font-extrabold text-white mb-2 text-center">Setup Profile</h3>
-                <p class="text-[10px] text-slate-400 text-center mb-4">Complete your details to generate your ID Card.</p>
-                <div class="space-y-3 mb-6 max-h-[45vh] overflow-y-auto pr-2 custom-scroll">
-                    <input type="text" id="reg-fname" placeholder="First Name *" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-3 text-sm text-white focus:border-brand-teal">
-                    <input type="text" id="reg-lname" placeholder="Last Name *" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-3 text-sm text-white focus:border-brand-teal">
-                    <input type="tel" id="reg-mobile" placeholder="Active Mobile Number *" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-3 text-sm text-white focus:border-brand-teal">
-                    <textarea id="reg-address" placeholder="Physical Address *" rows="2" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-3 text-sm text-white focus:border-brand-teal resize-none"></textarea>
-                    
-                    <div>
-                        <label class="text-[10px] text-brand-teal font-bold mb-1 block">Profile Photo (Optional)</label>
-                        <input type="file" accept="image/*" onchange="encodeProfilePhoto(this)" class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-brand-teal/10 file:text-brand-teal hover:file:bg-brand-teal/20">
-                    </div>
-
-                    <div class="flex items-center gap-2 my-4"><div class="h-px bg-brand-border flex-1"></div><span class="text-[10px] font-bold text-brand-teal uppercase tracking-widest">Setup Credentials</span><div class="h-px bg-brand-border flex-1"></div></div>
-                    
-                    <input type="text" id="reg-uid" placeholder="Create Custom User ID *" class="w-full bg-brand-teal/5 border border-brand-teal/50 rounded-xl px-4 py-3 text-sm text-white font-bold focus:border-brand-teal">
-                    <input type="password" id="reg-pwd" placeholder="Create Secure Password *" class="w-full bg-brand-teal/5 border border-brand-teal/50 rounded-xl px-4 py-3 text-sm text-white font-bold focus:border-brand-teal">
-                </div>
-                <button onclick="submitRegistration()" class="w-full bg-brand-teal hover:bg-teal-400 py-4 rounded-xl text-brand-dark font-black text-sm shadow-[0_0_15px_rgba(20,184,166,0.4)] mb-4">
-                    <span id="reg-submit-text">Submit & Generate Card</span><div id="reg-submit-loader" class="loader hidden" style="border-left-color: #05080a;"></div>
-                </button>
-            </div>
+    <!-- Services Grid Section -->
+    <section id="services-section" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full relative z-10">
+        <div class="flex items-center justify-center gap-3 mb-12">
+            <i data-lucide="layout-grid" class="w-8 h-8 text-brand-orange"></i>
+            <h2 class="text-3xl font-extrabold text-white tracking-tight">Available Services Dashboard</h2>
         </div>
-    </div>
-
-    <!-- Code Marketplace & Services Checkout Form Modal -->
-    <div id="code-order-modal" class="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md transition-all duration-400 opacity-0 pointer-events-none">
-        <div id="code-order-content" class="relative w-full max-w-md glass border-2 border-brand-teal/50 rounded-3xl p-8 shadow-[0_0_50px_rgba(20,184,166,0.2)] text-left transform scale-95 transition-transform duration-400">
-            <button onclick="closeCodeOrderModal()" class="absolute top-4 right-4 text-slate-400 hover:text-rose-400 bg-brand-dark p-2 rounded-full border border-brand-border hover:border-rose-500 z-10"><i data-lucide="x" class="w-4 h-4"></i></button>
-            
-            <h3 class="text-2xl font-extrabold text-white mb-2 flex items-center gap-3"><i data-lucide="shopping-bag" class="w-6 h-6 text-brand-teal"></i> Finalize Order</h3>
-            <p class="text-slate-400 text-xs mb-6">Fill out the details below to request the service/code.</p>
-            
-            <div class="space-y-4">
-                <div class="bg-brand-dark p-4 rounded-xl border border-brand-border">
-                    <label class="text-[10px] text-slate-500 uppercase tracking-widest font-bold block mb-1">Selected Item</label>
-                    <input type="text" id="order-service-name" readonly class="w-full bg-transparent text-sm text-brand-teal font-bold outline-none">
-                    <input type="text" id="order-service-price" readonly class="w-full bg-transparent text-xs text-white font-mono outline-none mt-1">
-                </div>
-                <input type="text" id="order-name" placeholder="Full Name *" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-3.5 text-sm text-white focus:border-brand-teal">
-                <input type="tel" id="order-mobile" placeholder="Active Mobile Number *" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-3.5 text-sm text-white focus:border-brand-teal">
-                <textarea id="order-address" placeholder="Full Address with Pincode *" rows="3" class="w-full bg-[#05080a] border border-brand-border rounded-xl px-4 py-3.5 text-sm text-white focus:border-brand-teal resize-none"></textarea>
-                <button onclick="submitCodeOrder()" class="w-full gradient-orange-btn py-4 rounded-xl text-white font-black text-sm flex justify-center items-center gap-2 mt-4">
-                    <span id="order-submit-text">Transmit Request to Database</span>
-                    <div id="order-submit-loader" class="loader hidden"></div>
-                </button>
-            </div>
+        <div id="services-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <!-- Dynamically rendered by JS -->
         </div>
-    </div>
+    </section>
 
-    <!-- WhatsApp Redirect Modal -->
-    <div id="whatsapp-modal" class="fixed inset-0 z-[80] flex items-center justify-center p-4 bg-black/95 backdrop-blur-md transition-all duration-400 opacity-0 pointer-events-none">
-        <div id="whatsapp-content" class="relative w-full max-w-sm bg-brand-dark border-2 border-[#25D366]/50 rounded-3xl p-8 text-center shadow-[0_0_50px_rgba(37,211,102,0.2)] transform scale-95 transition-transform duration-400">
-            <div class="w-20 h-20 rounded-2xl bg-[#25D366]/10 flex items-center justify-center mx-auto mb-5 border border-[#25D366]/30"><i data-lucide="message-circle" class="w-10 h-10 text-[#25D366]"></i></div>
-            <h3 class="text-2xl font-extrabold text-white mb-4">Request Sent!</h3>
-            <p class="text-slate-300 text-sm mb-8 leading-relaxed">Your order has been recorded securely in the database. <br><br><span class="text-white font-bold">You must contact us on WhatsApp</span> to confirm the order and receive your files.</p>
-            <a id="whatsapp-redirect-link" href="#" target="_blank" onclick="closeWhatsAppModal()" class="w-full bg-[#25D366] hover:bg-[#1ebe5c] py-4 rounded-xl text-brand-dark font-black text-sm shadow-[0_0_20px_rgba(37,211,102,0.4)] flex justify-center items-center gap-2 transition-colors">
-                <i data-lucide="send" class="w-5 h-5"></i> Open WhatsApp Now
-            </a>
-            <button onclick="closeWhatsAppModal()" class="mt-6 text-xs text-slate-500 hover:text-white font-bold">Close Window</button>
-        </div>
-    </div>
-
-    <!-- User Dashboard with Tier Recharge System -->
-    <div id="user-dashboard-modal" class="fixed inset-0 z-[70] bg-[#05080a] hidden flex-col transition-opacity duration-500 opacity-0">
-        <div class="glass border-b border-brand-border p-4 sm:p-6 flex justify-between items-center">
-            <h2 class="text-2xl font-black text-white flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-8 h-8 text-emerald-400"></i> Member Dashboard</h2>
-            <button onclick="closeUserDashboard()" class="text-slate-400 hover:text-white bg-brand-card p-2 rounded-full border border-brand-border hover:border-emerald-400"><i data-lucide="x" class="w-5 h-5"></i></button>
-        </div>
-        <div class="flex-1 overflow-y-auto p-4 sm:p-8 max-w-4xl mx-auto w-full relative space-y-6">
-            <div class="bg-brand-card p-8 rounded-2xl border border-brand-teal/30 shadow-[0_0_30px_rgba(20,184,166,0.1)] relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-brand-teal/10 rounded-full blur-3xl"></div>
-                <h3 class="text-white font-extrabold mb-2 text-xl flex items-center gap-2"><i data-lucide="shield" class="w-6 h-6 text-brand-teal"></i> Membership Status</h3>
-                
-                <div class="flex flex-col sm:flex-row justify-between items-center mt-6 gap-6">
-                    <div class="bg-[#05080a] border border-brand-border rounded-xl p-5 w-full sm:w-1/2 text-center">
-                        <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1">Current Tier</p>
-                        <p id="current-tier-display" class="text-2xl font-black text-white uppercase">Default</p>
-                        <p id="current-expiry-display" class="text-[10px] text-brand-teal mt-2">Free Services Only</p>
-                    </div>
-                    <div class="w-full sm:w-1/2 text-center space-y-3">
-                        <p class="text-slate-400 text-xs">Unlock premium IT services & code market access step-by-step.</p>
-                        <div id="upgrade-action-area" class="bg-brand-dark p-4 rounded-xl border border-brand-orange/30">
-                            <p class="text-[10px] text-brand-orange font-bold uppercase mb-1">Next Available Step</p>
-                            <p id="next-tier-name" class="text-lg font-black text-white">Silver Card</p>
-                            <p id="next-tier-price" class="text-sm font-mono text-slate-300 mb-3">₹250 for 7 Days</p>
-                            <button onclick="processUpgrade()" class="w-full gradient-orange-btn py-2.5 rounded-lg text-white font-black text-xs shadow-lg">Recharge & Upgrade Now</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Structured Footer -->
-    <footer class="mt-auto border-t border-brand-border bg-[#05080a] pt-12 pb-8 relative z-10">
+    <!-- Footer -->
+    <footer class="mt-auto border-t border-brand-border/50 bg-[#05080a]/80 backdrop-blur-md pt-10 pb-8 relative z-10">
         <div class="max-w-7xl mx-auto px-4 text-center space-y-3 relative z-10">
-            <p class="text-sm text-white font-black tracking-widest uppercase">&copy; <span id="current-year"></span> Sangma Web Developer</p>
+            <p class="text-sm text-slate-300 font-black tracking-widest uppercase">&copy; <span id="current-year"></span> Copyright Sangma Web Developer</p>
+            <p class="text-xs text-slate-500">All rights reserved. Contact: +91 8258813963</p>
         </div>
     </footer>
 
     <script>
         document.getElementById('current-year').innerText = new Date().getFullYear();
 
-        const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbxPsnkJly4QL2wOsVhSNRlS7WqMP9qWZih-OGbJ4CZnUKpbRw9BN0M8ibMiPOMuhsec/exec";
-
-        let isMember = false; 
-        let activeUser = null; 
-        let activeUserProfileData = null;
-        let pendingAction = null; 
-        let currentFilteredCategory = 'all';
-        let itemsVisibleLimit = 8;
-        
-        // OTP & Profile Data
-        let currentSignupEmail = "";
-        let generatedOTP = "";
-        let profilePhotoBase64 = "";
-
-        const allProducts = [
-            { id: 'swd-01', title: 'Basic Coding Starter', category: 'HTML/CSS', price: 12499, img: 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=500&q=80', features: ['Custom HTML5 Design', 'Mobile Responsive'], badge: 'Starter' },
-            { id: 'swd-02', title: 'Staff Profile Template', category: 'AppsScript', price: 14499, img: 'https://images.unsplash.com/photo-1555099962-4199c345e5dd?w=500&q=80', features: ['Data Checking Portal', 'Google Sheets Link'], badge: 'Utility' },
-            { id: 'swd-03', title: 'Inter-Club Scoring System', category: 'FullStack', price: 7499, img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&q=80', features: ['Live Web Results', 'Digital Judging Sheets'], badge: 'Event' },
-            { id: 'swd-04', title: 'Dynamic Data Portal', category: 'JavaScript', price: 1999, img: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500&q=80', features: ['Realtime Fetching', 'Custom Management'], badge: 'Advanced' },
-            ...Array.from({length: 31}).map((_, i) => ({
-                id: `swd-${i+5}`,
-                title: ['Inventory Module', 'Exam Seating Maker', 'Library Indexer', 'Canteen POS Script', 'Transport Tracker'][i % 5] + ` Pro V${(i%3)+1}`,
-                category: ['HTML/CSS', 'AppsScript', 'FullStack', 'JavaScript'][i % 4],
-                price: 1000 + (i * 250),
-                img: `https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&q=80`,
-                features: ['Secure Framework', 'Cloud Hosted'],
-                badge: ['Popular', 'Pro', 'New', 'Utility'][i % 4]
-            }))
+        // Unique services array with contextual images (Unsplash) - Pricing completely removed
+        const uniqueServices = [
+            // Board / Education Services
+            { title: "MBOSE Class IX Registration", category: "Board Service", img: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=500&q=80" },
+            { title: "MBOSE Class X Exam Form", category: "Board Service", img: "https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?w=500&q=80" },
+            { title: "MBOSE Class XI Registration", category: "Board Service", img: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=500&q=80" },
+            { title: "MBOSE Class XII Exam Form", category: "Board Service", img: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=500&q=80" },
+            { title: "UDISE+ Service & Data Update", category: "Institutional", img: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=500&q=80" },
+            { title: "Scholarship Application Fill-up", category: "Education", img: "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=500&q=80" },
+            
+            // Institutional Design
+            { title: "School Banner Design & Print", category: "Design", img: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=500&q=80" },
+            { title: "Students & Staff ID Card Generation", category: "Design", img: "https://images.unsplash.com/photo-1588534882069-4d62b667e42d?w=500&q=80" },
+            
+            // Government / E-Services
+            { title: "PAN Card Apply / Correction", category: "Govt E-Service", img: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=500&q=80" },
+            { title: "EPIC (Voter ID) Apply New", category: "Govt E-Service", img: "https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=500&q=80" },
+            { title: "EPIC Correction / Update", category: "Govt E-Service", img: "https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?w=500&q=80" },
+            { title: "Caste Certificate Apply", category: "Govt E-Service", img: "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=500&q=80" },
+            { title: "Income Certificate Apply", category: "Govt E-Service", img: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=500&q=80" },
+            { title: "Aadhaar Card Download & Print", category: "Govt E-Service", img: "https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?w=500&q=80" },
+            { title: "Driving License Processing", category: "Govt E-Service", img: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=500&q=80" },
+            { title: "Passport Application Assist", category: "Govt E-Service", img: "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=500&q=80" },
+            
+            // Other E-Commerce Services
+            { title: "Online Shopping Assistance (Mobile/Tech)", category: "E-Commerce", img: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=500&q=80" },
+            { title: "Online Shopping (Printers/Computers)", category: "E-Commerce", img: "https://images.unsplash.com/photo-1593640408182-31c70c8268f5?w=500&q=80" },
+            { title: "General Document Typing & Formatting", category: "Utility", img: "https://images.unsplash.com/photo-1555421689-491a97ff2040?w=500&q=80" },
+            { title: "Job Application Form Fill-up", category: "Utility", img: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=500&q=80" }
         ];
 
-        const localServices = [
-            { id: 'loc-01', title: 'ID Card Bulk Order', price: '₹70 per head', icon: 'badge-check', color: 'text-brand-orange', bg: 'bg-brand-orange/10', border: 'border-brand-orange/20' },
-            { id: 'loc-02', title: 'MBOSE Portals', price: '₹150 per candidate', icon: 'file-text', color: 'text-emerald-400', bg: 'bg-emerald-400/10', border: 'border-emerald-400/20' },
-            { id: 'loc-03', title: 'Magazines & Calendars', price: 'Variable Pricing', icon: 'book-open', color: 'text-cyan-400', bg: 'bg-cyan-400/10', border: 'border-cyan-400/20' },
-            { id: 'loc-04', title: 'Scholarship Apply', price: 'Standard Fee', icon: 'graduation-cap', color: 'text-amber-400', bg: 'bg-amber-400/10', border: 'border-amber-400/20' },
-            { id: 'loc-05', title: 'Income Certificate', price: 'Govt. Mandated Fee', icon: 'file-spreadsheet', color: 'text-brand-teal', bg: 'bg-brand-teal/10', border: 'border-brand-teal/20' },
-            { id: 'loc-06', title: 'Caste Certificate', price: 'Govt. Mandated Fee', icon: 'users', color: 'text-rose-400', bg: 'bg-rose-400/10', border: 'border-rose-400/20' },
-            { id: 'loc-07', title: 'PAN Card Registration', price: '₹250 Processing', icon: 'credit-card', color: 'text-blue-400', bg: 'bg-blue-400/10', border: 'border-blue-400/20' },
-            { id: 'loc-08', title: 'APAAR ID Card', price: 'Student Format', icon: 'id-card', color: 'text-indigo-400', bg: 'bg-indigo-400/10', border: 'border-indigo-400/20' },
-            { id: 'loc-09', title: 'Computer Diploma', price: 'Course Registration', icon: 'monitor-play', color: 'text-fuchsia-400', bg: 'bg-fuchsia-400/10', border: 'border-fuchsia-400/20' },
-            { id: 'loc-10', title: 'Voter ID Apply', price: 'Free Registration', icon: 'vote', color: 'text-emerald-500', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20' },
-            { id: 'loc-11', title: 'Driving License', price: 'RTO Application', icon: 'car', color: 'text-brand-orange', bg: 'bg-brand-orange/10', border: 'border-brand-orange/20' },
-            { id: 'loc-12', title: 'Passport Application', price: 'Full Processing', icon: 'plane', color: 'text-cyan-500', bg: 'bg-cyan-500/10', border: 'border-cyan-500/20' }
-        ];
-
-        const tierSystem = [
-            { id: 0, name: 'Default', price: 0, duration: 'Base' },
-            { id: 1, name: 'Silver Card', price: 250, duration: '7 Days' },
-            { id: 2, name: 'Gold Card', price: 500, duration: '1 Month' },
-            { id: 3, name: 'Platinum', price: 1500, duration: '3 Months' },
-            { id: 4, name: 'Diamond', price: 2999, duration: '6 Months' },
-            { id: 5, name: 'Elite', price: 4999, duration: '9 Months' },
-            { id: 6, name: 'Master', price: 9999, duration: '12 Months' }
-        ];
-
-        function showToast(msg, type = 'info') {
-            const t = document.getElementById('sys-toast'); const i = document.getElementById('sys-toast-icon');
-            document.getElementById('sys-toast-msg').innerText = msg;
-            t.className = `toast flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl border text-sm font-bold max-w-md w-full glass z-[9999] ${type==='error'?'border-rose-500/50 text-rose-400':type==='success'?'border-emerald-500/50 text-emerald-400':'border-brand-teal/50 text-brand-teal'}`;
-            i.setAttribute('data-lucide', type==='error'?'alert-circle':type==='success'?'check-circle-2':'info');
-            lucide.createIcons(); t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 5000);
+        function createServiceCardHTML(service) {
+            return `
+                <div class="card-3d bg-brand-card/60 border border-brand-border rounded-2xl flex flex-col overflow-hidden group">
+                    <div class="img-overlay">
+                        <img src="${service.img}" alt="${service.title}" class="card-img" loading="lazy">
+                    </div>
+                    <div class="bg-brand-dark/90 p-5 border-b border-brand-border/50 text-center relative z-10 -mt-2 min-h-[110px] flex flex-col justify-center">
+                        <h3 class="text-[17px] font-extrabold text-white group-hover:text-brand-teal transition-colors leading-tight mb-2">${service.title}</h3>
+                        <div><span class="px-2 py-0.5 rounded-md bg-brand-border/50 text-slate-300 text-[9px] font-black uppercase tracking-wider">${service.category}</span></div>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col justify-end bg-brand-card/40">
+                        <button onclick="requestServiceOnWhatsApp('${service.title}')" class="w-full bg-[#25D366] hover:bg-[#1ebe5c] text-brand-dark py-3 rounded-xl font-black text-sm transition-all flex justify-center items-center gap-2 shadow-[0_0_15px_rgba(37,211,102,0.15)] group-hover:shadow-[0_0_20px_rgba(37,211,102,0.4)] mt-2">
+                            <i data-lucide="send" class="w-4 h-4"></i> Request on WhatsApp
+                        </button>
+                    </div>
+                </div>
+            `;
         }
 
-        async function apiRequest(payload) {
-            try {
-                const response = await fetch(GOOGLE_SHEET_API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
-                return await response.json();
-            } catch (error) {
-                console.error('API Error:', error); return { status: 'error', message: 'Network Error.' };
+        function renderServices(servicesToRender) {
+            const grid = document.getElementById('services-grid');
+            if (servicesToRender.length === 0) {
+                grid.innerHTML = '<div class="col-span-full text-center py-10"><p class="text-slate-400 text-lg">No services found matching your search. Please try another keyword.</p></div>';
+            } else {
+                grid.innerHTML = servicesToRender.map(createServiceCardHTML).join('');
             }
-        }
-
-        function renderProducts() {
-            const grid = document.getElementById('product-grid');
-            const itemsToRender = currentFilteredCategory === 'all' ? allProducts : allProducts.filter(p => p.category === currentFilteredCategory);
-            grid.innerHTML = itemsToRender.slice(0, itemsVisibleLimit).map(p => `
-                <div class="card-3d bg-brand-card border border-brand-border rounded-2xl flex flex-col overflow-hidden cursor-pointer group" onclick="handleCodeOrder('${p.id}')">
-                    <div class="img-overlay"><img src="${p.img}" alt="${p.title}" class="card-img"></div>
-                    <div class="bg-brand-dark p-5 border-b border-brand-border text-center relative z-10 -mt-2">
-                        <h3 class="text-lg font-extrabold text-white group-hover:text-brand-teal transition-colors leading-tight mb-2">${p.title}</h3>
-                        <span class="px-2 py-0.5 rounded-md bg-brand-teal/10 text-brand-teal text-[9px] font-black uppercase border border-brand-teal/20">${p.category}</span>
-                    </div>
-                    <div class="p-5 flex-1 flex flex-col justify-between">
-                        <div class="mt-4 pt-4 border-t border-brand-border/50 flex items-center justify-between">
-                            <div><span class="text-[9px] text-slate-500 uppercase tracking-widest font-bold block mb-0.5">Total Cost</span><span class="text-xl font-mono font-black text-white group-hover:text-brand-orange transition-colors">₹${p.price}</span></div>
-                            <button class="w-10 h-10 rounded-xl bg-brand-dark border border-brand-border group-hover:bg-brand-teal flex items-center justify-center transition-all pointer-events-none">
-                                <i data-lucide="shopping-cart" class="w-4 h-4 text-brand-teal group-hover:text-brand-dark"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>`).join('');
-            document.getElementById('see-more-container').style.display = (itemsToRender.length <= itemsVisibleLimit) ? 'none' : 'block';
             lucide.createIcons();
         }
 
-        function renderLocalServices() {
-            const grid = document.getElementById('local-services-grid');
-            grid.innerHTML = localServices.map(srv => `
-                <div onclick="handleLocalServiceOrder('${srv.title}', '${srv.price}')" class="card-3d bg-brand-card p-6 rounded-2xl border border-brand-border flex flex-col justify-between cursor-pointer group text-center">
-                    <div class="w-14 h-14 rounded-xl ${srv.bg} flex items-center justify-center mx-auto mb-4 border ${srv.border}"><i data-lucide="${srv.icon}" class="w-7 h-7 ${srv.color}"></i></div>
-                    <h3 class="text-[15px] font-extrabold text-white mb-2 leading-tight">${srv.title}</h3>
-                    <p class="text-[12px] ${srv.color} font-black mb-4">${srv.price}</p>
-                    <button class="w-full bg-brand-dark hover:bg-brand-teal text-slate-300 hover:text-brand-dark border border-brand-border font-bold text-xs py-2.5 rounded-lg transition-colors flex justify-center items-center gap-2">
-                        <i data-lucide="shopping-cart" class="w-4 h-4"></i> Buy / Add Service
-                    </button>
-                </div>
-            `).join('');
+        function filterServices() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const filtered = uniqueServices.filter(s => s.title.toLowerCase().includes(query) || s.category.toLowerCase().includes(query));
+            renderServices(filtered);
         }
 
-        function filterProducts(category) { currentFilteredCategory = category; itemsVisibleLimit = 8; renderProducts(); }
-        function loadMoreProducts() { itemsVisibleLimit = 35; renderProducts(); }
-
-        // Core Authentication Flow
-        function switchAuthView(viewName) { 
-            ['login', 'signup-email', 'signup-otp', 'signup-profile'].forEach(v => {
-                const el = document.getElementById('auth-view-' + v);
-                if(el) el.classList.add('hidden');
-            }); 
-            document.getElementById('auth-view-' + viewName).classList.remove('hidden'); 
+        function requestServiceOnWhatsApp(serviceName) {
+            const phoneNumber = "918258813963";
+            const message = `Hello Sangma Web Developer,\n\nI am interested in requesting a service from your website.\n\n*Service Requested:* ${serviceName}\n\nPlease let me know the required documents and how to proceed.`;
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
         }
 
-        function openAuthModal(view = 'login') {
-            const m = document.getElementById('auth-modal'); const c = document.getElementById('auth-modal-content');
-            switchAuthView(view);
-            m.classList.remove('pointer-events-none', 'opacity-0'); m.classList.add('opacity-100');
-            setTimeout(() => c.classList.replace('scale-95', 'scale-100'), 50);
-        }
-
-        function closeAuthModal() {
-            const m = document.getElementById('auth-modal'); const c = document.getElementById('auth-modal-content');
-            c.classList.replace('scale-100', 'scale-95'); m.classList.remove('opacity-100'); m.classList.add('opacity-0', 'pointer-events-none');
-        }
-
-        async function sendOTP() {
-            const email = document.getElementById('signup-email').value.trim();
-            if(!email.includes('@') || email.length < 5) { showToast("Invalid email format.", "error"); return; }
-            
-            document.getElementById('send-otp-text').classList.add('hidden'); 
-            document.getElementById('send-otp-loader').classList.remove('hidden');
-            
-            generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
-            currentSignupEmail = email.toLowerCase();
-
-            const res = await apiRequest({ action: 'sendOTP', email: currentSignupEmail, otp: generatedOTP });
-            
-            document.getElementById('send-otp-text').classList.remove('hidden'); 
-            document.getElementById('send-otp-loader').classList.add('hidden');
-
-            if(res.status === 'success' || res) { 
-                showToast(`OTP successfully sent to ${currentSignupEmail}`, "success"); 
-                switchAuthView('signup-otp'); 
-            } else { showToast("Failed to send OTP.", "error"); }
-        }
-
-        function verifyOTP() {
-            const otp = document.getElementById('signup-otp').value;
-            if(otp === generatedOTP && otp.length === 6) { 
-                switchAuthView('signup-profile'); 
-                showToast("Identity Verified. Setup your profile.", "success"); 
-            } else { showToast("Incorrect OTP entered. Check your inbox.", "error"); }
-        }
-
-        function encodeProfilePhoto(input) {
-            const file = input.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) { profilePhotoBase64 = e.target.result; }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        async function submitRegistration() {
-            const f = document.getElementById('reg-fname').value;
-            const l = document.getElementById('reg-lname').value;
-            const m = document.getElementById('reg-mobile').value;
-            const a = document.getElementById('reg-address').value;
-            const u = document.getElementById('reg-uid').value;
-            const p = document.getElementById('reg-pwd').value;
-
-            if(!f || !l || !u || !p || !m || !a) { showToast("All parameters including Address are mandatory.", "error"); return; }
-            
-            document.getElementById('reg-submit-text').classList.add('hidden'); 
-            document.getElementById('reg-submit-loader').classList.remove('hidden');
-
-            const res = await apiRequest({ 
-                action: 'register', firstName: f, lastName: l, mobile: m, address: a, 
-                email: currentSignupEmail, userId: u, password: p, photo: profilePhotoBase64 
-            });
-            
-            document.getElementById('reg-submit-text').classList.remove('hidden'); 
-            document.getElementById('reg-submit-loader').classList.add('hidden');
-
-            if(res.status === 'success' || res) { 
-                showToast(`Registration Complete! Credentials and ID Card sent to ${currentSignupEmail}`, "success");
-                document.getElementById('login-uid').value = u; 
-                switchAuthView('login');
-            } else { showToast("Registration Failed.", "error"); }
-        }
-
-        async function executeLogin() {
-            const uid = document.getElementById('login-uid').value; const pwd = document.getElementById('login-pwd').value;
-            if(!uid || !pwd) { showToast("Enter credentials.", "error"); return; }
-
-            document.getElementById('login-btn-text').classList.add('hidden'); document.getElementById('login-btn-loader').classList.remove('hidden');
-            const res = await apiRequest({ action: 'login', userId: uid, password: pwd });
-            document.getElementById('login-btn-text').classList.remove('hidden'); document.getElementById('login-btn-loader').classList.add('hidden');
-
-            if(res.status === 'success' || res) { 
-                isMember = true; activeUser = uid; activeUserProfileData = res.user || {tierId: "0", expiry: ""};
-                
-                document.getElementById('nav-login-btn').classList.add('hidden');
-                document.getElementById('user-dash-btn').classList.replace('hidden', 'flex');
-                document.getElementById('logout-btn').classList.replace('hidden', 'flex');
-                closeAuthModal(); showToast(`Authentication Success.`, "success");
-                
-                if (pendingAction) { pendingAction(); pendingAction = null; }
-            } else { showToast("Incorrect User ID or Password.", "error"); }
-        }
-
-        function logout() {
-            isMember = false; activeUser = null; activeUserProfileData = null;
-            document.getElementById('nav-login-btn').classList.remove('hidden');
-            document.getElementById('user-dash-btn').classList.replace('flex', 'hidden');
-            document.getElementById('logout-btn').classList.replace('flex', 'hidden');
-            showToast("Logged out.", "info");
-        }
-
-        function updateDashboardTierView() {
-            if(!activeUserProfileData) return;
-            const currentTierIndex = parseInt(activeUserProfileData.tierId) || 0;
-            const currentTier = tierSystem[currentTierIndex];
-            
-            document.getElementById('current-tier-display').innerText = currentTier.name;
-            document.getElementById('current-expiry-display').innerText = currentTierIndex === 0 ? "Free Services Only" : `Valid: ${activeUserProfileData.expiry || 'Active'}`;
-
-            if(currentTierIndex < tierSystem.length - 1) {
-                const nextTier = tierSystem[currentTierIndex + 1];
-                document.getElementById('upgrade-action-area').classList.remove('hidden');
-                document.getElementById('next-tier-name').innerText = nextTier.name;
-                document.getElementById('next-tier-price').innerText = `₹${nextTier.price} for ${nextTier.duration}`;
-            } else { document.getElementById('upgrade-action-area').classList.add('hidden'); }
-        }
-
-        function openUserDashboard() {
-            updateDashboardTierView();
-            const dash = document.getElementById('user-dashboard-modal');
-            dash.classList.remove('hidden'); dash.classList.add('flex');
-            setTimeout(() => dash.classList.replace('opacity-0', 'opacity-100'), 50);
-        }
-
-        function closeUserDashboard() {
-            const dash = document.getElementById('user-dashboard-modal');
-            dash.classList.replace('opacity-100', 'opacity-0');
-            setTimeout(() => { dash.classList.remove('flex'); dash.classList.add('hidden'); }, 500);
-        }
-
-        async function processUpgrade() {
-            const currentTierIndex = parseInt(activeUserProfileData.tierId) || 0;
-            const nextTierIndex = currentTierIndex + 1;
-            if(nextTierIndex >= tierSystem.length) return;
-
-            showToast("Processing recharge request...", "info");
-            const res = await apiRequest({ action: 'upgradeTier', userId: activeUser, newTierId: nextTierIndex });
-            
-            if(res.status === 'success' || res) { 
-                showToast(`Successfully Upgraded to ${tierSystem[nextTierIndex].name}!`, "success");
-                activeUserProfileData.tierId = nextTierIndex;
-                activeUserProfileData.expiry = res.newExpiry || "New Expiry Set";
-                updateDashboardTierView();
-            } else { showToast("Recharge failed.", "error"); }
-        }
-
-        // Purchasing Actions
-        function handleCodeOrder(productId) {
-            const product = allProducts.find(p => p.id === productId);
-            if (!isMember) {
-                showToast(`Registration required to order ${product.title}.`, "info");
-                pendingAction = () => { openCodeOrderModal(product.title, `₹${product.price}`); };
-                openAuthModal('signup-email'); 
-            } else { openCodeOrderModal(product.title, `₹${product.price}`); }
-        }
-
-        function handleLocalServiceOrder(serviceTitle, priceText) {
-            if (!isMember) {
-                showToast(`Registration required to process ${serviceTitle}.`, "info");
-                pendingAction = () => { openCodeOrderModal(serviceTitle, priceText); };
-                openAuthModal('signup-email');
-            } else { openCodeOrderModal(serviceTitle, priceText); }
-        }
-
-        function openCodeOrderModal(title, price) {
-            document.getElementById('order-service-name').value = title;
-            document.getElementById('order-service-price').value = price;
-            const m = document.getElementById('code-order-modal'); const c = document.getElementById('code-order-content');
-            m.classList.remove('pointer-events-none', 'opacity-0'); m.classList.add('opacity-100');
-            setTimeout(() => c.classList.replace('scale-95', 'scale-100'), 50);
-        }
-
-        function closeCodeOrderModal() {
-            const m = document.getElementById('code-order-modal'); const c = document.getElementById('code-order-content');
-            c.classList.replace('scale-100', 'scale-95'); m.classList.remove('opacity-100'); m.classList.add('opacity-0', 'pointer-events-none');
-            document.getElementById('order-name').value = ''; document.getElementById('order-mobile').value = ''; document.getElementById('order-address').value = '';
-        }
-
-        async function submitCodeOrder() {
-            const name = document.getElementById('order-name').value.trim();
-            const mobile = document.getElementById('order-mobile').value.trim();
-            const address = document.getElementById('order-address').value.trim();
-            const srvName = document.getElementById('order-service-name').value;
-            const srvPrice = document.getElementById('order-service-price').value;
-
-            if (!name || !mobile || !address) { showToast("All form fields including Pincode are mandatory.", "error"); return; }
-            
-            document.getElementById('order-submit-text').classList.add('hidden');
-            document.getElementById('order-submit-loader').classList.remove('hidden');
-
-            const payload = { action: 'submitCodeOrder', userId: activeUser, name: name, mobile: mobile, address: address, serviceName: srvName, price: srvPrice };
-            const res = await apiRequest(payload); 
-            
-            document.getElementById('order-submit-text').classList.remove('hidden');
-            document.getElementById('order-submit-loader').classList.add('hidden');
-
-            if (res.status === 'success' || res) { 
-                closeCodeOrderModal();
-                showWhatsAppModal(srvName);
-            }
-        }
-
-        function showWhatsAppModal(serviceName) {
-            const m = document.getElementById('whatsapp-modal'); const c = document.getElementById('whatsapp-content');
-            const text = encodeURIComponent(`Hello, I have submitted an order request in the portal for: *${serviceName}*. Kindly verify and provide the files/processing details.`);
-            document.getElementById('whatsapp-redirect-link').href = `https://wa.me/918258813963?text=${text}`;
-
-            m.classList.remove('pointer-events-none', 'opacity-0'); m.classList.add('opacity-100');
-            setTimeout(() => c.classList.replace('scale-95', 'scale-100'), 50);
-        }
-
-        function closeWhatsAppModal() {
-            const m = document.getElementById('whatsapp-modal'); const c = document.getElementById('whatsapp-content');
-            c.classList.replace('scale-100', 'scale-95'); m.classList.remove('opacity-100'); m.classList.add('opacity-0', 'pointer-events-none');
-        }
-
+        // Initialize grid on load
         window.addEventListener('DOMContentLoaded', () => { 
-            renderProducts(); 
-            renderLocalServices();
-            lucide.createIcons(); 
+            renderServices(uniqueServices);
         });
     </script>
 </body>
