@@ -133,6 +133,10 @@
                     <input type="text" id="candidateName" placeholder="Alphabets only" oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '')" required>
                   </div>
                   <div class="form-group-field">
+                    <label>School Name <span class="required-star">*</span></label>
+                    <input type="text" id="schoolName" placeholder="Enter School Name" required>
+                  </div>
+                  <div class="form-group-field">
                     <label>Phone Number <span class="required-star">*</span></label>
                     <input type="number" id="phoneNo" placeholder="Phone Number" required>
                   </div>
@@ -253,7 +257,7 @@
     // =======================================================================
     // 🔗 API CONFIGURATION - Paste Web App URL below
     // =======================================================================
-    const API_URL = "https://script.google.com/macros/s/AKfycbyyLPVrY_QXoEVyjxj5zbViWzKscUB5LfPZr14g6M68z5d4grSIrs0t6ARlyFyojultPA/exec"; 
+    const API_URL = "https://script.google.com/macros/s/AKfycbxrI8RYNmSRYGQwPShOKk-oRzKe96kACBIuTtYdyZO0VzzRbWMGvBGUCtS7My_G917QYQ/exec"; 
 
     let isTeacherAuthenticated = false;
 
@@ -342,6 +346,7 @@
       btn.disabled = true; btn.innerText = "Saving Record...";
       const formData = {
         candidateName: document.getElementById("candidateName").value,
+        schoolName: document.getElementById("schoolName").value,
         phoneNo: document.getElementById("phoneNo").value,
         line1: document.getElementById("line1").value,
         state: document.getElementById("state").value,
@@ -389,7 +394,7 @@
           html += `
             <div class="form-container" style="padding: 25px; margin-bottom: 25px;">
               <div style="margin: -25px -25px 20px -25px; padding: 15px 25px; background: var(--bg-gray); border-bottom: 1px solid #e2e8f0; font-weight: 800; color: var(--primary-color); border-radius: 10px 10px 0 0;">
-                Application ID #${rec.slNo} | ${rec.candidateName}
+                Application ID #${rec.slNo} | ${rec.candidateName} - ${rec.schoolName}
               </div>
               <div class="grid-row" style="grid-template-columns: repeat(4, 1fr);">
                 <div class="form-group-field"><label>Phone Number</label><input type="text" value="${rec.phoneNo}" disabled></div>
@@ -418,7 +423,6 @@
         
         const gradeOptions = ['A', 'B', 'C', 'D', 'E'];
         
-        // Pass a third parameter `isLocked` to disable the select dropdown if grades are complete
         const buildSelect = (id, currentVal, isLocked) => {
           let opts = `<option value="" disabled ${!currentVal ? 'selected' : ''}>-- Grade --</option>`;
           gradeOptions.forEach(g => { opts += `<option value="${g}" ${currentVal === g ? 'selected' : ''}>Grade ${g}</option>`; });
@@ -432,7 +436,7 @@
           let cardHtml = `
             <div class="form-container" style="padding: 25px; margin-bottom: 25px; border-left: 4px solid ${hasAllGrades ? 'var(--accent-green)' : 'var(--accent-gold)'};">
               <div style="font-weight: 800; font-size: 16px; color: var(--primary-color); margin-bottom: 15px;">
-                ${rec.candidateName} <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">(ID: ${rec.slNo} | Phone: ${rec.phoneNo})</span>
+                ${rec.candidateName} <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">(ID: ${rec.slNo} | School: ${rec.schoolName})</span>
               </div>
               <div class="teacher-grading-section" style="${hasAllGrades ? 'background: #f8fafc; border-color: #cbd5e1;' : ''}">
                 <div class="grading-title" style="${hasAllGrades ? 'color: #64748b;' : ''}">${hasAllGrades ? 'Assigned Grades (Locked)' : 'Assign Grades'}</div>
@@ -479,7 +483,6 @@
         if (response.success) {
           btn.innerText = "Saved Successfully";
           btn.style.backgroundColor = "var(--accent-green)";
-          // Refresh dashboard automatically so student moves to Graded list, locks fields, and updates counters
           setTimeout(() => { loadTeacherRecords(); }, 1500); 
         } else { throw new Error(response.message); }
       } catch (error) { renderAlert('error', 'Failed to save: ' + error.message); btn.innerText = originalText; btn.disabled = false; }
