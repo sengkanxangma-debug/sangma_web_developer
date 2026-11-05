@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart ID Card Maker & Management Portal</title>
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- SheetJS (xlsx.full.min.js) for Excel template download & import -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+  <style>
+    :root {
+      --primary-color: #0284c7;
+      --card-accent: #0284c7;
+      --card-bg: #ffffff;
+      --body-bg: #f1f5f9;
+    }
+
+    body {
+      background-color: var(--body-bg);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      color: #334155;
+    }
+
+    /* Top Ribbon Header styling */
+    .app-header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    .app-badge {
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.6rem;
+      border-radius: 9999px;
+    }
+
+    /* Tabs styling */
+    .nav-tabs .nav-link {
+      font-weight: 600;
+      color: #64748b;
+      border: none;
+      padding: 0.85rem 1.4rem;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s ease;
+    }
+    .nav-tabs .nav-link:hover {
+      color: #0284c7;
+    }
+    .nav-tabs .nav-link.active {
+      color: #0284c7;
+      border-bottom: 3px solid #0284c7;
+      background: transparent;
+    }
+
+    /* Card Preview Workspace */
+    .preview-workspace {
+      background: radial-gradient(#cbd5e1 1.5px, transparent 1.5px);
+      background-size: 16px 16px;
+      background-color: #e2e8f0;
+      border: 2px dashed #94a3b8;
+      border-radius: 12px;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 560px;
+      position: relative;
+    }
+
+    /* Standard CR80 ID Card dimensions: 54mm x 85.6mm (Approx ratio 1 : 1.585) */
+    .cr80-card-wrapper {
+      perspective: 1000px;
+      width: 320px;
+      height: 508px;
+    }
+
+    .cr80-card {
+      width: 100%;
+      height: 100%;
+      background: var(--card-bg);
+      border-radius: 14px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), 0 3px 10px rgba(0,0,0,0.08);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #cbd5e1;
+      transition: transform 0.4s ease;
+    }
+
+    /* ID Card Front Styling */
+    .id-header-band {
+      background: var(--card-accent);
+      color: #ffffff;
+      padding: 12px 10px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .id-logo-slot {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #ffffff;
+      object-fit: contain;
+      padding: 2px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    .id-org-title {
+      font-size: 13px;
+      font-weight: 800;
+      margin-top: 5px;
+      margin-bottom: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      line-height: 1.2;
+    }
+    .id-badge-pill {
+      display: inline-block;
+      background: #facc15;
+      color: #0f172a;
+      font-size: 9.5px;
+      font-weight: 800;
+      padding: 2px 14px;
+      border-radius: 9999px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .id-photo-wrapper {
+      text-align: center;
+      margin-top: 10px;
+    }
+    .id-passport-photo {
+      width: 96px;
+      height: 112px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 3px solid var(--card-accent);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+      background-color: #f8fafc;
+    }
+
+    .id-details-box {
+      padding: 12px 18px;
+      font-size: 11.5px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 5px;
+    }
+    .id-details-row {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dashed #e2e8f0;
+      padding-bottom: 3px;
+    }
+    .id-details-row .f-label {
+      color: #64748b;
+      font-weight: 600;
+    }
+    .id-details-row .f-val {
+      color: #0f172a;
+      font-weight: 700;
+      text-align: right;
+      max-width: 170px;
+      word-break: break-word;
+    }
+
+    .id-barcode-mock {
+      text-align: center;
+      margin-top: auto;
+      margin-bottom: 6px;
+    }
+    .id-barcode-mock svg {
+      height: 24px;
+      max-width: 80%;
+    }
+
+    .id-card-footer {
+      background: #0f172a;
+      color: #94a3b8;
+      font-size: 9.5px;
+      text-align: center;
+      padding: 6px;
+      font-weight: 600;
+    }
+
+    /* Card Backside Styling */
+    .card-back {
+      display: none;
+      height: 100%;
+      flex-direction: column;
+      padding: 18px;
+      background: #ffffff;
+      font-size: 11px;
+    }
+    .card-back.active {
+      display: flex;
+    }
+    .card-front.hidden {
+      display: none;
+    }
+    .terms-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 12px;
+      color: #475569;
+      line-height: 1.4;
+    }
+
+    /* Print Preview Modes */
+    @media print {
+      body * {
+        visibility: hidden !important;
+      }
+      #printArea, #printArea * {
+        visibility: visible !important;
+      }
+      #printArea {
+        position: absolute;
+        left: 0;
+        top: 0;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        background: transparent !important;
+      }
+      .cr80-card-wrapper {
+        page-break-after: always;
+        box-shadow: none !important;
+        margin: 10px auto !important;
+      }
+      .cr80-card {
+        box-shadow: none !important;
+        border: 1px solid #333 !important;
+      }
+    }
+
+    /* Custom Toast Notification */
+    #toastNotification {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      z-index: 9999;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation & Ribbon -->
+  <header class="app-header py-2 px-3">
+    <div class="container-fluid d-flex flex-wrap justify-content-between align-items-center">
+      <div class="d-flex align-items-center gap-2">
+        <i class="fa-solid fa-address-card fa-2x text-info"></i>
+        <div>
+          <h1 class="h5 mb-0 fw-bold">Smart ID Studio &amp; Sheet Syncer</h1>
+          <small class="text-secondary">CR80 Badge Designer • Excel Import/Export • Auto-Generated Serial ID</small>
+        </div>
+      </div>
+      <div class="d-flex align-items-center gap-2 mt-2 mt-md-0">
+        <button class="btn btn-sm btn-outline-light" onclick="exportAppHtmlBackup()"><i class="fa-solid fa-download me-1"></i>Backup Data / App</button>
+        <span class="badge bg-success app-badge"><i class="fa-solid fa-circle-check me-1"></i>Offline Ready</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="container-fluid px-3 px-md-4 py-3">
+    <!-- Main Tabs -->
+    <ul class="nav nav-tabs mb-4" id="mainTabControl" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="designer-tab" data-bs-toggle="tab" data-bs-target="#designerPane" type="button" role="tab"><i class="fa-solid fa-id-badge me-2"></i>ID Registration &amp; Live Designer</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="excel-tab" data-bs-toggle="tab" data-bs-target="#excelPane" type="button" role="tab"><i class="fa-solid fa-file-excel me-2 text-success"></i>Batch Excel &amp; Templates</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="records-tab" data-bs-toggle="tab" data-bs-target="#recordsPane" type="button" role="tab"><i class="fa-solid fa-database me-2 text-warning"></i>Local Database (<span id="recordCountBadge">0</span>)</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settingsPane" type="button" role="tab"><i class="fa-brands fa-google-drive me-2 text-danger"></i>Google Sheets Sync &amp; API</button>
+      </li>
+    </ul>
+
+    <!-- Tab Contents -->
+    <div class="tab-content" id="mainTabContent">
+
+      <!-- ================= 1. ID REGISTRATION & DESIGNER PANE ================= -->
+      <div class="tab-pane fade show active" id="designerPane" role="tabpanel">
+        <div class="row g-4">
+          
+          <!-- Designer Controls & Form -->
+          <div class="col-lg-7">
+            <div class="card shadow-sm border-0 mb-3">
+              <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                <h6 class="mb-0 fw-bold text-primary"><i class="fa-solid fa-sliders me-2"></i>Template &amp; ID Parameters</h6>
+                <span class="badge bg-dark px-3 py-2" id="nextIdDisplay">ID: Auto-Calculating...</span>
+              </div>
+              <div class="card-body">
+                
+                <!-- Category, Year, and Style Options -->
+                <div class="row g-3 mb-3">
+                  <div class="col-md-5">
+                    <label class="form-label fw-bold small">Category of ID *</label>
+                    <select class="form-select border-primary" id="idCategorySelect" onchange="onCategoryChange()">
+                      <option value="Student" selected>School Student ID</option>
+                      <option value="Staff">School / College Staff ID</option>
+                      <option value="Office">Office / Corporate ID</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label fw-bold small">Academic / Print Year *</label>
+                    <input type="text" class="form-control" id="cardAcademicYear" value="2026-2027" oninput="renderCard()">
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label fw-bold small">Header Accent</label>
+                    <input type="color" class="form-control form-control-color w-100" id="cardColorPicker" value="#0284c7" onchange="changeCardColor(this.value)">
+                  </div>
+                </div>
+
+                <!-- Branding Options -->
+                <div class="row g-3 mb-3 p-3 bg-light rounded-3">
+                  <div class="col-md-6">
+                    <label class="form-label small fw-semibold">School / Institute / Office Name</label>
+                    <input type="text" class="form-control" id="orgNameInput" value="ST. XAVIER HIGHER ACADEMY" oninput="renderCard()">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label small fw-semibold">Upload Logo (Square/Circle)</label>
+                    <input type="file" class="form-control" id="logoUploadInput" accept="image/*" onchange="handleLogoUpload(event)">
+                  </div>
+                  <div class="col-md-12">
+                    <label class="form-label small fw-semibold">Footer Disclaimer / Address Line</label>
+                    <input type="text" class="form-control" id="footerTextInput" value="Affiliated to State Board • Ph: +91 9876543210" oninput="renderCard()">
+                  </div>
+                </div>
+
+                <hr class="text-muted">
+
+                <!-- Dynamic Form Fields -->
+                <div id="dynamicFormFields">
+                  <!-- Injected via JavaScript based on category -->
+                </div>
+
+                <!-- Photo Upload Field -->
+                <div class="row g-3 mt-1 mb-4">
+                  <div class="col-md-12">
+                    <label class="form-label fw-bold small"><i class="fa-solid fa-camera me-1 text-primary"></i>Passport Photo Upload *</label>
+                    <div class="input-group">
+                      <input type="file" class="form-control" id="photoUploadInput" accept="image/*" onchange="handlePhotoUpload(event)">
+                      <button class="btn btn-outline-secondary" type="button" onclick="clearPhoto()"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                    <small class="text-muted">Supports JPG, PNG or WebP images. Displayed automatically in ratio.</small>
+                  </div>
+                </div>
+
+                <!-- Action Button Cluster -->
+                <div class="d-flex flex-wrap gap-2 pt-2 border-top">
+                  <button type="button" class="btn btn-primary px-4 fw-semibold" onclick="saveCurrentCard()"><i class="fa-solid fa-floppy-disk me-2"></i>Save &amp; Register ID</button>
+                  <button type="button" class="btn btn-dark px-4 fw-semibold" onclick="printCard()"><i class="fa-solid fa-print me-2"></i>Print Physical Card</button>
+                  <button type="button" class="btn btn-outline-secondary" onclick="resetForm()"><i class="fa-solid fa-arrow-rotate-left me-1"></i>Reset</button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- Preview & Canvas Workspace -->
+          <div class="col-lg-5">
+            <div class="card shadow-sm border-0 sticky-top" style="top: 20px;">
+              <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                <h6 class="mb-0 fw-bold"><i class="fa-solid fa-eye me-2 text-info"></i>CR80 Card Live Preview</h6>
+                <div class="btn-group btn-group-sm" role="group">
+                  <button type="button" class="btn btn-outline-secondary active" id="btnFrontToggle" onclick="toggleCardSide('front')">Front</button>
+                  <button type="button" class="btn btn-outline-secondary" id="btnBackToggle" onclick="toggleCardSide('back')">Back</button>
+                </div>
+              </div>
+              <div class="card-body preview-workspace" id="printArea">
+                
+                <!-- The Printable CR80 Standard ID Card Container -->
+                <div class="cr80-card-wrapper">
+                  <div class="cr80-card" id="cr80Card">
+                    
+                    <!-- FRONT SIDE -->
+                    <div class="card-front h-100 d-flex flex-column" id="cardFrontSide">
+                      <div class="id-header-band" id="cardHeaderBand">
+                        <img id="cardLogoImg" class="id-logo-slot" src="https://placehold.co/100x100/ffffff/0284c7?text=LOGO" alt="Logo" onerror="this.src='https://placehold.co/100x100/ffffff/0284c7?text=LOGO'">
+                        <div class="id-org-title" id="cardOrgTitle">ST. XAVIER HIGHER ACADEMY</div>
+                        <div class="id-badge-pill" id="cardBadgeTitle">STUDENT ID</div>
+                      </div>
+
+                      <div class="id-photo-wrapper">
+                        <img id="cardPhotoImg" class="id-passport-photo" src="https://placehold.co/120x140/f1f5f9/64748b?text=PASSPORT+PHOTO" alt="Passport Photo">
+                      </div>
+
+                      <div class="id-details-box" id="cardAttributesBox">
+                        <!-- Populated by JavaScript dynamically -->
+                      </div>
+
+                      <div class="id-barcode-mock">
+                        <svg viewBox="0 0 100 20" preserveAspectRatio="none">
+                          <rect x="2" width="2" height="20" fill="#000"/>
+                          <rect x="6" width="3" height="20" fill="#000"/>
+                          <rect x="11" width="1" height="20" fill="#000"/>
+                          <rect x="14" width="4" height="20" fill="#000"/>
+                          <rect x="20" width="2" height="20" fill="#000"/>
+                          <rect x="24" width="1" height="20" fill="#000"/>
+                          <rect x="27" width="3" height="20" fill="#000"/>
+                          <rect x="32" width="2" height="20" fill="#000"/>
+                          <rect x="36" width="4" height="20" fill="#000"/>
+                          <rect x="42" width="1" height="20" fill="#000"/>
+                          <rect x="45" width="3" height="20" fill="#000"/>
+                          <rect x="50" width="2" height="20" fill="#000"/>
+                          <rect x="54" width="3" height="20" fill="#000"/>
+                          <rect x="59" width="1" height="20" fill="#000"/>
+                          <rect x="62" width="4" height="20" fill="#000"/>
+                          <rect x="68" width="2" height="20" fill="#000"/>
+                          <rect x="72" width="1" height="20" fill="#000"/>
+                          <rect x="75" width="3" height="20" fill="#000"/>
+                          <rect x="80" width="2" height="20" fill="#000"/>
+                          <rect x="84" width="4" height="20" fill="#000"/>
+                          <rect x="90" width="2" height="20" fill="#000"/>
+                          <rect x="94" width="2" height="20" fill="#000"/>
+                        </svg>
+                      </div>
+
+                      <div class="id-card-footer">
+                        <span id="cardFooterSerial">ID: STU-2026-0001</span> | <span id="cardFooterNote">2026-2027</span>
+                      </div>
+                    </div>
+
+                    <!-- BACK SIDE -->
+                    <div class="card-back" id="cardBackSide">
+                      <div class="text-center mb-2">
+                        <strong class="text-uppercase" id="backOrgTitle">ST. XAVIER HIGHER ACADEMY</strong>
+                        <div class="text-muted small">TERMS &amp; REGULATIONS</div>
+                      </div>
+                      <div class="terms-box">
+                        <ul class="ps-3 mb-0 small" style="font-size: 10px;">
+                          <li>This card is non-transferable and must be carried at all times.</li>
+                          <li>Loss of this identity card must be immediately reported to the authority.</li>
+                          <li>If found, please surrender this card to the reception or administration office.</li>
+                          <li>Valid for the designated academic/working term only.</li>
+                        </ul>
+                      </div>
+                      <div class="mt-auto border-top pt-2 text-center" style="font-size: 10.5px;">
+                        <p class="mb-1 text-muted" id="backFooterText">Affiliated to State Board • Ph: +91 9876543210</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top">
+                          <span class="text-muted small">Holder Sign</span>
+                          <span class="text-muted small fw-bold">Authorized Signatory</span>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="text-center mt-3 text-muted small">
+                  <i class="fa-solid fa-arrows-left-right me-1"></i>CR80 Standard (54mm × 85.6mm) Badge Ratio
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ================= 2. BATCH EXCEL & TEMPLATES PANE ================= -->
+      <div class="tab-pane fade" id="excelPane" role="tabpanel">
+        <div class="row g-4">
+          
+          <!-- Download Empty Excel Templates -->
+          <div class="col-md-5">
+            <div class="card shadow-sm border-0 h-100">
+              <div class="card-header bg-white py-3">
+                <h6 class="mb-0 fw-bold text-success"><i class="fa-solid fa-download me-2"></i>Download Blank Excel Templates</h6>
+              </div>
+              <div class="card-body">
+                <p class="text-muted small">
+                  Export standardized empty Excel (.xlsx) templates tailored with column headers for easy bulk filling.
+                </p>
+
+                <div class="list-group list-group-flush mb-3">
+                  <div class="list-group-item d-flex justify-content-between align-items-center px-0">
+                    <div>
+                      <strong>Student ID Template</strong>
+                      <div class="text-muted small">Headers: Full Name, Class, Section, Roll No, Blood Group, Contact, Academic Year</div>
+                    </div>
+                    <button class="btn btn-sm btn-outline-success" onclick="downloadEmptyTemplate('Student')"><i class="fa-solid fa-file-arrow-down me-1"></i>.XLSX</button>
+                  </div>
+                  <div class="list-group-item d-flex justify-content-between align-items-center px-0">
+                    <div>
+                      <strong>Staff ID Template</strong>
+                      <div class="text-muted small">Headers: Staff Name, Designation, Department, Joining Date, Blood Group, Contact</div>
+                    </div>
+                    <button class="btn btn-sm btn-outline-success" onclick="downloadEmptyTemplate('Staff')"><i class="fa-solid fa-file-arrow-down me-1"></i>.XLSX</button>
+                  </div>
+                  <div class="list-group-item d-flex justify-content-between align-items-center px-0">
+                    <div>
+                      <strong>Office / Corporate Template</strong>
+                      <div class="text-muted small">Headers: Employee Name, Designation, Department/Branch, Contact No, Blood Group</div>
+                    </div>
+                    <button class="btn btn-sm btn-outline-success" onclick="downloadEmptyTemplate('Office')"><i class="fa-solid fa-file-arrow-down me-1"></i>.XLSX</button>
+                  </div>
+                </div>
+
+                <div class="alert alert-info py-2 small mb-0">
+                  <i class="fa-solid fa-circle-info me-1"></i>Fill the spreadsheet and upload it into the right-hand panel for instant queue preview.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Import Excel Spreadsheet -->
+          <div class="col-md-7">
+            <div class="card shadow-sm border-0 h-100">
+              <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                <h6 class="mb-0 fw-bold text-primary"><i class="fa-solid fa-file-import me-2"></i>Import Excel &amp; Parse Records</h6>
+                <span class="badge bg-light text-dark border" id="importCountBadge">0 Rows Found</span>
+              </div>
+              <div class="card-body">
+                <div class="mb-3">
+                  <label class="form-label small fw-bold">Select Excel File (.xlsx, .xls, .csv)</label>
+                  <input type="file" class="form-control" id="excelFileInput" accept=".xlsx, .xls, .csv" onchange="parseExcelFile(event)">
+                </div>
+
+                <div class="table-responsive border rounded" style="max-height: 320px; overflow-y: auto;">
+                  <table class="table table-hover table-sm small mb-0" id="excelPreviewTable">
+                    <thead class="table-light sticky-top">
+                      <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Type / Class / Desig</th>
+                        <th>Year</th>
+                        <th>Contact</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="excelPreviewBody">
+                      <tr>
+                        <td colspan="6" class="text-center text-muted py-4">No Excel file loaded yet.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-3">
+                  <button type="button" class="btn btn-outline-danger btn-sm" onclick="clearImportedQueue()"><i class="fa-solid fa-trash me-1"></i>Clear Queue</button>
+                  <button type="button" class="btn btn-success btn-sm" id="btnBatchSave" onclick="batchImportToStorage()" disabled><i class="fa-solid fa-database me-1"></i>Save All to Local Database</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ================= 3. LOCAL DATABASE & LOGS PANE ================= -->
+      <div class="tab-pane fade" id="recordsPane" role="tabpanel">
+        <div class="card shadow-sm border-0">
+          <div class="card-header bg-white py-3 d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <div>
+              <h6 class="mb-0 fw-bold"><i class="fa-solid fa-table-list me-2 text-warning"></i>Registered Identity Records</h6>
+              <small class="text-muted">Stored in local browser database and synchronized with Google Sheets</small>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-sm btn-outline-success" onclick="exportDatabaseToExcel()"><i class="fa-solid fa-file-excel me-1"></i>Export to Excel</button>
+              <button class="btn btn-sm btn-outline-danger" onclick="clearDatabase()"><i class="fa-solid fa-trash me-1"></i>Clear All</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <!-- Filter Bar -->
+            <div class="row g-2 mb-3">
+              <div class="col-md-4">
+                <input type="text" class="form-control form-control-sm" id="tableSearchInput" placeholder="Search by name, ID number, or phone..." oninput="filterTable()">
+              </div>
+              <div class="col-md-3">
+                <select class="form-select form-select-sm" id="tableFilterCategory" onchange="filterTable()">
+                  <option value="All">All Categories</option>
+                  <option value="Student">School Student IDs</option>
+                  <option value="Staff">Staff IDs</option>
+                  <option value="Office">Office IDs</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-responsive border rounded">
+              <table class="table table-hover table-striped align-middle small mb-0">
+                <thead class="table-dark">
+                  <tr>
+                    <th>Card ID</th>
+                    <th>Category</th>
+                    <th>Full Name</th>
+                    <th>Primary Detail</th>
+                    <th>Year</th>
+                    <th>Contact</th>
+                    <th>Photo</th>
+                    <th class="text-end">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="databaseTableBody">
+                  <!-- Populated by JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 4. GOOGLE SHEETS SYNC & SETTINGS PANE ================= -->
+      <div class="tab-pane fade" id="settingsPane" role="tabpanel">
+        <div class="row g-4">
+          <div class="col-lg-6">
+            <div class="card shadow-sm border-0">
+              <div class="card-header bg-white py-3">
+                <h6 class="mb-0 fw-bold text-danger"><i class="fa-brands fa-google-drive me-2"></i>Google Sheets Web App Connection</h6>
+              </div>
+              <div class="card-body">
+                <p class="text-muted small">
+                  Connect your Google Spreadsheet to automatically sync registered Student, Staff, and Office IDs into dedicated tabs (`School_IDs`, `Staff_IDs`, `Office_IDs`).
+                </p>
+
+                <div class="mb-3">
+                  <label class="form-label small fw-bold">Google Apps Script Web App URL</label>
+                  <input type="url" class="form-control" id="gasEndpointUrl" placeholder="https://script.google.com/macros/s/.../exec">
+                  <div class="form-text">Paste the Web App deployment URL generated from your Google Apps Script editor.</div>
+                </div>
+
+                <div class="d-flex gap-2 mb-4">
+                  <button type="button" class="btn btn-primary btn-sm" onclick="saveSettings()"><i class="fa-solid fa-check me-1"></i>Save Configuration</button>
+                  <button type="button" class="btn btn-outline-secondary btn-sm" onclick="testSheetConnection()"><i class="fa-solid fa-bolt me-1"></i>Test Connection</button>
+                </div>
+
+                <div id="syncStatusBox" class="alert alert-secondary py-2 small mb-0">
+                  <i class="fa-solid fa-satellite-dish me-1"></i>Status: Google Sheet URL not yet verified.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="card shadow-sm border-0">
+              <div class="card-header bg-white py-3">
+                <h6 class="mb-0 fw-bold text-dark"><i class="fa-solid fa-code me-2"></i>Google Apps Script Setup Guide</h6>
+              </div>
+              <div class="card-body small text-muted">
+                <ol class="ps-3 mb-0">
+                  <li class="mb-2">Open your target Google Spreadsheet.</li>
+                  <li class="mb-2">Navigate to <strong>Extensions &gt; Apps Script</strong>.</li>
+                  <li class="mb-2">Paste the provided `Code.gs` handler script and click <strong>Save</strong>.</li>
+                  <li class="mb-2">Click <strong>Deploy &gt; New deployment</strong>.</li>
+                  <li class="mb-2">Select type <em>Web app</em>, set Execute as: <em>Me</em>, and Who has access: <em>Anyone</em>.</li>
+                  <li>Copy the resulting Web App URL and paste it into the field on the left.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification element -->
+  <div id="toastNotification" class="alert alert-dark shadow-lg d-flex align-items-center gap-2 py-2 px-3 rounded-pill text-white" role="alert">
+    <i class="fa-solid fa-circle-info text-info" id="toastIcon"></i>
+    <span id="toastMessage">Notification message</span>
+  </div>
+
+  <!-- Bootstrap 5 Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    /* =====================================================================
+       GLOBAL STATE & CONFIGURATION
+       ===================================================================== */
+    const DB_STORAGE_KEY = "smart_id_database_v2";
+    const SETTINGS_KEY = "smart_id_settings_v2";
+
+    let state = {
+      category: "Student",
+      year: "2026-2027",
+      orgName: "ST. XAVIER HIGHER ACADEMY",
+      footerText: "Affiliated to State Board • Ph: +91 9876543210",
+      accentColor: "#0284c7",
+      logoBase64: "",
+      photoBase64: "",
+      currentSerialId: "",
+      activeSide: "front",
+      records: [],
+      importedRows: [],
+      gasUrl: ""
+    };
+
+    /* Initialize on DOM Ready */
+    document.addEventListener("DOMContentLoaded", () => {
+      loadStoredSettings();
+      loadDatabase();
+      onCategoryChange();
+      renderCard();
+      renderDatabaseTable();
+    });
+
+    /* =====================================================================
+       CARD DESIGNER & DYNAMIC FIELDS LOGIC
+       ===================================================================== */
+    function onCategoryChange() {
+      const select = document.getElementById("idCategorySelect");
+      state.category = select.value;
+      calculateNextSerial();
+
+      const container = document.getElementById("dynamicFormFields");
+
+      if (state.category === "Student") {
+        container.innerHTML = `
+          <div class="row g-2 mb-2">
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold">Student Full Name *</label>
+              <input type="text" class="form-control" id="f_stuName" placeholder="e.g. Rahul Sharma" oninput="renderCard()">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label small fw-semibold">Class *</label>
+              <input type="text" class="form-control" id="f_stuClass" placeholder="10" oninput="renderCard()">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label small fw-semibold">Section</label>
+              <input type="text" class="form-control" id="f_stuSec" placeholder="A" oninput="renderCard()">
+            </div>
+          </div>
+          <div class="row g-2 mb-2">
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold">Roll Number</label>
+              <input type="text" class="form-control" id="f_stuRoll" placeholder="24" oninput="renderCard()">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold">Blood Group</label>
+              <input type="text" class="form-control" id="f_stuBlood" placeholder="O +ve" oninput="renderCard()">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold">Emergency Contact</label>
+              <input type="text" class="form-control" id="f_stuContact" placeholder="+91 90000 00000" oninput="renderCard()">
+            </div>
+          </div>
+        `;
+      } else if (state.category === "Staff") {
+        container.innerHTML = `
+          <div class="row g-2 mb-2">
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold">Staff Full Name *</label>
+              <input type="text" class="form-control" id="f_staffName" placeholder="e.g. Dr. Priya Sen" oninput="renderCard()">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold">Designation *</label>
+              <input type="text" class="form-control" id="f_staffDesig" placeholder="e.g. Senior Lecturer" oninput="renderCard()">
+            </div>
+          </div>
+          <div class="row g-2 mb-2">
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold">Department *</label>
+              <input type="text" class="form-control" id="f_staffDept" placeholder="Mathematics" oninput="renderCard()">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold">Joining Date/Year</label>
+              <input type="text" class="form-control" id="f_staffJoin" placeholder="15-Jul-2022" oninput="renderCard()">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold">Contact / Phone</label>
+              <input type="text" class="form-control" id="f_staffContact" placeholder="+91 98888 88888" oninput="renderCard()">
+            </div>
+          </div>
+        `;
+      } else {
+        // Office Category
+        container.innerHTML = `
+          <div class="row g-2 mb-2">
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold">Employee Name *</label>
+              <input type="text" class="form-control" id="f_offName" placeholder="e.g. Amit Verma" oninput="renderCard()">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold">Designation *</label>
+              <input type="text" class="form-control" id="f_offDesig" placeholder="e.g. Operations Manager" oninput="renderCard()">
+            </div>
+          </div>
+          <div class="row g-2 mb-2">
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold">Branch / Division</label>
+              <input type="text" class="form-control" id="f_offDept" placeholder="Logistics" oninput="renderCard()">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold">Blood Group</label>
+              <input type="text" class="form-control" id="f_offBlood" placeholder="B +ve" oninput="renderCard()">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold">Contact No</label>
+              <input type="text" class="form-control" id="f_offContact" placeholder="+91 97777 77777" oninput="renderCard()">
+            </div>
+          </div>
+        `;
+      }
+
+      renderCard();
+    }
+
+    /* Auto-increment Serial generator: [PREFIX]-[YEAR]-[SERIAL] */
+    function calculateNextSerial() {
+      const year = (document.getElementById("cardAcademicYear")?.value || "2026").trim().slice(0, 4);
+      let prefix = "STU";
+      if (state.category === "Staff") prefix = "STF";
+      if (state.category === "Office") prefix = "OFF";
+
+      // Count existing category items
+      const countForCategory = state.records.filter(r => r.category === state.category).length + 1;
+      const serialPad = String(countForCategory).padStart(4, "0");
+
+      state.currentSerialId = `${prefix}-${year}-${serialPad}`;
+      document.getElementById("nextIdDisplay").innerText = `ID: ${state.currentSerialId}`;
+    }
+
+    /* Synchronize UI controls and render the live badge preview */
+    function renderCard() {
+      const org = document.getElementById("orgNameInput")?.value || "INSTITUTION NAME";
+      const year = document.getElementById("cardAcademicYear")?.value || "2026-2027";
+      const footer = document.getElementById("footerTextInput")?.value || "";
+
+      document.getElementById("cardOrgTitle").innerText = org;
+      document.getElementById("backOrgTitle").innerText = org;
+      document.getElementById("cardBadgeTitle").innerText = `${state.category.toUpperCase()} ID`;
+      document.getElementById("cardFooterSerial").innerText = `ID: ${state.currentSerialId}`;
+      document.getElementById("cardFooterNote").innerText = year;
+      document.getElementById("backFooterText").innerText = footer;
+
+      const attrContainer = document.getElementById("cardAttributesBox");
+      let detailsHtml = "";
+
+      if (state.category === "Student") {
+        const name = document.getElementById("f_stuName")?.value || "Student Name";
+        const cls = document.getElementById("f_stuClass")?.value || "-";
+        const sec = document.getElementById("f_stuSec")?.value || "-";
+        const roll = document.getElementById("f_stuRoll")?.value || "-";
+        const bld = document.getElementById("f_stuBlood")?.value || "-";
+        const contact = document.getElementById("f_stuContact")?.value || "-";
+
+        detailsHtml = `
+          <div class="id-details-row"><span class="f-label">Full Name:</span><span class="f-val text-primary">${escapeHtml(name)}</span></div>
+          <div class="id-details-row"><span class="f-label">Class &amp; Sec:</span><span class="f-val">${escapeHtml(cls)} (${escapeHtml(sec)})</span></div>
+          <div class="id-details-row"><span class="f-label">Roll Number:</span><span class="f-val">${escapeHtml(roll)}</span></div>
+          <div class="id-details-row"><span class="f-label">Blood Group:</span><span class="f-val">${escapeHtml(bld)}</span></div>
+          <div class="id-details-row"><span class="f-label">Emergency:</span><span class="f-val">${escapeHtml(contact)}</span></div>
+        `;
+      } else if (state.category === "Staff") {
+        const name = document.getElementById("f_staffName")?.value || "Staff Name";
+        const desig = document.getElementById("f_staffDesig")?.value || "Faculty Member";
+        const dept = document.getElementById("f_staffDept")?.value || "Academics";
+        const join = document.getElementById("f_staffJoin")?.value || "-";
+        const contact = document.getElementById("f_staffContact")?.value || "-";
+
+        detailsHtml = `
+          <div class="id-details-row"><span class="f-label">Staff Name:</span><span class="f-val text-primary">${escapeHtml(name)}</span></div>
+          <div class="id-details-row"><span class="f-label">Designation:</span><span class="f-val">${escapeHtml(desig)}</span></div>
+          <div class="id-details-row"><span class="f-label">Department:</span><span class="f-val">${escapeHtml(dept)}</span></div>
+          <div class="id-details-row"><span class="f-label">Joining Year:</span><span class="f-val">${escapeHtml(join)}</span></div>
+          <div class="id-details-row"><span class="f-label">Contact:</span><span class="f-val">${escapeHtml(contact)}</span></div>
+        `;
+      } else {
+        const name = document.getElementById("f_offName")?.value || "Employee Name";
+        const desig = document.getElementById("f_offDesig")?.value || "Staff Member";
+        const dept = document.getElementById("f_offDept")?.value || "Administration";
+        const bld = document.getElementById("f_offBlood")?.value || "-";
+        const contact = document.getElementById("f_offContact")?.value || "-";
+
+        detailsHtml = `
+          <div class="id-details-row"><span class="f-label">Employee:</span><span class="f-val text-primary">${escapeHtml(name)}</span></div>
+          <div class="id-details-row"><span class="f-label">Designation:</span><span class="f-val">${escapeHtml(desig)}</span></div>
+          <div class="id-details-row"><span class="f-label">Branch/Dept:</span><span class="f-val">${escapeHtml(dept)}</span></div>
+          <div class="id-details-row"><span class="f-label">Blood Group:</span><span class="f-val">${escapeHtml(bld)}</span></div>
+          <div class="id-details-row"><span class="f-label">Phone:</span><span class="f-val">${escapeHtml(contact)}</span></div>
+        `;
+      }
+
+      attrContainer.innerHTML = detailsHtml;
+    }
+
+    function changeCardColor(hex) {
+      state.accentColor = hex;
+      document.getElementById("cardHeaderBand").style.backgroundColor = hex;
+      document.getElementById("cardPhotoImg").style.borderColor = hex;
+    }
+
+    function toggleCardSide(side) {
+      state.activeSide = side;
+      const front = document.getElementById("cardFrontSide");
+      const back = document.getElementById("cardBackSide");
+      const btnF = document.getElementById("btnFrontToggle");
+      const btnB = document.getElementById("btnBackToggle");
+
+      if (side === "front") {
+        front.classList.remove("hidden");
+        back.classList.remove("active");
+        btnF.classList.add("active");
+        btnB.classList.remove("active");
+      } else {
+        front.classList.add("hidden");
+        back.classList.add("active");
+        btnB.classList.add("active");
+        btnF.classList.remove("active");
+      }
+    }
+
+    /* Logo & Photo Handlers */
+    function handleLogoUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        state.logoBase64 = evt.target.result;
+        document.getElementById("cardLogoImg").src = evt.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function handlePhotoUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        state.photoBase64 = evt.target.result;
+        document.getElementById("cardPhotoImg").src = evt.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function clearPhoto() {
+      state.photoBase64 = "";
+      document.getElementById("photoUploadInput").value = "";
+      document.getElementById("cardPhotoImg").src = "https://placehold.co/120x140/f1f5f9/64748b?text=PASSPORT+PHOTO";
+    }
+
+    /* =====================================================================
+       RECORD MANAGEMENT & PRINTING
+       ===================================================================== */
+    function saveCurrentCard() {
+      let record = {
+        id: state.currentSerialId,
+        category: state.category,
+        academicYear: document.getElementById("cardAcademicYear").value,
+        orgName: document.getElementById("orgNameInput").value,
+        footerText: document.getElementById("footerTextInput").value,
+        photoBase64: state.photoBase64,
+        timestamp: new Date().toISOString()
+      };
+
+      if (state.category === "Student") {
+        record.name = document.getElementById("f_stuName")?.value.trim();
+        record.className = document.getElementById("f_stuClass")?.value.trim();
+        record.section = document.getElementById("f_stuSec")?.value.trim();
+        record.rollNo = document.getElementById("f_stuRoll")?.value.trim();
+        record.bloodGroup = document.getElementById("f_stuBlood")?.value.trim();
+        record.contact = document.getElementById("f_stuContact")?.value.trim();
+      } else if (state.category === "Staff") {
+        record.name = document.getElementById("f_staffName")?.value.trim();
+        record.designation = document.getElementById("f_staffDesig")?.value.trim();
+        record.department = document.getElementById("f_staffDept")?.value.trim();
+        record.joiningDate = document.getElementById("f_staffJoin")?.value.trim();
+        record.contact = document.getElementById("f_staffContact")?.value.trim();
+      } else {
+        record.name = document.getElementById("f_offName")?.value.trim();
+        record.designation = document.getElementById("f_offDesig")?.value.trim();
+        record.department = document.getElementById("f_offDept")?.value.trim();
+        record.bloodGroup = document.getElementById("f_offBlood")?.value.trim();
+        record.contact = document.getElementById("f_offContact")?.value.trim();
+      }
+
+      if (!record.name) {
+        showToast("Please provide the full name before saving.", "warning");
+        return;
+      }
+
+      // Append or replace
+      state.records.unshift(record);
+      persistDatabase();
+      renderDatabaseTable();
+      calculateNextSerial();
+
+      // Trigger Google Sheets sync if URL is configured
+      if (state.gasUrl) {
+        syncSingleRecordToGoogleSheet(record);
+      }
+
+      showToast(`Record ${record.id} saved successfully!`, "success");
+    }
+
+    function printCard() {
+      // Ensure front side is visible when printing
+      toggleCardSide("front");
+      window.print();
+    }
+
+    function resetForm() {
+      document.getElementById("dynamicFormFields").querySelectorAll("input").forEach(i => i.value = "");
+      clearPhoto();
+      calculateNextSerial();
+      renderCard();
+    }
+
+    /* =====================================================================
+       LOCAL DATABASE STORAGE & TABLE
+       ===================================================================== */
+    function loadDatabase() {
+      const stored = localStorage.getItem(DB_STORAGE_KEY);
+      if (stored) {
+        try {
+          state.records = JSON.parse(stored);
+        } catch (e) {
+          state.records = [];
+        }
+      }
+      updateRecordCountBadge();
+    }
+
+    function persistDatabase() {
+      localStorage.setItem(DB_STORAGE_KEY, JSON.stringify(state.records));
+      updateRecordCountBadge();
+    }
+
+    function updateRecordCountBadge() {
+      document.getElementById("recordCountBadge").innerText = state.records.length;
+    }
+
+    function renderDatabaseTable() {
+      const tbody = document.getElementById("databaseTableBody");
+      const search = (document.getElementById("tableSearchInput")?.value || "").toLowerCase();
+      const filterCat = document.getElementById("tableFilterCategory")?.value || "All";
+
+      const filtered = state.records.filter(r => {
+        const matchCat = (filterCat === "All" || r.category === filterCat);
+        const matchSearch = !search ||
+          (r.name && r.name.toLowerCase().includes(search)) ||
+          (r.id && r.id.toLowerCase().includes(search)) ||
+          (r.contact && r.contact.toLowerCase().includes(search));
+        return matchCat && matchSearch;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center text-muted py-4">No matching records registered yet.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(r => {
+        const primaryDetail = r.category === "Student" 
+          ? `Class: ${r.className || '-'} (${r.section || '-'}) • Roll: ${r.rollNo || '-'}`
+          : `${r.designation || '-'} (${r.department || '-'})`;
+
+        const photoHtml = r.photoBase64 
+          ? `<img src="${r.photoBase64}" class="rounded border" style="width: 32px; height: 38px; object-fit: cover;">`
+          : `<span class="badge bg-light text-muted border">No Pic</span>`;
+
+        return `
+          <tr>
+            <td class="fw-bold font-monospace">${r.id}</td>
+            <td><span class="badge ${r.category === 'Student' ? 'bg-primary' : r.category === 'Staff' ? 'bg-success' : 'bg-secondary'}">${r.category}</span></td>
+            <td class="fw-semibold">${escapeHtml(r.name)}</td>
+            <td class="text-muted small">${escapeHtml(primaryDetail)}</td>
+            <td>${r.academicYear || '-'}</td>
+            <td>${r.contact || '-'}</td>
+            <td>${photoHtml}</td>
+            <td class="text-end">
+              <button class="btn btn-sm btn-outline-primary py-0 px-2" title="Load into Designer" onclick="loadRecordToDesigner('${r.id}')"><i class="fa-solid fa-pen-to-square"></i></button>
+              <button class="btn btn-sm btn-outline-danger py-0 px-2" title="Delete Record" onclick="deleteRecord('${r.id}')"><i class="fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function filterTable() {
+      renderDatabaseTable();
+    }
+
+    function deleteRecord(id) {
+      if (confirm(`Delete record ID: ${id}?`)) {
+        state.records = state.records.filter(r => r.id !== id);
+        persistDatabase();
+        renderDatabaseTable();
+        calculateNextSerial();
+        showToast("Record deleted.", "info");
+      }
+    }
+
+    function clearDatabase() {
+      if (confirm("Are you sure you want to clear all locally stored cards?")) {
+        state.records = [];
+        persistDatabase();
+        renderDatabaseTable();
+        calculateNextSerial();
+        showToast("All local records removed.", "danger");
+      }
+    }
+
+    function loadRecordToDesigner(id) {
+      const rec = state.records.find(r => r.id === id);
+      if (!rec) return;
+
+      document.getElementById("idCategorySelect").value = rec.category;
+      state.category = rec.category;
+      onCategoryChange();
+
+      document.getElementById("cardAcademicYear").value = rec.academicYear || "2026-2027";
+      document.getElementById("orgNameInput").value = rec.orgName || "INSTITUTION NAME";
+      document.getElementById("footerTextInput").value = rec.footerText || "";
+      state.currentSerialId = rec.id;
+      document.getElementById("nextIdDisplay").innerText = `ID: ${rec.id}`;
+
+      if (rec.photoBase64) {
+        state.photoBase64 = rec.photoBase64;
+        document.getElementById("cardPhotoImg").src = rec.photoBase64;
+      }
+
+      if (rec.category === "Student") {
+        if (document.getElementById("f_stuName")) document.getElementById("f_stuName").value = rec.name || "";
+        if (document.getElementById("f_stuClass")) document.getElementById("f_stuClass").value = rec.className || "";
+        if (document.getElementById("f_stuSec")) document.getElementById("f_stuSec").value = rec.section || "";
+        if (document.getElementById("f_stuRoll")) document.getElementById("f_stuRoll").value = rec.rollNo || "";
+        if (document.getElementById("f_stuBlood")) document.getElementById("f_stuBlood").value = rec.bloodGroup || "";
+        if (document.getElementById("f_stuContact")) document.getElementById("f_stuContact").value = rec.contact || "";
+      } else if (rec.category === "Staff") {
+        if (document.getElementById("f_staffName")) document.getElementById("f_staffName").value = rec.name || "";
+        if (document.getElementById("f_staffDesig")) document.getElementById("f_staffDesig").value = rec.designation || "";
+        if (document.getElementById("f_staffDept")) document.getElementById("f_staffDept").value = rec.department || "";
+        if (document.getElementById("f_staffJoin")) document.getElementById("f_staffJoin").value = rec.joiningDate || "";
+        if (document.getElementById("f_staffContact")) document.getElementById("f_staffContact").value = rec.contact || "";
+      } else {
+        if (document.getElementById("f_offName")) document.getElementById("f_offName").value = rec.name || "";
+        if (document.getElementById("f_offDesig")) document.getElementById("f_offDesig").value = rec.designation || "";
+        if (document.getElementById("f_offDept")) document.getElementById("f_offDept").value = rec.department || "";
+        if (document.getElementById("f_offBlood")) document.getElementById("f_offBlood").value = rec.bloodGroup || "";
+        if (document.getElementById("f_offContact")) document.getElementById("f_offContact").value = rec.contact || "";
+      }
+
+      renderCard();
+      const firstTab = new bootstrap.Tab(document.getElementById("designer-tab"));
+      firstTab.show();
+      showToast(`Loaded ID ${rec.id} into designer.`, "info");
+    }
+
+    /* =====================================================================
+       SHEETJS EXCEL TEMPLATE GENERATION & PARSING
+       ===================================================================== */
+    function downloadEmptyTemplate(type) {
+      let headers = [];
+      let filename = "";
+
+      if (type === "Student") {
+        headers = [["Academic Year", "Student Name", "Class", "Section", "Roll No", "Blood Group", "Contact Number", "Address"]];
+        filename = "Student_ID_Template.xlsx";
+      } else if (type === "Staff") {
+        headers = [["Academic Year", "Staff Name", "Designation", "Department", "Joining Date", "Blood Group", "Contact Number", "Address"]];
+        filename = "Staff_ID_Template.xlsx";
+      } else {
+        headers = [["Academic Year", "Employee Name", "Designation", "Branch Department", "Blood Group", "Contact Number", "Address"]];
+        filename = "Office_ID_Template.xlsx";
+      }
+
+      const ws = XLSX.utils.aoa_to_sheet(headers);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, `${type}_Template`);
+      XLSX.writeFile(wb, filename);
+
+      showToast(`Downloaded ${filename}`, "success");
+    }
+
+    function parseExcelFile(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const data = new Uint8Array(evt.target.result);
+          const workbook = XLSX.read(data, { type: "array" });
+          const firstSheetName = workbook.SheetNames[0];
+          const rawRows = XLSX.utils.sheet_to_json(workbook.Sheets[firstSheetName]);
+
+          if (rawRows.length === 0) {
+            showToast("No data rows found in the selected Excel sheet.", "warning");
+            return;
+          }
+
+          state.importedRows = rawRows;
+          document.getElementById("importCountBadge").innerText = `${rawRows.length} Rows Loaded`;
+          document.getElementById("btnBatchSave").disabled = false;
+
+          renderExcelPreviewTable(rawRows);
+          showToast(`Parsed ${rawRows.length} rows successfully!`, "success");
+        } catch (err) {
+          showToast("Error parsing Excel file: " + err.message, "danger");
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function renderExcelPreviewTable(rows) {
+      const tbody = document.getElementById("excelPreviewBody");
+      tbody.innerHTML = rows.map((r, i) => {
+        const name = r["Student Name"] || r["Staff Name"] || r["Employee Name"] || r["Name"] || "Unknown";
+        const detail = r["Class"] ? `Class: ${r["Class"]} (${r["Section"] || '-'})` : (r["Designation"] || "-");
+        const yr = r["Academic Year"] || r["Year"] || "2026";
+        const contact = r["Contact Number"] || r["Contact"] || "-";
+
+        return `
+          <tr>
+            <td>${i + 1}</td>
+            <td class="fw-semibold">${escapeHtml(name)}</td>
+            <td>${escapeHtml(detail)}</td>
+            <td>${escapeHtml(yr)}</td>
+            <td>${escapeHtml(contact)}</td>
+            <td>
+              <button class="btn btn-xs btn-outline-primary py-0 px-2" onclick="previewBatchRow(${i})">Load Card</button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function previewBatchRow(index) {
+      const r = state.importedRows[index];
+      if (!r) return;
+
+      const name = r["Student Name"] || r["Staff Name"] || r["Employee Name"] || r["Name"] || "";
+      const isStudent = !!r["Student Name"] || !!r["Class"];
+      const isStaff = !!r["Staff Name"] || !!r["Joining Date"];
+
+      let type = "Office";
+      if (isStudent) type = "Student";
+      else if (isStaff) type = "Staff";
+
+      document.getElementById("idCategorySelect").value = type;
+      state.category = type;
+      onCategoryChange();
+
+      if (r["Academic Year"] || r["Year"]) {
+        document.getElementById("cardAcademicYear").value = r["Academic Year"] || r["Year"];
+      }
+
+      if (type === "Student") {
+        if (document.getElementById("f_stuName")) document.getElementById("f_stuName").value = name;
+        if (document.getElementById("f_stuClass")) document.getElementById("f_stuClass").value = r["Class"] || "";
+        if (document.getElementById("f_stuSec")) document.getElementById("f_stuSec").value = r["Section"] || "";
+        if (document.getElementById("f_stuRoll")) document.getElementById("f_stuRoll").value = r["Roll No"] || "";
+        if (document.getElementById("f_stuBlood")) document.getElementById("f_stuBlood").value = r["Blood Group"] || "";
+        if (document.getElementById("f_stuContact")) document.getElementById("f_stuContact").value = r["Contact Number"] || r["Contact"] || "";
+      } else if (type === "Staff") {
+        if (document.getElementById("f_staffName")) document.getElementById("f_staffName").value = name;
+        if (document.getElementById("f_staffDesig")) document.getElementById("f_staffDesig").value = r["Designation"] || "";
+        if (document.getElementById("f_staffDept")) document.getElementById("f_staffDept").value = r["Department"] || "";
+        if (document.getElementById("f_staffJoin")) document.getElementById("f_staffJoin").value = r["Joining Date"] || "";
+        if (document.getElementById("f_staffContact")) document.getElementById("f_staffContact").value = r["Contact Number"] || r["Contact"] || "";
+      } else {
+        if (document.getElementById("f_offName")) document.getElementById("f_offName").value = name;
+        if (document.getElementById("f_offDesig")) document.getElementById("f_offDesig").value = r["Designation"] || "";
+        if (document.getElementById("f_offDept")) document.getElementById("f_offDept").value = r["Branch Department"] || r["Department"] || "";
+        if (document.getElementById("f_offBlood")) document.getElementById("f_offBlood").value = r["Blood Group"] || "";
+        if (document.getElementById("f_offContact")) document.getElementById("f_offContact").value = r["Contact Number"] || r["Contact"] || "";
+      }
+
+      renderCard();
+      const firstTab = new bootstrap.Tab(document.getElementById("designer-tab"));
+      firstTab.show();
+      showToast(`Loaded ${name} into Designer`, "info");
+    }
+
+    function batchImportToStorage() {
+      if (!state.importedRows.length) return;
+
+      const year = (document.getElementById("cardAcademicYear")?.value || "2026").trim().slice(0, 4);
+      let count = 0;
+
+      state.importedRows.forEach(r => {
+        const name = r["Student Name"] || r["Staff Name"] || r["Employee Name"] || r["Name"];
+        if (!name) return;
+
+        const isStudent = !!r["Student Name"] || !!r["Class"];
+        const isStaff = !!r["Staff Name"] || !!r["Joining Date"];
+        const cat = isStudent ? "Student" : (isStaff ? "Staff" : "Office");
+        const prefix = cat === "Student" ? "STU" : (cat === "Staff" ? "STF" : "OFF");
+
+        const nextCount = state.records.filter(item => item.category === cat).length + 1;
+        const serialId = `${prefix}-${year}-${String(nextCount).padStart(4, "0")}`;
+
+        const newRec = {
+          id: serialId,
+          category: cat,
+          name: name,
+          academicYear: r["Academic Year"] || r["Year"] || "2026-2027",
+          orgName: document.getElementById("orgNameInput")?.value || "INSTITUTION NAME",
+          footerText: document.getElementById("footerTextInput")?.value || "",
+          contact: r["Contact Number"] || r["Contact"] || "",
+          bloodGroup: r["Blood Group"] || "",
+          photoBase64: "",
+          timestamp: new Date().toISOString()
+        };
+
+        if (cat === "Student") {
+          newRec.className = r["Class"] || "";
+          newRec.section = r["Section"] || "";
+          newRec.rollNo = r["Roll No"] || "";
+        } else if (cat === "Staff") {
+          newRec.designation = r["Designation"] || "";
+          newRec.department = r["Department"] || "";
+          newRec.joiningDate = r["Joining Date"] || "";
+        } else {
+          newRec.designation = r["Designation"] || "";
+          newRec.department = r["Branch Department"] || r["Department"] || "";
+        }
+
+        state.records.unshift(newRec);
+        count++;
+      });
+
+      persistDatabase();
+      renderDatabaseTable();
+      calculateNextSerial();
+      showToast(`Saved ${count} records into local database!`, "success");
+    }
+
+    function clearImportedQueue() {
+      state.importedRows = [];
+      document.getElementById("excelFileInput").value = "";
+      document.getElementById("importCountBadge").innerText = "0 Rows Found";
+      document.getElementById("btnBatchSave").disabled = true;
+      document.getElementById("excelPreviewBody").innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">No Excel file loaded yet.</td></tr>`;
+    }
+
+    function exportDatabaseToExcel() {
+      if (!state.records.length) {
+        showToast("No database records available to export.", "warning");
+        return;
+      }
+
+      const rows = state.records.map(r => ({
+        "ID Number": r.id,
+        "Category": r.category,
+        "Academic Year": r.academicYear,
+        "Full Name": r.name,
+        "Class/Designation": r.category === "Student" ? r.className : r.designation,
+        "Section/Department": r.category === "Student" ? r.section : r.department,
+        "Roll No/Joining": r.category === "Student" ? r.rollNo : r.joiningDate,
+        "Blood Group": r.bloodGroup || "",
+        "Contact": r.contact || "",
+        "Registered On": r.timestamp
+      }));
+
+      const ws = XLSX.utils.json_to_sheet(rows);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Registered_IDs");
+      XLSX.writeFile(wb, `ID_Cards_Database_Export.xlsx`);
+      showToast("Exported database to Excel!", "success");
+    }
+
+    /* =====================================================================
+       GOOGLE APPS SCRIPT SYNC
+       ===================================================================== */
+    function loadStoredSettings() {
+      const stored = localStorage.getItem(SETTINGS_KEY);
+      if (stored) {
+        try {
+          const cfg = JSON.parse(stored);
+          state.gasUrl = cfg.gasUrl || "";
+          document.getElementById("gasEndpointUrl").value = state.gasUrl;
+          if (state.gasUrl) {
+            document.getElementById("syncStatusBox").innerHTML = `<i class="fa-solid fa-check-circle text-success me-1"></i>Configured: Syncing automatically.`;
+          }
+        } catch (e) {}
+      }
+    }
+
+    function saveSettings() {
+      state.gasUrl = document.getElementById("gasEndpointUrl").value.trim();
+      localStorage.setItem(SETTINGS_KEY, JSON.stringify({ gasUrl: state.gasUrl }));
+      showToast("Settings and Google Sheets URL saved!", "success");
+      document.getElementById("syncStatusBox").innerHTML = state.gasUrl 
+        ? `<i class="fa-solid fa-check-circle text-success me-1"></i>Configured: Live synchronization enabled.`
+        : `<i class="fa-solid fa-satellite-dish me-1"></i>Status: No URL provided.`;
+    }
+
+    async function syncSingleRecordToGoogleSheet(record) {
+      if (!state.gasUrl) return;
+
+      try {
+        await fetch(state.gasUrl, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(record)
+        });
+        showToast(`Dispatched ${record.id} to Google Sheets tab.`, "success");
+      } catch (err) {
+        console.error("Google sync error:", err);
+      }
+    }
+
+    async function testSheetConnection() {
+      const url = document.getElementById("gasEndpointUrl").value.trim();
+      if (!url) {
+        showToast("Please enter a Google Apps Script Web App URL first.", "warning");
+        return;
+      }
+
+      showToast("Testing connection...", "info");
+      try {
+        await fetch(url, { method: "GET", mode: "no-cors" });
+        showToast("Endpoint reached successfully!", "success");
+        document.getElementById("syncStatusBox").innerHTML = `<i class="fa-solid fa-check text-success me-1"></i>Endpoint reachable.`;
+      } catch (err) {
+        showToast("Connection failed: " + err.message, "danger");
+      }
+    }
+
+    /* =====================================================================
+       BACKUP & UTILITY HELPERS
+       ===================================================================== */
+    function exportAppHtmlBackup() {
+      const backupData = {
+        database: state.records,
+        settings: { gasUrl: state.gasUrl },
+        exportDate: new Date().toISOString()
+      };
+      const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `ID_Studio_Backup_${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      showToast("Downloaded database backup JSON.", "success");
+    }
+
+    function showToast(message, type = "info") {
+      const toast = document.getElementById("toastNotification");
+      const msgElem = document.getElementById("toastMessage");
+      const icon = document.getElementById("toastIcon");
+
+      msgElem.innerText = message;
+      if (type === "success") {
+        icon.className = "fa-solid fa-circle-check text-success";
+      } else if (type === "warning") {
+        icon.className = "fa-solid fa-triangle-exclamation text-warning";
+      } else if (type === "danger") {
+        icon.className = "fa-solid fa-circle-xmark text-danger";
+      } else {
+        icon.className = "fa-solid fa-circle-info text-info";
+      }
+
+      toast.style.display = "flex";
+      setTimeout(() => {
+        toast.style.display = "none";
+      }, 3500);
+    }
+
+    function escapeHtml(str) {
+      if (!str) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+  </script>
+</body>
+</html>
